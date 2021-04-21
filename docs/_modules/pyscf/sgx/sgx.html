@@ -332,7 +332,7 @@
 <span class="kn">from</span> <span class="nn">pyscf.df</span> <span class="kn">import</span> <span class="n">df_jk</span>
 <span class="kn">from</span> <span class="nn">pyscf</span> <span class="kn">import</span> <span class="n">__config__</span>
 
-<div class="viewcode-block" id="sgx_fit"><a class="viewcode-back" href="../../../modules/sgx.html#pyscf.sgx.sgx.sgx_fit">[docs]</a><span class="k">def</span> <span class="nf">sgx_fit</span><span class="p">(</span><span class="n">mf</span><span class="p">,</span> <span class="n">auxbasis</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">with_df</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="sgx_fit"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.sgx.html#pyscf.sgx.sgx.sgx_fit">[docs]</a><span class="k">def</span> <span class="nf">sgx_fit</span><span class="p">(</span><span class="n">mf</span><span class="p">,</span> <span class="n">auxbasis</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">with_df</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">'''For the given SCF object, update the J, K matrix constructor with</span>
 <span class="sd">    corresponding SGX or density fitting integrals.</span>
 
@@ -473,7 +473,7 @@
     <span class="k">return</span> <span class="n">vhfopt</span>
 
 
-<div class="viewcode-block" id="SGX"><a class="viewcode-back" href="../../../modules/sgx.html#pyscf.sgx.sgx.SGX">[docs]</a><span class="k">class</span> <span class="nc">SGX</span><span class="p">(</span><span class="n">lib</span><span class="o">.</span><span class="n">StreamObject</span><span class="p">):</span>
+<div class="viewcode-block" id="SGX"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.sgx.html#pyscf.sgx.sgx.SGX">[docs]</a><span class="k">class</span> <span class="nc">SGX</span><span class="p">(</span><span class="n">lib</span><span class="o">.</span><span class="n">StreamObject</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mol</span><span class="p">,</span> <span class="n">auxbasis</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mol</span> <span class="o">=</span> <span class="n">mol</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">stdout</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">stdout</span>
@@ -542,10 +542,10 @@
                 <span class="n">v</span><span class="o">.</span><span class="n">build</span><span class="p">(</span><span class="n">level</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span></div>
 
-<div class="viewcode-block" id="SGX.kernel"><a class="viewcode-back" href="../../../modules/sgx.html#pyscf.sgx.sgx.SGX.kernel">[docs]</a>    <span class="k">def</span> <span class="nf">kernel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="SGX.kernel"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.sgx.html#pyscf.sgx.sgx.SGX.kernel">[docs]</a>    <span class="k">def</span> <span class="nf">kernel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">build</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="SGX.reset"><a class="viewcode-back" href="../../../modules/sgx.html#pyscf.sgx.sgx.SGX.reset">[docs]</a>    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mol</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="SGX.reset"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.sgx.html#pyscf.sgx.sgx.SGX.reset">[docs]</a>    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mol</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">'''Reset mol and clean up relevant attributes for scanner mode'''</span>
         <span class="k">if</span> <span class="n">mol</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">mol</span> <span class="o">=</span> <span class="n">mol</span>

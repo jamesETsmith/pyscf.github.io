@@ -4,7 +4,8 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   <meta name="lang:clipboard.copy" content="Copy to clipboard">
@@ -46,10 +47,11 @@
   
   
   
-    <title>Multi-configuration self-consistent field (MCSCF) &#8212; PySCF 2.0.0 documentation</title>
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/material.css" type="text/css" />
-    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <title>Multi-configuration self-consistent field (MCSCF) &#8212; PySCF</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/material.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/pyscf.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
@@ -65,7 +67,7 @@
 
   </head>
   <body dir=ltr
-        data-md-color-primary=indigo data-md-color-accent=amber>
+        data-md-color-primary=pyscf data-md-color-accent=pyscf>
   
   <svg class="md-svg">
     <defs data-children-count="0">
@@ -83,11 +85,11 @@
   <nav class="md-header-nav md-grid">
     <div class="md-flex navheader">
       <div class="md-flex__cell md-flex__cell--shrink">
-        <a href="../index.html" title="PySCF 2.0.0 documentation"
+        <a href="../index.html" title="PySCF"
            class="md-header-nav__button md-logo">
           
               <img src="../_static/pyscf-logo-white.svg" height="26"
-                   alt="PySCF 2.0.0 documentation logo">
+                   alt="PySCF logo">
           
         </a>
       </div>
@@ -173,8 +175,6 @@
             
             <li class="md-tabs__item"><a href="../index.html" class="md-tabs__link">Home</a></li>
             
-            <li class="md-tabs__item"><a href="../overview.html" class="md-tabs__link">Overview</a></li>
-            
             <li class="md-tabs__item"><a href="../install.html" class="md-tabs__link">Install</a></li>
             
             <li class="md-tabs__item"><a href="../quickstart.html" class="md-tabs__link">Quickstart</a></li>
@@ -198,13 +198,13 @@
               <div class="md-sidebar__inner">
                 <nav class="md-nav md-nav--primary" data-md-level="0">
   <label class="md-nav__title md-nav__title--site" for="__drawer">
-    <a href="../index.html" title="PySCF 2.0.0 documentation" class="md-nav__button md-logo">
+    <a href="../index.html" title="PySCF" class="md-nav__button md-logo">
       
         <img src="../_static/pyscf-logo-white.svg" alt=" logo" width="48" height="48">
       
     </a>
     <a href="../index.html"
-       title="PySCF 2.0.0 documentation">PySCF 2.0</a>
+       title="PySCF">PySCF 2.0</a>
   </label>
     <div class="md-nav__source">
       <a href="https://github.com/pyscf/pyscf/" title="Go to repository" class="md-source" data-md-source="github">
@@ -225,13 +225,6 @@
 
   
   <ul class="md-nav__list">
-    <li class="md-nav__item">
-    
-    
-      <a href="../overview.html" class="md-nav__link">Overview</a>
-      
-    
-    </li>
     <li class="md-nav__item">
     
     
@@ -461,13 +454,6 @@
     <li class="md-nav__item">
     
     
-      <a href="../interface.html" class="md-nav__link">Interface</a>
-      
-    
-    </li>
-    <li class="md-nav__item">
-    
-    
       <a href="../about.html" class="md-nav__link">About</a>
       
     
@@ -538,23 +524,23 @@
         <div class="md-content">
           <article class="md-content__inner md-typeset" role="main">
             
-  
+  <section id="multi-configuration-self-consistent-field-mcscf">
 <span id="user-mcscf"></span><h1 id="user-mcscf--page-root">Multi-configuration self-consistent field (MCSCF)<a class="headerlink" href="#user-mcscf--page-root" title="Permalink to this headline">¶</a></h1>
 <p><em>Modules</em>: <code class="xref py py-mod docutils literal notranslate"><span class="pre">mcscf</span></code></p>
-
+<section id="introduction">
 <h2 id="introduction">Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
 <p>Multiconfigurational self-consistent field (MCSCF) methods go beyond the single-determinant Hartree-Fock (HF) method by allowing the wave function to become a linear combination of multiple determinants.
 While the configurations i.e. determinants can in principle be chosen in an arbitrary number of ways, PySCF focuses on the complete active space (CAS) family of methods, where the set of electron configurations is defined in terms of a given set of active orbitals, also known as the “active space”.
 The CAS method generates all possible electron configurations that can be formed from the set of the active orbitals, and is therefore equivalent to an FCI procedure on a subset of the molecular orbitals; please see <a class="reference internal" href="ci.html#theory-ci"><span class="std std-ref">Configuration interaction (CISD and FCI)</span></a> for a discussion on the FCI method.
 The use of MCSCF methods is crucial for reliable modeling of systems that exhibit nearly degenerate orbitals i.e. static correlation, such as transition metal complexes.
-For a detailed discussion of MCSCF methods, we direct the reader to References <a class="bibtex reference internal" href="#helgaker2013" id="id1">[1]</a> and <a class="bibtex reference internal" href="#esqc" id="id2">[2]</a>.</p>
+For a general discussion of MCSCF methods, we direct the reader to References <a class="bibtex reference internal" href="#helgaker2013" id="id1">[1]</a> and <a class="bibtex reference internal" href="#esqc" id="id2">[2]</a>, and for specific details about PySCF’s implementation of CASSCF see <a class="bibtex reference internal" href="#sun2017" id="id3">[3]</a>.</p>
 <p>The MCSCF module has two main flavors: CASCI and CASSCF.
 In CASCI, the wave function is written as a linear combination of Slater determinants, and the expansion coefficients are solved in a variational procedure.
 The orbitals are fixed in a CASCI calculation.
 In contrast, in a CASSCF calculation, the orbitals are relaxed to minimize the resulting CASCI energy.
 This means performing multiple CASCI steps followed by updates to the molecular orbitals, in analogy to Hartree-Fock calculations which also relies on iterative algorithms to minimize the HF energy with respect to the orbitals.</p>
 <p>Minimal examples for each type of calculations are shown below.</p>
-
+<section id="casci">
 <h3 id="casci">CASCI<a class="headerlink" href="#casci" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyscf</span> <span class="kn">import</span> <span class="n">gto</span><span class="p">,</span> <span class="n">mp</span><span class="p">,</span> <span class="n">mcscf</span>
 <span class="n">mol</span> <span class="o">=</span> <span class="n">gto</span><span class="o">.</span><span class="n">M</span><span class="p">(</span>
@@ -571,8 +557,8 @@ This means performing multiple CASCI steps followed by updates to the molecular 
 <span class="n">mycas</span><span class="o">.</span><span class="n">kernel</span><span class="p">(</span><span class="n">natorbs</span><span class="p">)</span>
 </pre></div>
 </div>
-
-
+</section>
+<section id="casscf">
 <h3 id="casscf">CASSCF<a class="headerlink" href="#casscf" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pyscf</span>
 <span class="n">mol</span> <span class="o">=</span> <span class="n">pyscf</span><span class="o">.</span><span class="n">M</span><span class="p">(</span>
@@ -590,9 +576,9 @@ It can also be used in its unrestricted formulation, please see <a class="refere
 An important feature of <code class="xref py py-mod docutils literal notranslate"><span class="pre">mcscf</span></code> is that it can interface with external CI solver such as DMRG, FCIQMC, or selected CI methods, see the external projects for more details.
 You can even use MP2 or CC methods as solvers!
 Check out <a class="reference external" href="https://github.com/pyscf/pyscf/tree/master//examples/cc/42-as_casci_fcisolver.py">/examples/cc/42-as_casci_fcisolver.py</a> for a working example.</p>
-
-
-
+</section>
+</section>
+<section id="picking-an-active-space">
 <h2 id="picking-an-active-space">Picking an Active Space<a class="headerlink" href="#picking-an-active-space" title="Permalink to this headline">¶</a></h2>
 <p>In general, selecting an active space can be cumbersome and PySCF offers severals ways to facilitate this process.
 There are several strategies and they all contain two main components:</p>
@@ -621,21 +607,17 @@ In most circumstances, this is not an ideal strategy and will lead to poor conve
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<blockquote>
-<div><p>Hartree-Fock orbitals are often poor for systems with significant static correlation.
+<p>Hartree-Fock orbitals are often poor for systems with significant static correlation.
 In such cases, orbitals from density functional calculations often yield better starting points for CAS calculations.</p>
-</div></blockquote>
+</div>
 <ol class="arabic simple" start="2">
-<li><p>Specifying the active space orbitals as a list of molecular orbital (MO) indices.</p></li>
+<li><p>Specifying the active space orbitals as a list of molecular orbital (MO) indices.
+This is often useful combined with a visual analysis of localized orbitals (see the section on localized orbitals).</p></li>
 </ol>
 <blockquote>
-<div><blockquote>
-<div><p>This is often useful combined with a visual analysis of localized orbitals (see the section on localized orbitals).</p>
-</div></blockquote>
-<p>The user can select the MO orbital indices “manually” and pass them to the <code class="docutils literal notranslate"><span class="pre">sort_mo</span></code> function. NB! The orbitals are numbered from 1, not 0.
+<div><p>The user can select the MO orbital indices “manually” and pass them to the <code class="docutils literal notranslate"><span class="pre">sort_mo</span></code> function. NB! The orbitals are numbered from 1, not 0.
 See <a class="reference external" href="https://github.com/pyscf/pyscf/tree/master/examples/mcscf/10-define_cas_space.py">examples/mcscf/10-define_cas_space.py</a> and <a class="reference external" href="https://github.com/pyscf/pyscf/tree/master/examples/mcscf/34-init_guess_localization.py">examples/mcscf/34-init_guess_localization.py</a> for more details.</p>
 </div></blockquote>
-</div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">mycas</span> <span class="o">=</span> <span class="n">mcscf</span><span class="o">.</span><span class="n">CASSCF</span><span class="p">(</span><span class="n">myhf</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
 <span class="c1"># Note sort_mo by default take the 1-based orbital indices.</span>
 <span class="n">mo</span> <span class="o">=</span> <span class="n">mycas</span><span class="o">.</span><span class="n">sort_mo</span><span class="p">([</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">9</span><span class="p">])</span>
@@ -679,8 +661,8 @@ For more details, see <a class="reference external" href="https://github.com/pys
 <span class="n">mycas</span><span class="o">.</span><span class="n">kernel</span><span class="p">(</span><span class="n">mo</span><span class="p">)</span>
 </pre></div>
 </div>
-
-
+</section>
+<section id="frozen-orbital-mcscf">
 <h2 id="frozen-orbital-mcscf">Frozen-orbital MCSCF<a class="headerlink" href="#frozen-orbital-mcscf" title="Permalink to this headline">¶</a></h2>
 <p>Orbitals can be frozen in the orbital optimization to e.g. reduce the computational effort of CASSCF calculations.
 The orbitals will remain fixed throughout the optimization.</p>
@@ -697,14 +679,14 @@ These may be occupied, virtual, or active orbitals.</p>
 <p class="admonition-title">Note</p>
 <p>The <cite>frozen</cite> keyword of the CASSCF optimizer should not be confused with the <cite>frozen</cite> keyword of the FCI solver, which controls the number of orbitals that are constrained to be doubly occupied.</p>
 </div>
-
-
+</section>
+<section id="state-averaged-calculations">
 <h2 id="state-averaged-calculations">State-Averaged Calculations<a class="headerlink" href="#state-averaged-calculations" title="Permalink to this headline">¶</a></h2>
 <p>When your system has states that are close-by in energy, their ordering may change during the orbital optimization and result in non-convergence of the CASSCF optimization.
 In such cases it is often helpful to optimize the orbitals for a state average.
 The <code class="docutils literal notranslate"><span class="pre">state_average_</span></code> function (note the hanging underscore) is a member function of <code class="docutils literal notranslate"><span class="pre">CASCI</span></code>/<code class="docutils literal notranslate"><span class="pre">CASSCF</span></code> objects and takes the weights of the states as input.
 The weights can be any normalized and non-negative array of values, but equal weights are typically used.
-See Section 12.7.2 in Ref. <a class="bibtex reference internal" href="#helgaker2013" id="id3">[1]</a> for more details.</p>
+See Section 12.7.2 in Ref. <a class="bibtex reference internal" href="#helgaker2013" id="id4">[1]</a> for more details.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">n_states</span> <span class="o">=</span> <span class="mi">5</span>
 <span class="n">weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n_states</span><span class="p">)</span><span class="o">/</span><span class="n">n_states</span>
 <span class="n">mycas</span> <span class="o">=</span> <span class="n">mcscf</span><span class="o">.</span><span class="n">CASSCF</span><span class="p">(</span><span class="n">mf</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span><span class="o">.</span><span class="n">state_average_</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span>
@@ -726,10 +708,10 @@ See Section 12.7.2 in Ref. <a class="bibtex reference internal" href="#helgaker2
 </pre></div>
 </div>
 <p>See <a class="reference external" href="https://github.com/pyscf/pyscf/tree/master/examples/mcscf/41-state_average.py">examples/mcscf/41-state_average.py</a> for a complete example.</p>
-
-
+</section>
+<section id="job-control">
 <h2 id="job-control">Job Control<a class="headerlink" href="#job-control" title="Permalink to this headline">¶</a></h2>
-
+<section id="optimization-settings">
 <h3 id="optimization-settings">Optimization Settings<a class="headerlink" href="#optimization-settings" title="Permalink to this headline">¶</a></h3>
 <p>For CASSCF calculations, users may want to modify several of the convergence thresholds such as the energy (<code class="docutils literal notranslate"><span class="pre">conv_tol</span></code>), the orbital gradient (<code class="docutils literal notranslate"><span class="pre">conv_tol_grad</span></code>), and the maximum number of MCSCF iterations (<code class="docutils literal notranslate"><span class="pre">max_cycle_macro</span></code>).</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">mycas</span> <span class="o">=</span> <span class="n">mcscf</span><span class="o">.</span><span class="n">CASSCF</span><span class="p">(</span><span class="n">mf</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
@@ -739,8 +721,8 @@ See Section 12.7.2 in Ref. <a class="bibtex reference internal" href="#helgaker2
 <span class="n">mycas</span><span class="o">.</span><span class="n">kernel</span><span class="p">()</span>
 </pre></div>
 </div>
-
-
+</section>
+<section id="initial-guess">
 <h3 id="initial-guess">Initial Guess<a class="headerlink" href="#initial-guess" title="Permalink to this headline">¶</a></h3>
 <p>Initial guess orbitals for the CASSCF calculation (starting orbitals) may be passed to the <code class="docutils literal notranslate"><span class="pre">kernel</span></code> member function of an MCSCF object.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">mycas</span> <span class="o">=</span> <span class="n">mcscf</span><span class="o">.</span><span class="n">CASSCF</span><span class="p">(</span><span class="n">myhf</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
@@ -756,8 +738,8 @@ See Section 12.7.2 in Ref. <a class="bibtex reference internal" href="#helgaker2
 <li><p><a class="reference external" href="https://github.com/pyscf/pyscf/tree/master/examples/mcscf/43-avas.py">examples/mcscf/43-avas.py</a></p></li>
 <li><p><a class="reference external" href="https://github.com/pyscf/pyscf/tree/master/examples/mcscf/43-dmet_cas.py">examples/mcscf/43-dmet_cas.py</a></p></li>
 </ul>
-
-
+</section>
+<section id="restarting">
 <h3 id="restarting">Restarting<a class="headerlink" href="#restarting" title="Permalink to this headline">¶</a></h3>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
@@ -766,7 +748,7 @@ See Section 12.7.2 in Ref. <a class="bibtex reference internal" href="#helgaker2
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">mycas</span><span class="o">.</span><span class="n">chkfile</span> <span class="o">=</span> <span class="s2">"casscf.chk"</span>
 </pre></div>
 </div>
-<p>Much like <a class="reference internal" href="../modules/scf.html#module-scf" title="scf: restricted and unrestricted, closed shell and open shell Hartree-Fock methods"><code class="xref py py-mod docutils literal notranslate"><span class="pre">scf</span></code></a>, if a job is interrupted, users can restart the MCSCF calculations using checkpoint files from a crashed calculation.</p>
+<p>Much like <code class="xref py py-mod docutils literal notranslate"><span class="pre">scf</span></code>, if a job is interrupted, users can restart the MCSCF calculations using checkpoint files from a crashed calculation.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyscf.lib</span> <span class="kn">import</span> <span class="n">chkfile</span>
 <span class="n">old_chk_file</span> <span class="o">=</span> <span class="s2">"old_casscf.chk"</span>
 <span class="n">mycas</span> <span class="o">=</span> <span class="n">mcscf</span><span class="o">.</span><span class="n">CASSCF</span><span class="p">(</span><span class="n">scf</span><span class="o">.</span><span class="n">RHF</span><span class="p">(</span><span class="n">mol</span><span class="p">),</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
@@ -777,11 +759,11 @@ See Section 12.7.2 in Ref. <a class="bibtex reference internal" href="#helgaker2
 </div>
 <p>See <a class="reference external" href="https://github.com/pyscf/pyscf/tree/master/examples/mcscf/13-restart.py">examples/mcscf/13-restart.py</a> for a complete example.</p>
 <p>Restarting calculations can be also be useful when using results from a smaller active space to speed up calculations on a larger one.</p>
-
-
-
+</section>
+</section>
+<section id="observables-and-properties">
 <h2 id="observables-and-properties">Observables and Properties<a class="headerlink" href="#observables-and-properties" title="Permalink to this headline">¶</a></h2>
-
+<section id="wave-function-analysis">
 <h3 id="wave-function-analysis">Wave Function Analysis<a class="headerlink" href="#wave-function-analysis" title="Permalink to this headline">¶</a></h3>
 <p>The <code class="docutils literal notranslate"><span class="pre">analyze</span></code> member functions of MCSCF objects prints many useful properties to <code class="docutils literal notranslate"><span class="pre">stdout</span></code> when the verbosity is &gt;=4.</p>
 <ol class="arabic simple">
@@ -799,8 +781,8 @@ See Section 12.7.2 in Ref. <a class="bibtex reference internal" href="#helgaker2
 <span class="n">mycas</span><span class="o">.</span><span class="n">analyze</span><span class="p">()</span>
 </pre></div>
 </div>
-
-
+</section>
+<section id="natural-orbitals">
 <h3 id="natural-orbitals">Natural Orbitals<a class="headerlink" href="#natural-orbitals" title="Permalink to this headline">¶</a></h3>
 <p>The CAS wave function is invariant under orbital rotation within the inactive core, active, and inactive virtual spaces.
 The inactive core and virtual orbitals are by default canonicalized, i.e., they are transformed by block-diagonalizing the generalized Fock matrix within the inactive core and virtual subblocks.
@@ -816,21 +798,24 @@ The user may request the active orbitals to be transformed to the so-called natu
 <span class="n">mycas</span><span class="o">.</span><span class="n">kernel</span><span class="p">()</span>
 </pre></div>
 </div>
-
-
-
+</section>
+</section>
+<section id="references">
 <h2 id="references">References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
-<p id="bibtex-bibliography-user/mcscf-0"><dl class="citation">
-<dt class="bibtex label" id="helgaker2013"><span class="brackets">1</span><span class="fn-backref">(<a href="#id1">1</a>,<a href="#id3">2</a>)</span></dt>
+<p id="bibtex-bibliography-user/mcscf-0"><dl class="bibtex citation">
+<dt class="bibtex label" id="helgaker2013"><span class="brackets">1</span><span class="fn-backref">(<a href="#id1">1</a>,<a href="#id4">2</a>)</span></dt>
 <dd><p>Trygve Helgaker, Poul Jorgensen, and Jeppe Olsen. <em>Molecular Electronic-Structure Theory</em>. Wiley, 2013. ISBN 9781118531471.</p>
 </dd>
 <dt class="bibtex label" id="esqc"><span class="brackets"><a class="fn-backref" href="#id2">2</a></span></dt>
 <dd><p>Esqc lectures 2019. URL: <a class="reference external" href="http://www.esqc.org/?page=lectures">http://www.esqc.org/?page=lectures</a>.</p>
 </dd>
+<dt class="bibtex label" id="sun2017"><span class="brackets"><a class="fn-backref" href="#id3">3</a></span></dt>
+<dd><p>Qiming Sun, Jun Yang, and Garnet Kin-lic Lic Chan. A general second order complete active space self-consistent-field solver for large-scale systems. <em>Chemical Physics Letters</em>, 683:291–299, 2017. <a class="reference external" href="https://arxiv.org/abs/1610.08394">arXiv:1610.08394</a>, <a class="reference external" href="https://doi.org/10.1016/j.cplett.2017.03.004">doi:10.1016/j.cplett.2017.03.004</a>.</p>
+</dd>
 </dl>
 </p>
-
-
+</section>
+</section>
 
 
           </article>
@@ -879,7 +864,7 @@ The user may request the active orbitals to be transformed to the so-called natu
               
           </div>
             Created using
-            <a href="http://www.sphinx-doc.org/">Sphinx</a> 3.5.4.
+            <a href="http://www.sphinx-doc.org/">Sphinx</a> 4.0.1.
              and
             <a href="https://github.com/bashtage/sphinx-material/">Material for
               Sphinx</a>

@@ -53,6 +53,7 @@
     <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
     <script src="../../../_static/jquery.js"></script>
     <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../../_static/doctools.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon-32x32.png"/>
@@ -95,7 +96,7 @@
       </div>
       <div class="md-flex__cell md-flex__cell--stretch">
         <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
-          <span class="md-header-nav__topic">PySCF 2.0</span>
+          <span class="md-header-nav__topic">PySCF 2.2</span>
           <span class="md-header-nav__topic"> pyscf.fci.spin_op </span>
         </div>
       </div>
@@ -105,7 +106,7 @@
 <div class="md-search" data-md-component="search" role="dialog">
   <label class="md-search__overlay" for="__search"></label>
   <div class="md-search__inner" role="search">
-    <form class="md-search__form" action="../../../search.html" method="GET" name="search">
+    <form class="md-search__form" action="../../../search.html" method="get" name="search">
       <input type="text" class="md-search__input" name="q" placeholder="Search"
              autocapitalize="off" autocomplete="off" spellcheck="false"
              data-md-component="query" data-md-state="active">
@@ -203,7 +204,7 @@
       
     </a>
     <a href="../../../index.html"
-       title="PySCF">PySCF 2.0</a>
+       title="PySCF">PySCF 2.2</a>
   </label>
     <div class="md-nav__source">
       <a href="https://github.com/pyscf/pyscf/" title="Go to repository" class="md-source" data-md-source="github">
@@ -294,7 +295,7 @@
             
   <h1 id="modules-pyscf-fci-spin-op--page-root">Source code for pyscf.fci.spin_op</h1><div class="highlight"><pre>
 <span></span><span class="ch">#!/usr/bin/env python</span>
-<span class="c1"># Copyright 2014-2020 The PySCF Developers. All Rights Reserved.</span>
+<span class="c1"># Copyright 2014-2021 The PySCF Developers. All Rights Reserved.</span>
 <span class="c1">#</span>
 <span class="c1"># Licensed under the Apache License, Version 2.0 (the "License");</span>
 <span class="c1"># you may not use this file except in compliance with the License.</span>
@@ -384,19 +385,19 @@
         <span class="n">ovlpba</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">mo_coeff</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">mo_coeff</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 
     <span class="c1"># if ovlp=1, ssz = (neleca-nelecb)**2 * .25</span>
-    <span class="n">ssz</span> <span class="o">=</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">'ijkl,ij,kl-&gt;'</span><span class="p">,</span> <span class="n">dm2aa</span><span class="p">,</span> <span class="n">ovlpaa</span><span class="p">,</span> <span class="n">ovlpaa</span><span class="p">)</span>
-        <span class="o">-</span> <span class="n">numpy</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">'ijkl,ij,kl-&gt;'</span><span class="p">,</span> <span class="n">dm2ab</span><span class="p">,</span> <span class="n">ovlpaa</span><span class="p">,</span> <span class="n">ovlpbb</span><span class="p">)</span>
-        <span class="o">+</span> <span class="n">numpy</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">'ijkl,ij,kl-&gt;'</span><span class="p">,</span> <span class="n">dm2bb</span><span class="p">,</span> <span class="n">ovlpbb</span><span class="p">,</span> <span class="n">ovlpbb</span><span class="p">)</span>
-        <span class="o">-</span> <span class="n">numpy</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">'ijkl,ij,kl-&gt;'</span><span class="p">,</span> <span class="n">dm2ab</span><span class="p">,</span> <span class="n">ovlpaa</span><span class="p">,</span> <span class="n">ovlpbb</span><span class="p">))</span> <span class="o">*</span> <span class="o">.</span><span class="mi">25</span> \
-        <span class="o">+</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">'ji,ij-&gt;'</span><span class="p">,</span> <span class="n">dm1a</span><span class="p">,</span> <span class="n">ovlpaa</span><span class="p">)</span>
-        <span class="o">+</span> <span class="n">numpy</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">'ji,ij-&gt;'</span><span class="p">,</span> <span class="n">dm1b</span><span class="p">,</span> <span class="n">ovlpbb</span><span class="p">))</span> <span class="o">*.</span><span class="mi">25</span>
+    <span class="n">ssz</span> <span class="o">=</span> <span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">'ijkl,ij,kl-&gt;'</span><span class="p">,</span> <span class="n">dm2aa</span><span class="p">,</span> <span class="n">ovlpaa</span><span class="p">,</span> <span class="n">ovlpaa</span><span class="p">)</span> <span class="o">-</span>
+           <span class="n">numpy</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">'ijkl,ij,kl-&gt;'</span><span class="p">,</span> <span class="n">dm2ab</span><span class="p">,</span> <span class="n">ovlpaa</span><span class="p">,</span> <span class="n">ovlpbb</span><span class="p">)</span> <span class="o">+</span>
+           <span class="n">numpy</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">'ijkl,ij,kl-&gt;'</span><span class="p">,</span> <span class="n">dm2bb</span><span class="p">,</span> <span class="n">ovlpbb</span><span class="p">,</span> <span class="n">ovlpbb</span><span class="p">)</span> <span class="o">-</span>
+           <span class="n">numpy</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">'ijkl,ij,kl-&gt;'</span><span class="p">,</span> <span class="n">dm2ab</span><span class="p">,</span> <span class="n">ovlpaa</span><span class="p">,</span> <span class="n">ovlpbb</span><span class="p">))</span> <span class="o">*</span> <span class="o">.</span><span class="mi">25</span>
+    <span class="n">ssz</span> <span class="o">+=</span> <span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">'ji,ij-&gt;'</span><span class="p">,</span> <span class="n">dm1a</span><span class="p">,</span> <span class="n">ovlpaa</span><span class="p">)</span> <span class="o">+</span>
+            <span class="n">numpy</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">'ji,ij-&gt;'</span><span class="p">,</span> <span class="n">dm1b</span><span class="p">,</span> <span class="n">ovlpbb</span><span class="p">))</span> <span class="o">*.</span><span class="mi">25</span>
 
     <span class="n">dm2abba</span> <span class="o">=</span> <span class="o">-</span><span class="n">dm2ab</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># alpha^+ beta^+ alpha beta</span>
     <span class="n">dm2baab</span> <span class="o">=</span> <span class="o">-</span><span class="n">dm2ab</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>  <span class="c1"># beta^+ alpha^+ beta alpha</span>
-    <span class="n">ssxy</span> <span class="o">=</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">'ijkl,ij,kl-&gt;'</span><span class="p">,</span> <span class="n">dm2baab</span><span class="p">,</span> <span class="n">ovlpba</span><span class="p">,</span> <span class="n">ovlpab</span><span class="p">)</span>
-         <span class="o">+</span> <span class="n">numpy</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">'ijkl,ij,kl-&gt;'</span><span class="p">,</span> <span class="n">dm2abba</span><span class="p">,</span> <span class="n">ovlpab</span><span class="p">,</span> <span class="n">ovlpba</span><span class="p">)</span>
-         <span class="o">+</span> <span class="n">numpy</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">'ji,ij-&gt;'</span><span class="p">,</span> <span class="n">dm1a</span><span class="p">,</span> <span class="n">ovlpaa</span><span class="p">)</span>
-         <span class="o">+</span> <span class="n">numpy</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">'ji,ij-&gt;'</span><span class="p">,</span> <span class="n">dm1b</span><span class="p">,</span> <span class="n">ovlpbb</span><span class="p">))</span> <span class="o">*</span> <span class="o">.</span><span class="mi">5</span>
+    <span class="n">ssxy</span> <span class="o">=</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">'ijkl,ij,kl-&gt;'</span><span class="p">,</span> <span class="n">dm2baab</span><span class="p">,</span> <span class="n">ovlpba</span><span class="p">,</span> <span class="n">ovlpab</span><span class="p">)</span> <span class="o">+</span>
+           <span class="n">numpy</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">'ijkl,ij,kl-&gt;'</span><span class="p">,</span> <span class="n">dm2abba</span><span class="p">,</span> <span class="n">ovlpab</span><span class="p">,</span> <span class="n">ovlpba</span><span class="p">)</span> <span class="o">+</span>
+           <span class="n">numpy</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">'ji,ij-&gt;'</span><span class="p">,</span> <span class="n">dm1a</span><span class="p">,</span> <span class="n">ovlpaa</span><span class="p">)</span> <span class="o">+</span>
+           <span class="n">numpy</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">'ji,ij-&gt;'</span><span class="p">,</span> <span class="n">dm1b</span><span class="p">,</span> <span class="n">ovlpbb</span><span class="p">))</span> <span class="o">*</span> <span class="o">.</span><span class="mi">5</span>
     <span class="n">ss</span> <span class="o">=</span> <span class="n">ssxy</span> <span class="o">+</span> <span class="n">ssz</span>
 
     <span class="n">s</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">ss</span><span class="o">+.</span><span class="mi">25</span><span class="p">)</span> <span class="o">-</span> <span class="o">.</span><span class="mi">5</span>
@@ -404,13 +405,17 @@
     <span class="k">return</span> <span class="n">ss</span><span class="p">,</span> <span class="n">multip</span></div>
 
 <div class="viewcode-block" id="spin_square"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.fci.html#pyscf.fci.spin_op.spin_square">[docs]</a><span class="nd">@lib</span><span class="o">.</span><span class="n">with_doc</span><span class="p">(</span><span class="n">spin_square_general</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">spin_square</span><span class="p">(</span><span class="n">fcivec</span><span class="p">,</span> <span class="n">norb</span><span class="p">,</span> <span class="n">nelec</span><span class="p">,</span> <span class="n">mo_coeff</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ovlp</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
-    <span class="kn">from</span> <span class="nn">pyscf.fci</span> <span class="kn">import</span> <span class="n">direct_spin1</span>
+<span class="k">def</span> <span class="nf">spin_square</span><span class="p">(</span><span class="n">fcivec</span><span class="p">,</span> <span class="n">norb</span><span class="p">,</span> <span class="n">nelec</span><span class="p">,</span> <span class="n">mo_coeff</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ovlp</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">fcisolver</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">mo_coeff</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">mo_coeff</span> <span class="o">=</span> <span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">norb</span><span class="p">),)</span> <span class="o">*</span> <span class="mi">2</span>
 
-    <span class="p">(</span><span class="n">dm1a</span><span class="p">,</span> <span class="n">dm1b</span><span class="p">),</span> <span class="p">(</span><span class="n">dm2aa</span><span class="p">,</span> <span class="n">dm2ab</span><span class="p">,</span> <span class="n">dm2bb</span><span class="p">)</span> <span class="o">=</span> \
+    <span class="k">if</span> <span class="n">fcisolver</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="kn">from</span> <span class="nn">pyscf.fci</span> <span class="kn">import</span> <span class="n">direct_spin1</span>
+        <span class="p">(</span><span class="n">dm1a</span><span class="p">,</span> <span class="n">dm1b</span><span class="p">),</span> <span class="p">(</span><span class="n">dm2aa</span><span class="p">,</span> <span class="n">dm2ab</span><span class="p">,</span> <span class="n">dm2bb</span><span class="p">)</span> <span class="o">=</span> \
             <span class="n">direct_spin1</span><span class="o">.</span><span class="n">make_rdm12s</span><span class="p">(</span><span class="n">fcivec</span><span class="p">,</span> <span class="n">norb</span><span class="p">,</span> <span class="n">nelec</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="p">(</span><span class="n">dm1a</span><span class="p">,</span> <span class="n">dm1b</span><span class="p">),</span> <span class="p">(</span><span class="n">dm2aa</span><span class="p">,</span> <span class="n">dm2ab</span><span class="p">,</span> <span class="n">dm2bb</span><span class="p">)</span> <span class="o">=</span> \
+            <span class="n">fcisolver</span><span class="o">.</span><span class="n">make_rdm12s</span><span class="p">(</span><span class="n">fcivec</span><span class="p">,</span> <span class="n">norb</span><span class="p">,</span> <span class="n">nelec</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">spin_square_general</span><span class="p">(</span><span class="n">dm1a</span><span class="p">,</span> <span class="n">dm1b</span><span class="p">,</span> <span class="n">dm2aa</span><span class="p">,</span> <span class="n">dm2ab</span><span class="p">,</span> <span class="n">dm2bb</span><span class="p">,</span> <span class="n">mo_coeff</span><span class="p">,</span> <span class="n">ovlp</span><span class="p">)</span></div>
 
@@ -622,7 +627,7 @@
               
           </div>
             Created using
-            <a href="http://www.sphinx-doc.org/">Sphinx</a> 4.0.1.
+            <a href="http://www.sphinx-doc.org/">Sphinx</a> 5.1.1.
              and
             <a href="https://github.com/bashtage/sphinx-material/">Material for
               Sphinx</a>

@@ -17,7 +17,7 @@ Whenever you change the value of the attributes of :class:`Mole`, you'll need to
 
 Symmetry may be specified in the ``Mole.symmetry`` attribute as either ``True`` or ``False`` (default is ``False``, i.e., off). Alternatively, a particular subgroup can be specified by a string argument (`gto/13-symmetry.py <https://github.com/pyscf/pyscf/blob/master/examples/gto/13-symmetry.py>`_):
 
-  >>> mol_c2 = gto.M(atom = 'C 0 0 .625; O 0 0 -.625', symmetry = 'd2h')
+  >>> mol_c2 = gto.M(atom = 'C 0 0 .625; C 0 0 -.625', symmetry = 'd2h')
   
 There are many other ways to input a molecular or crystalline geometry (e.g., by means of Z-matrices or reading in .xyz files), cf. the complete suite of `gto <https://github.com/pyscf/pyscf/blob/master/examples/gto>`_ and `pbc <https://github.com/pyscf/pyscf/blob/master/examples/pbc>`_ examples.
 
@@ -331,7 +331,7 @@ Finally, additional dynamic correlation may be added by means of second-order pe
 External Approximate Full Configuration Interaction Solvers
 -----------------------------------------------------------
 
-Besides the exact solvers discussed :ref:`earlier <FCI>`, PySCF has interfaces to efficient approximate solvers. For instance, the `StackBlock <https://github.com/sanshar/StackBlock>`_ code can be used as a DMRG solver to perform parallel DMRGSCF calculations across several processes (cf. `dmrg/01-dmrg_casscf_with_stackblock.py <https://github.com/pyscf/pyscf/blob/master/examples/dmrg/01-dmrg_casscf_with_stackblock.py>`_):
+Besides the exact solvers discussed :ref:`earlier <FCI>`, PySCF has interfaces to efficient approximate solvers. For instance, the `StackBlock <https://github.com/sanshar/StackBlock>`_ or `block2 <https://github.com/block-hczhai/block2-preview>`_ code can be used as a DMRG solver to perform parallel DMRGSCF calculations across several processes (cf. `dmrg/01-dmrg_casscf_with_stackblock.py <https://github.com/pyscf/dmrgscf/blob/master/examples/01-dmrg_casscf_with_stackblock.py>`_):
 
   >>> from pyscf import dmrgscf
   >>> import os

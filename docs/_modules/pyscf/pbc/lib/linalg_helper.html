@@ -53,6 +53,7 @@
     <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
     <script src="../../../../_static/jquery.js"></script>
     <script src="../../../../_static/underscore.js"></script>
+    <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../../../_static/doctools.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="shortcut icon" href="../../../../_static/favicon-32x32.png"/>
@@ -95,7 +96,7 @@
       </div>
       <div class="md-flex__cell md-flex__cell--stretch">
         <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
-          <span class="md-header-nav__topic">PySCF 2.0</span>
+          <span class="md-header-nav__topic">PySCF 2.2</span>
           <span class="md-header-nav__topic"> pyscf.pbc.lib.linalg_helper </span>
         </div>
       </div>
@@ -105,7 +106,7 @@
 <div class="md-search" data-md-component="search" role="dialog">
   <label class="md-search__overlay" for="__search"></label>
   <div class="md-search__inner" role="search">
-    <form class="md-search__form" action="../../../../search.html" method="GET" name="search">
+    <form class="md-search__form" action="../../../../search.html" method="get" name="search">
       <input type="text" class="md-search__input" name="q" placeholder="Search"
              autocapitalize="off" autocomplete="off" spellcheck="false"
              data-md-component="query" data-md-state="active">
@@ -202,7 +203,7 @@
       
     </a>
     <a href="../../../../index.html"
-       title="PySCF">PySCF 2.0</a>
+       title="PySCF">PySCF 2.2</a>
   </label>
     <div class="md-nav__source">
       <a href="https://github.com/pyscf/pyscf/" title="Go to repository" class="md-source" data-md-source="github">
@@ -293,7 +294,7 @@
             
   <h1 id="modules-pyscf-pbc-lib-linalg-helper--page-root">Source code for pyscf.pbc.lib.linalg_helper</h1><div class="highlight"><pre>
 <span></span><span class="ch">#!/usr/bin/env python</span>
-<span class="c1"># Copyright 2014-2020 The PySCF Developers. All Rights Reserved.</span>
+<span class="c1"># Copyright 2014-2021 The PySCF Developers. All Rights Reserved.</span>
 <span class="c1">#</span>
 <span class="c1"># Licensed under the Apache License, Version 2.0 (the "License");</span>
 <span class="c1"># you may not use this file except in compliance with the License.</span>
@@ -315,7 +316,7 @@
 <span class="sd">'''</span>
 
 <span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">reduce</span>
-<span class="kn">import</span> <span class="nn">time</span>
+
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">scipy.linalg</span>
 
@@ -327,7 +328,7 @@
 <span class="n">VERBOSE</span> <span class="o">=</span> <span class="kc">False</span>
 
 <span class="k">try</span><span class="p">:</span>
-<span class="c1"># Temporary fix for davidson when using mpicc</span>
+    <span class="c1"># Temporary fix for davidson when using mpicc</span>
     <span class="kn">from</span> <span class="nn">mpi4py</span> <span class="kn">import</span> <span class="n">MPI</span>
     <span class="n">FOUND_MPI4PY</span> <span class="o">=</span> <span class="kc">True</span>
     <span class="n">MPI_RANK</span> <span class="o">=</span> <span class="n">MPI</span><span class="o">.</span><span class="n">COMM_WORLD</span><span class="o">.</span><span class="n">Get_rank</span><span class="p">()</span>
@@ -347,10 +348,10 @@
     <span class="n">nroots</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">nroots</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s1">'davidson'</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">guess</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
-            <span class="n">conv</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">niter</span> <span class="o">=</span> <span class="n">davidson</span><span class="p">(</span><span class="n">matvec</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">nroots</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">Adiag</span><span class="p">,</span> <span class="n">verbose</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">guess</span><span class="p">:</span>
             <span class="n">conv</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">niter</span> <span class="o">=</span> <span class="n">davidson_guess</span><span class="p">(</span><span class="n">matvec</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">nroots</span><span class="p">,</span> <span class="n">Adiag</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">conv</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">niter</span> <span class="o">=</span> <span class="n">davidson</span><span class="p">(</span><span class="n">matvec</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">nroots</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">Adiag</span><span class="p">,</span> <span class="n">verbose</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">conv</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">c</span>
     <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s1">'arnoldi'</span><span class="p">:</span>
         <span class="c1"># Currently not used:</span>
@@ -384,27 +385,27 @@
         <span class="kn">import</span> <span class="nn">sys</span>
         <span class="n">log</span> <span class="o">=</span> <span class="n">logger</span><span class="o">.</span><span class="n">Logger</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">,</span> <span class="n">verbose</span><span class="p">)</span>
 
-    <span class="n">cput1</span> <span class="o">=</span> <span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">clock</span><span class="p">(),</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">())</span>
+    <span class="n">cput1</span> <span class="o">=</span> <span class="p">(</span><span class="n">logger</span><span class="o">.</span><span class="n">process_clock</span><span class="p">(),</span> <span class="n">logger</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">())</span>
 
     <span class="n">Mmin</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">neig</span><span class="p">,</span><span class="n">N</span><span class="p">)</span>
     <span class="n">Mmax</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">N</span><span class="p">,</span><span class="mi">2000</span><span class="p">)</span>
     <span class="n">tol</span> <span class="o">=</span> <span class="mf">1e-6</span>
 
-    <span class="c1">#Adiagcheck = np.zeros(N,np.complex)</span>
+    <span class="c1">#Adiagcheck = np.zeros(N,np.complex128)</span>
     <span class="c1">#for i in range(N):</span>
-    <span class="c1">#    test = np.zeros(N,np.complex)</span>
+    <span class="c1">#    test = np.zeros(N,np.complex128)</span>
     <span class="c1">#    test[i] = 1.0</span>
     <span class="c1">#    Adiagcheck[i] = mult_by_A(test)[i]</span>
     <span class="c1">#print "Analytical Adiag == numerical Adiag?", np.allclose(Adiag,Adiagcheck)</span>
 
     <span class="k">if</span> <span class="n">Adiag</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">Adiag</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">N</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">complex</span><span class="p">)</span>
+        <span class="n">Adiag</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">N</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
-            <span class="n">test</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">N</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">complex</span><span class="p">)</span>
+            <span class="n">test</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">N</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">)</span>
             <span class="n">test</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
             <span class="n">Adiag</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">mult_by_A</span><span class="p">(</span><span class="n">test</span><span class="p">)[</span><span class="n">i</span><span class="p">]</span>
 
-    <span class="n">xi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">N</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">complex</span><span class="p">)</span>
+    <span class="n">xi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">N</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">)</span>
 
     <span class="n">lamda_k_old</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">lamda_k</span> <span class="o">=</span> <span class="mi">0</span>
@@ -414,7 +415,7 @@
         <span class="k">assert</span> <span class="n">x0</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">Mmin</span><span class="p">)</span>
         <span class="n">b</span> <span class="o">=</span> <span class="n">x0</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 
-        <span class="n">Ab</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">N</span><span class="p">,</span><span class="n">Mmin</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">complex</span><span class="p">)</span>
+        <span class="n">Ab</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">N</span><span class="p">,</span><span class="n">Mmin</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">Mmin</span><span class="p">):</span>
             <span class="n">Ab</span><span class="p">[:,</span><span class="n">m</span><span class="p">]</span> <span class="o">=</span> <span class="n">mult_by_A</span><span class="p">(</span><span class="n">b</span><span class="p">[:,</span><span class="n">m</span><span class="p">])</span>
 
@@ -431,7 +432,7 @@
             <span class="c1">#    b[:,m] /= np.linalg.norm(b[:,m])</span>
             <span class="c1">#    b,R = np.linalg.qr(b)</span>
 
-            <span class="n">Ab</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">N</span><span class="p">,</span><span class="n">M</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">complex</span><span class="p">)</span>
+            <span class="n">Ab</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">N</span><span class="p">,</span><span class="n">M</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">M</span><span class="p">):</span>
                 <span class="n">Ab</span><span class="p">[:,</span><span class="n">m</span><span class="p">]</span> <span class="o">=</span> <span class="n">mult_by_A</span><span class="p">(</span><span class="n">b</span><span class="p">[:,</span><span class="n">m</span><span class="p">])</span>
         <span class="k">else</span><span class="p">:</span>
@@ -493,24 +494,24 @@
     <span class="n">Mmax</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">N</span><span class="p">,</span><span class="mi">2000</span><span class="p">)</span>
     <span class="n">tol</span> <span class="o">=</span> <span class="mf">1e-6</span>
 
-    <span class="c1">#Adiagcheck = np.zeros(N,np.complex)</span>
+    <span class="c1">#Adiagcheck = np.zeros(N,np.complex128)</span>
     <span class="c1">#for i in range(N):</span>
-    <span class="c1">#    test = np.zeros(N,np.complex)</span>
+    <span class="c1">#    test = np.zeros(N,np.complex128)</span>
     <span class="c1">#    test[i] = 1.0</span>
     <span class="c1">#    Adiagcheck[i] = mult_by_A(test)[i]</span>
     <span class="c1">#print "Analytical Adiag == numerical Adiag?", np.allclose(Adiag,Adiagcheck)</span>
 
     <span class="k">if</span> <span class="n">Adiag</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">Adiag</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">N</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">complex</span><span class="p">)</span>
+        <span class="n">Adiag</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">N</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
-            <span class="n">test</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">N</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">complex</span><span class="p">)</span>
+            <span class="n">test</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">N</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">)</span>
             <span class="n">test</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
             <span class="n">Adiag</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">mult_by_A</span><span class="p">(</span><span class="n">test</span><span class="p">)[</span><span class="n">i</span><span class="p">]</span>
 
-    <span class="n">xi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">N</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">complex</span><span class="p">)</span>
+    <span class="n">xi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">N</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">)</span>
 
-    <span class="n">evals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">neig</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">complex</span><span class="p">)</span>
-    <span class="n">evecs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">N</span><span class="p">,</span><span class="n">neig</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">complex</span><span class="p">)</span>
+    <span class="n">evals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">neig</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">)</span>
+    <span class="n">evecs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">N</span><span class="p">,</span><span class="n">neig</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">)</span>
 
     <span class="n">Mtot</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="k">for</span> <span class="n">guess</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">neig</span><span class="p">):</span>
@@ -520,7 +521,7 @@
                 <span class="c1"># Unit vector 'target' as the guess</span>
                 <span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">N</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
                 <span class="n">b</span><span class="p">[</span><span class="n">guess</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
-                <span class="n">Ab</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">N</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">complex</span><span class="p">)</span>
+                <span class="n">Ab</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">N</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">)</span>
                 <span class="n">Ab</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">mult_by_A</span><span class="p">(</span><span class="n">b</span><span class="p">[:,</span><span class="mi">0</span><span class="p">])</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">Ab</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">(</span> <span class="p">(</span><span class="n">Ab</span><span class="p">,</span><span class="n">mult_by_A</span><span class="p">(</span><span class="n">b</span><span class="p">[:,</span><span class="n">M</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span> <span class="p">)</span>
@@ -698,8 +699,8 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">totalIter</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">deflated</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span> <span class="c1"># construct the full block of v^*Av</span>
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">currentSize</span><span class="p">):</span>
                 <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">currentSize</span><span class="p">):</span>
-                   <span class="n">val</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vdot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vlist</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="bp">self</span><span class="o">.</span><span class="n">Avlist</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
-                   <span class="bp">self</span><span class="o">.</span><span class="n">subH</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
+                    <span class="n">val</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vdot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vlist</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="bp">self</span><span class="o">.</span><span class="n">Avlist</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">subH</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">currentSize</span><span class="p">):</span>
                 <span class="k">if</span> <span class="n">j</span> <span class="o">&lt;=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">currentSize</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
@@ -812,8 +813,7 @@
             <span class="c1">#  To get around this I'm not sure what to do other than to throw that</span>
             <span class="c1">#  solution out and start at that eigenvalue</span>
             <span class="c1">########################################################################</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">" ERROR!!!! ... restarting at eigenvalue #%"</span> <span class="o">%</span> \
-                        <span class="p">(</span><span class="n">northo</span><span class="p">,</span> <span class="n">cvnorm</span><span class="p">))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">" ERROR!!!! ... restarting at eigenvalue #</span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">northo</span><span class="p">,</span> <span class="n">cvnorm</span><span class="p">))</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">ciEig</span> <span class="o">=</span> <span class="n">northo</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cv</span> <span class="o">/=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cv</span><span class="p">)</span></div>
 
@@ -823,11 +823,14 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">deflated</span> <span class="o">=</span> <span class="mi">1</span>
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nEigen</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">sol</span><span class="p">[:</span><span class="bp">self</span><span class="o">.</span><span class="n">currentSize</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">evecs</span><span class="p">[:</span><span class="bp">self</span><span class="o">.</span><span class="n">currentSize</span><span class="p">,</span><span class="n">i</span><span class="p">]</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">constructSolV</span><span class="p">()</span>            <span class="c1"># Finds the "best" eigenvector for this eigenvalue</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">Avlist</span><span class="p">[</span><span class="n">i</span><span class="p">,:]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cv</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span> <span class="c1"># Puts this guess in self.Avlist rather than self.vlist for now...</span>
-                                                <span class="c1"># since this would mess up self.constructSolV()'s solution</span>
+                <span class="c1"># Finds the "best" eigenvector for this eigenvalue</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">constructSolV</span><span class="p">()</span>
+                <span class="c1"># Puts this guess in self.Avlist rather than self.vlist for now...</span>
+                <span class="c1"># since this would mess up self.constructSolV()'s solution</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">Avlist</span><span class="p">[</span><span class="n">i</span><span class="p">,:]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cv</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nEigen</span><span class="p">):</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">cv</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Avlist</span><span class="p">[</span><span class="n">i</span><span class="p">,:]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span> <span class="c1"># This is actually the "best" eigenvector v, not A*v (see above)</span>
+                <span class="c1"># This is actually the "best" eigenvector v, not A*v (see above)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">cv</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Avlist</span><span class="p">[</span><span class="n">i</span><span class="p">,:]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">gramSchmidtCurrentVec</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">vlist</span><span class="p">[</span><span class="n">i</span><span class="p">,:]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cv</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 
@@ -837,8 +840,10 @@
                     <span class="n">orthog</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">vdot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vlist</span><span class="p">[</span><span class="n">j</span><span class="p">,:],</span><span class="bp">self</span><span class="o">.</span><span class="n">vlist</span><span class="p">[</span><span class="n">i</span><span class="p">,:])</span><span class="o">**</span><span class="mf">2.0</span>
 
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nEigen</span><span class="p">):</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">cv</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vlist</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span> <span class="c1"># This is actually the "best" eigenvector v, not A*v (see above)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">hMult</span><span class="p">()</span>                   <span class="c1"># Use current vector cv to create cAv</span>
+                <span class="c1"># This is actually the "best" eigenvector v, not A*v (see above)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">cv</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vlist</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+                <span class="c1"># Use current vector cv to create cAv</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">hMult</span><span class="p">()</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">Avlist</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cAv</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="Arnoldi.constructDeflatedSub"><a class="viewcode-back" href="../../../../pyscf_api_docs/pyscf.pbc.lib.html#pyscf.pbc.lib.linalg_helper.Arnoldi.constructDeflatedSub">[docs]</a>    <span class="k">def</span> <span class="nf">constructDeflatedSub</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -909,7 +914,6 @@
         <span class="n">ifconv</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="n">neig</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">neig</span>
         <span class="n">iconv</span> <span class="o">=</span> <span class="p">[</span><span class="kc">False</span><span class="p">]</span><span class="o">*</span><span class="n">neig</span>
-        <span class="n">ediff</span> <span class="o">=</span> <span class="mf">0.0</span>
         <span class="n">eigs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">neig</span><span class="p">)</span>
         <span class="n">ndim</span> <span class="o">=</span> <span class="n">neig</span>
         <span class="n">rlst</span> <span class="o">=</span> <span class="p">[]</span>
@@ -977,7 +981,8 @@
             <span class="c1"># New directions from residuals</span>
             <span class="n">rlst</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">neig</span><span class="p">):</span>
-                <span class="k">if</span> <span class="n">iconv</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span> <span class="k">continue</span>
+                <span class="k">if</span> <span class="n">iconv</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+                    <span class="k">continue</span>
                 <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ndim</span><span class="p">):</span>
                     <span class="n">tmp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">diag</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">-</span> <span class="n">eigs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
                     <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">tmp</span><span class="p">)</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">crit_demo</span><span class="p">:</span>
@@ -1096,8 +1101,9 @@
                 <span class="k">if</span> <span class="n">debug</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="s1">' ktime,i,rii='</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">rii</span><span class="p">)</span>
                 <span class="c1"># TOO SMALL</span>
                 <span class="k">if</span> <span class="n">rii</span> <span class="o">&lt;=</span> <span class="n">crit_indp</span><span class="o">*</span><span class="mf">10.0</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="n">k</span><span class="p">):</span>
-                    <span class="k">if</span> <span class="n">debug</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="s1">' unable to normalize:'</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="s1">' norm='</span><span class="p">,</span> <span class="n">rii</span><span class="p">,</span>\
-                                   <span class="s1">' thresh='</span><span class="p">,</span> <span class="n">crit_indp</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">debug</span><span class="p">:</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="s1">' unable to normalize:'</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="s1">' norm='</span><span class="p">,</span> <span class="n">rii</span><span class="p">,</span>
+                              <span class="s1">' thresh='</span><span class="p">,</span> <span class="n">crit_indp</span><span class="p">)</span>
                     <span class="k">continue</span>
                 <span class="c1"># NORMALIZE</span>
                 <span class="n">rvec</span> <span class="o">=</span> <span class="n">rvec</span> <span class="o">/</span> <span class="n">rii</span>
@@ -1118,9 +1124,9 @@
     <span class="k">if</span> <span class="n">diff</span> <span class="o">&gt;</span> <span class="mf">1.e-10</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">VERBOSE</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="s1">' error in mgs_ortho: diff='</span><span class="p">,</span> <span class="n">diff</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">VERBOSE</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="n">iden</span><span class="p">)</span>
-        <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">VERBOSE</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="s1">' final nindp from mgs_ortho ='</span><span class="p">,</span> <span class="n">nindp</span><span class="p">,</span> \
+        <span class="k">if</span> <span class="n">VERBOSE</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="s1">' final nindp from mgs_ortho ='</span><span class="p">,</span> <span class="n">nindp</span><span class="p">,</span>
                           <span class="s1">' diffIden='</span><span class="p">,</span> <span class="n">diff</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">nindp</span><span class="p">,</span> <span class="n">vlst2</span></div>
 
@@ -1169,7 +1175,7 @@
               
           </div>
             Created using
-            <a href="http://www.sphinx-doc.org/">Sphinx</a> 4.0.1.
+            <a href="http://www.sphinx-doc.org/">Sphinx</a> 5.1.1.
              and
             <a href="https://github.com/bashtage/sphinx-material/">Material for
               Sphinx</a>

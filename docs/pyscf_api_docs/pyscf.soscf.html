@@ -4,7 +4,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -54,6 +54,7 @@
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="shortcut icon" href="../_static/favicon-32x32.png"/>
@@ -98,7 +99,7 @@
       </div>
       <div class="md-flex__cell md-flex__cell--stretch">
         <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
-          <span class="md-header-nav__topic">PySCF 2.0</span>
+          <span class="md-header-nav__topic">PySCF 2.2</span>
           <span class="md-header-nav__topic"> pyscf.soscf package </span>
         </div>
       </div>
@@ -108,7 +109,7 @@
 <div class="md-search" data-md-component="search" role="dialog">
   <label class="md-search__overlay" for="__search"></label>
   <div class="md-search__inner" role="search">
-    <form class="md-search__form" action="../search.html" method="GET" name="search">
+    <form class="md-search__form" action="../search.html" method="get" name="search">
       <input type="text" class="md-search__input" name="q" placeholder="Search"
              autocapitalize="off" autocomplete="off" spellcheck="false"
              data-md-component="query" data-md-state="active">
@@ -204,7 +205,7 @@
       
     </a>
     <a href="../index.html"
-       title="PySCF">PySCF 2.0</a>
+       title="PySCF">PySCF 2.2</a>
   </label>
     <div class="md-nav__source">
       <a href="https://github.com/pyscf/pyscf/" title="Go to repository" class="md-source" data-md-source="github">
@@ -336,47 +337,47 @@
           <article class="md-content__inner md-typeset" role="main">
             
   <section id="pyscf-soscf-package">
-<h1 id="pyscf-api-docs-pyscf-soscf--page-root">pyscf.soscf package<a class="headerlink" href="#pyscf-api-docs-pyscf-soscf--page-root" title="Permalink to this headline">¶</a></h1>
+<h1 id="pyscf-api-docs-pyscf-soscf--page-root">pyscf.soscf package<a class="headerlink" href="#pyscf-api-docs-pyscf-soscf--page-root" title="Permalink to this heading">¶</a></h1>
 <section id="submodules">
-<h2 id="submodules">Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+<h2 id="submodules">Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading">¶</a></h2>
 </section>
 <section id="module-pyscf.soscf.ciah">
-<span id="pyscf-soscf-ciah-module"></span><h2 id="module-pyscf.soscf.ciah">pyscf.soscf.ciah module<a class="headerlink" href="#module-pyscf.soscf.ciah" title="Permalink to this headline">¶</a></h2>
+<span id="pyscf-soscf-ciah-module"></span><h2 id="module-pyscf.soscf.ciah">pyscf.soscf.ciah module<a class="headerlink" href="#module-pyscf.soscf.ciah" title="Permalink to this heading">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="pyscf.soscf.ciah.CIAHOptimizer">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pyscf.soscf.ciah.</span></span><span class="sig-name descname"><span class="pre">CIAHOptimizer</span></span><a class="reference internal" href="../_modules/pyscf/soscf/ciah.html#CIAHOptimizer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyscf.soscf.ciah.CIAHOptimizer" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="pyscf.lib.html#pyscf.lib.misc.StreamObject" title="pyscf.lib.misc.StreamObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">pyscf.lib.misc.StreamObject</span></code></a></p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyscf.soscf.ciah.</span></span><span class="sig-name descname"><span class="pre">CIAHOptimizer</span></span><a class="reference internal" href="../_modules/pyscf/soscf/ciah.html#CIAHOptimizer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyscf.soscf.ciah.CIAHOptimizer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="pyscf.lib.html#pyscf.lib.misc.StreamObject" title="pyscf.lib.misc.StreamObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">StreamObject</span></code></a></p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pyscf.soscf.ciah.CIAHOptimizer.ah_conv_tol">
-<span class="sig-name descname"><span class="pre">ah_conv_tol</span></span><em class="property"> <span class="pre">=</span> <span class="pre">1e-12</span></em><a class="headerlink" href="#pyscf.soscf.ciah.CIAHOptimizer.ah_conv_tol" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">ah_conv_tol</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1e-12</span></em><a class="headerlink" href="#pyscf.soscf.ciah.CIAHOptimizer.ah_conv_tol" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pyscf.soscf.ciah.CIAHOptimizer.ah_level_shift">
-<span class="sig-name descname"><span class="pre">ah_level_shift</span></span><em class="property"> <span class="pre">=</span> <span class="pre">0</span></em><a class="headerlink" href="#pyscf.soscf.ciah.CIAHOptimizer.ah_level_shift" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">ah_level_shift</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#pyscf.soscf.ciah.CIAHOptimizer.ah_level_shift" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pyscf.soscf.ciah.CIAHOptimizer.ah_lindep">
-<span class="sig-name descname"><span class="pre">ah_lindep</span></span><em class="property"> <span class="pre">=</span> <span class="pre">1e-14</span></em><a class="headerlink" href="#pyscf.soscf.ciah.CIAHOptimizer.ah_lindep" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">ah_lindep</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1e-14</span></em><a class="headerlink" href="#pyscf.soscf.ciah.CIAHOptimizer.ah_lindep" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pyscf.soscf.ciah.CIAHOptimizer.ah_max_cycle">
-<span class="sig-name descname"><span class="pre">ah_max_cycle</span></span><em class="property"> <span class="pre">=</span> <span class="pre">30</span></em><a class="headerlink" href="#pyscf.soscf.ciah.CIAHOptimizer.ah_max_cycle" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">ah_max_cycle</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">30</span></em><a class="headerlink" href="#pyscf.soscf.ciah.CIAHOptimizer.ah_max_cycle" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pyscf.soscf.ciah.CIAHOptimizer.ah_start_cycle">
-<span class="sig-name descname"><span class="pre">ah_start_cycle</span></span><em class="property"> <span class="pre">=</span> <span class="pre">1</span></em><a class="headerlink" href="#pyscf.soscf.ciah.CIAHOptimizer.ah_start_cycle" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">ah_start_cycle</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#pyscf.soscf.ciah.CIAHOptimizer.ah_start_cycle" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pyscf.soscf.ciah.CIAHOptimizer.ah_start_tol">
-<span class="sig-name descname"><span class="pre">ah_start_tol</span></span><em class="property"> <span class="pre">=</span> <span class="pre">5.0</span></em><a class="headerlink" href="#pyscf.soscf.ciah.CIAHOptimizer.ah_start_tol" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">ah_start_tol</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">5.0</span></em><a class="headerlink" href="#pyscf.soscf.ciah.CIAHOptimizer.ah_start_tol" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pyscf.soscf.ciah.CIAHOptimizer.ah_trust_region">
-<span class="sig-name descname"><span class="pre">ah_trust_region</span></span><em class="property"> <span class="pre">=</span> <span class="pre">3.0</span></em><a class="headerlink" href="#pyscf.soscf.ciah.CIAHOptimizer.ah_trust_region" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">ah_trust_region</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">3.0</span></em><a class="headerlink" href="#pyscf.soscf.ciah.CIAHOptimizer.ah_trust_region" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pyscf.soscf.ciah.CIAHOptimizer.conv_tol_grad">
-<span class="sig-name descname"><span class="pre">conv_tol_grad</span></span><em class="property"> <span class="pre">=</span> <span class="pre">0.0001</span></em><a class="headerlink" href="#pyscf.soscf.ciah.CIAHOptimizer.conv_tol_grad" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">conv_tol_grad</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.0001</span></em><a class="headerlink" href="#pyscf.soscf.ciah.CIAHOptimizer.conv_tol_grad" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyscf.soscf.ciah.CIAHOptimizer.cost_function">
@@ -396,19 +397,19 @@
 <dd></dd></dl>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pyscf.soscf.ciah.CIAHOptimizer.kf_interval">
-<span class="sig-name descname"><span class="pre">kf_interval</span></span><em class="property"> <span class="pre">=</span> <span class="pre">5</span></em><a class="headerlink" href="#pyscf.soscf.ciah.CIAHOptimizer.kf_interval" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">kf_interval</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">5</span></em><a class="headerlink" href="#pyscf.soscf.ciah.CIAHOptimizer.kf_interval" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pyscf.soscf.ciah.CIAHOptimizer.kf_trust_region">
-<span class="sig-name descname"><span class="pre">kf_trust_region</span></span><em class="property"> <span class="pre">=</span> <span class="pre">5</span></em><a class="headerlink" href="#pyscf.soscf.ciah.CIAHOptimizer.kf_trust_region" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">kf_trust_region</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">5</span></em><a class="headerlink" href="#pyscf.soscf.ciah.CIAHOptimizer.kf_trust_region" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pyscf.soscf.ciah.CIAHOptimizer.max_iters">
-<span class="sig-name descname"><span class="pre">max_iters</span></span><em class="property"> <span class="pre">=</span> <span class="pre">10</span></em><a class="headerlink" href="#pyscf.soscf.ciah.CIAHOptimizer.max_iters" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">max_iters</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">10</span></em><a class="headerlink" href="#pyscf.soscf.ciah.CIAHOptimizer.max_iters" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pyscf.soscf.ciah.CIAHOptimizer.max_stepsize">
-<span class="sig-name descname"><span class="pre">max_stepsize</span></span><em class="property"> <span class="pre">=</span> <span class="pre">0.05</span></em><a class="headerlink" href="#pyscf.soscf.ciah.CIAHOptimizer.max_stepsize" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">max_stepsize</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.05</span></em><a class="headerlink" href="#pyscf.soscf.ciah.CIAHOptimizer.max_stepsize" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyscf.soscf.ciah.CIAHOptimizer.pack_uniq_var">
@@ -421,7 +422,7 @@
 </dd></dl>
 <dl class="py function">
 <dt class="sig sig-object py" id="pyscf.soscf.ciah.davidson_cc">
-<span class="sig-prename descclassname"><span class="pre">pyscf.soscf.ciah.</span></span><span class="sig-name descname"><span class="pre">davidson_cc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">h_op</span></em>, <em class="sig-param"><span class="pre">g_op</span></em>, <em class="sig-param"><span class="pre">precond</span></em>, <em class="sig-param"><span class="pre">x0</span></em>, <em class="sig-param"><span class="pre">tol=1e-10</span></em>, <em class="sig-param"><span class="pre">xs=[]</span></em>, <em class="sig-param"><span class="pre">ax=[]</span></em>, <em class="sig-param"><span class="pre">max_cycle=30</span></em>, <em class="sig-param"><span class="pre">lindep=1e-14</span></em>, <em class="sig-param"><span class="pre">dot=&lt;function</span> <span class="pre">dot&gt;</span></em>, <em class="sig-param"><span class="pre">verbose=2</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyscf/soscf/ciah.html#davidson_cc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyscf.soscf.ciah.davidson_cc" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">pyscf.soscf.ciah.</span></span><span class="sig-name descname"><span class="pre">davidson_cc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">h_op</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">g_op</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">precond</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol=1e-10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xs=[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax=[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_cycle=30</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lindep=1e-14</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dot=&lt;function</span> <span class="pre">dot&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose=2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyscf/soscf/ciah.html#davidson_cc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyscf.soscf.ciah.davidson_cc" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 <dl class="py function">
 <dt class="sig sig-object py" id="pyscf.soscf.ciah.expmat">
@@ -433,7 +434,7 @@
 <dd></dd></dl>
 </section>
 <section id="module-pyscf.soscf.newton_ah">
-<span id="pyscf-soscf-newton-ah-module"></span><h2 id="module-pyscf.soscf.newton_ah">pyscf.soscf.newton_ah module<a class="headerlink" href="#module-pyscf.soscf.newton_ah" title="Permalink to this headline">¶</a></h2>
+<span id="pyscf-soscf-newton-ah-module"></span><h2 id="module-pyscf.soscf.newton_ah">pyscf.soscf.newton_ah module<a class="headerlink" href="#module-pyscf.soscf.newton_ah" title="Permalink to this heading">¶</a></h2>
 <p>Co-iterative augmented hessian second order SCF solver (CIAH-SOSCF)</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="pyscf.soscf.newton_ah.expmat">
@@ -441,7 +442,7 @@
 <dd></dd></dl>
 <dl class="py function">
 <dt class="sig sig-object py" id="pyscf.soscf.newton_ah.gen_g_hop_dhf">
-<span class="sig-prename descclassname"><span class="pre">pyscf.soscf.newton_ah.</span></span><span class="sig-name descname"><span class="pre">gen_g_hop_dhf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mo_coeff</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mo_occ</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fock_ao</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h1e</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">with_symmetry</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyscf/soscf/newton_ah.html#gen_g_hop_dhf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyscf.soscf.newton_ah.gen_g_hop_dhf" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">pyscf.soscf.newton_ah.</span></span><span class="sig-name descname"><span class="pre">gen_g_hop_dhf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mo_coeff</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mo_occ</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fock_ao</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h1e</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">with_symmetry</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyscf/soscf/newton_ah.html#gen_g_hop_dhf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyscf.soscf.newton_ah.gen_g_hop_dhf" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 <dl class="py function">
 <dt class="sig sig-object py" id="pyscf.soscf.newton_ah.gen_g_hop_ghf">
@@ -480,9 +481,14 @@
 <dt class="sig sig-object py" id="pyscf.soscf.newton_ah.project_mol">
 <span class="sig-prename descclassname"><span class="pre">pyscf.soscf.newton_ah.</span></span><span class="sig-name descname"><span class="pre">project_mol</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dual_basis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyscf/soscf/newton_ah.html#project_mol"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyscf.soscf.newton_ah.project_mol" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyscf.soscf.newton_ah.remove_soscf">
+<span class="sig-prename descclassname"><span class="pre">pyscf.soscf.newton_ah.</span></span><span class="sig-name descname"><span class="pre">remove_soscf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mf</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyscf/soscf/newton_ah.html#remove_soscf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyscf.soscf.newton_ah.remove_soscf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove the SOSCF decorator</p>
+</dd></dl>
 </section>
 <section id="module-pyscf.soscf">
-<span id="module-contents"></span><h2 id="module-pyscf.soscf">Module contents<a class="headerlink" href="#module-pyscf.soscf" title="Permalink to this headline">¶</a></h2>
+<span id="module-contents"></span><h2 id="module-pyscf.soscf">Module contents<a class="headerlink" href="#module-pyscf.soscf" title="Permalink to this heading">¶</a></h2>
 </section>
 </section>
 
@@ -533,7 +539,7 @@
               
           </div>
             Created using
-            <a href="http://www.sphinx-doc.org/">Sphinx</a> 4.0.1.
+            <a href="http://www.sphinx-doc.org/">Sphinx</a> 5.1.1.
              and
             <a href="https://github.com/bashtage/sphinx-material/">Material for
               Sphinx</a>

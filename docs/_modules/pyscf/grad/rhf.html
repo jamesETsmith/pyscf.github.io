@@ -53,6 +53,7 @@
     <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
     <script src="../../../_static/jquery.js"></script>
     <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../../_static/doctools.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon-32x32.png"/>
@@ -95,7 +96,7 @@
       </div>
       <div class="md-flex__cell md-flex__cell--stretch">
         <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
-          <span class="md-header-nav__topic">PySCF 2.0</span>
+          <span class="md-header-nav__topic">PySCF 2.2</span>
           <span class="md-header-nav__topic"> pyscf.grad.rhf </span>
         </div>
       </div>
@@ -105,7 +106,7 @@
 <div class="md-search" data-md-component="search" role="dialog">
   <label class="md-search__overlay" for="__search"></label>
   <div class="md-search__inner" role="search">
-    <form class="md-search__form" action="../../../search.html" method="GET" name="search">
+    <form class="md-search__form" action="../../../search.html" method="get" name="search">
       <input type="text" class="md-search__input" name="q" placeholder="Search"
              autocapitalize="off" autocomplete="off" spellcheck="false"
              data-md-component="query" data-md-state="active">
@@ -202,7 +203,7 @@
       
     </a>
     <a href="../../../index.html"
-       title="PySCF">PySCF 2.0</a>
+       title="PySCF">PySCF 2.2</a>
   </label>
     <div class="md-nav__source">
       <a href="https://github.com/pyscf/pyscf/" title="Go to repository" class="md-source" data-md-source="github">
@@ -314,16 +315,17 @@
 <span class="sd">Non-relativistic Hartree-Fock analytical nuclear gradients</span>
 <span class="sd">'''</span>
 
-<span class="kn">import</span> <span class="nn">time</span>
+
 <span class="kn">import</span> <span class="nn">numpy</span>
 <span class="kn">import</span> <span class="nn">ctypes</span>
 <span class="kn">from</span> <span class="nn">pyscf</span> <span class="kn">import</span> <span class="n">gto</span>
 <span class="kn">from</span> <span class="nn">pyscf</span> <span class="kn">import</span> <span class="n">lib</span>
 <span class="kn">from</span> <span class="nn">pyscf.lib</span> <span class="kn">import</span> <span class="n">logger</span>
 <span class="kn">from</span> <span class="nn">pyscf.scf</span> <span class="kn">import</span> <span class="n">_vhf</span>
+<span class="kn">from</span> <span class="nn">pyscf.gto.mole</span> <span class="kn">import</span> <span class="n">is_au</span>
 
 
-<div class="viewcode-block" id="grad_elec"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.grad.html#pyscf.grad.dhf.grad_elec">[docs]</a><span class="k">def</span> <span class="nf">grad_elec</span><span class="p">(</span><span class="n">mf_grad</span><span class="p">,</span> <span class="n">mo_energy</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mo_coeff</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mo_occ</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">atmlst</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="grad_elec"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.grad.html#pyscf.scf.hf.grad_elec">[docs]</a><span class="k">def</span> <span class="nf">grad_elec</span><span class="p">(</span><span class="n">mf_grad</span><span class="p">,</span> <span class="n">mo_energy</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mo_coeff</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mo_occ</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">atmlst</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">'''</span>
 <span class="sd">    Electronic part of RHF/RKS gradients</span>
 
@@ -340,8 +342,9 @@
     <span class="n">hcore_deriv</span> <span class="o">=</span> <span class="n">mf_grad</span><span class="o">.</span><span class="n">hcore_generator</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
     <span class="n">s1</span> <span class="o">=</span> <span class="n">mf_grad</span><span class="o">.</span><span class="n">get_ovlp</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
     <span class="n">dm0</span> <span class="o">=</span> <span class="n">mf</span><span class="o">.</span><span class="n">make_rdm1</span><span class="p">(</span><span class="n">mo_coeff</span><span class="p">,</span> <span class="n">mo_occ</span><span class="p">)</span>
+    <span class="n">dm0</span> <span class="o">=</span> <span class="n">mf_grad</span><span class="o">.</span><span class="n">_tag_rdm1</span> <span class="p">(</span><span class="n">dm0</span><span class="p">,</span> <span class="n">mo_coeff</span><span class="p">,</span> <span class="n">mo_occ</span><span class="p">)</span>
 
-    <span class="n">t0</span> <span class="o">=</span> <span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">clock</span><span class="p">(),</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">())</span>
+    <span class="n">t0</span> <span class="o">=</span> <span class="p">(</span><span class="n">logger</span><span class="o">.</span><span class="n">process_clock</span><span class="p">(),</span> <span class="n">logger</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">())</span>
     <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">'Computing Gradients of NR-HF Coulomb repulsion'</span><span class="p">)</span>
     <span class="n">vhf</span> <span class="o">=</span> <span class="n">mf_grad</span><span class="o">.</span><span class="n">get_veff</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">dm0</span><span class="p">)</span>
     <span class="n">log</span><span class="o">.</span><span class="n">timer</span><span class="p">(</span><span class="s1">'gradients of 2e part'</span><span class="p">,</span> <span class="o">*</span><span class="n">t0</span><span class="p">)</span>
@@ -381,7 +384,7 @@
                          <span class="p">(</span><span class="n">ia</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">atom_symbol</span><span class="p">(</span><span class="n">ia</span><span class="p">),</span> <span class="n">de</span><span class="p">[</span><span class="n">k</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="n">de</span><span class="p">[</span><span class="n">k</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="n">de</span><span class="p">[</span><span class="n">k</span><span class="p">,</span><span class="mi">2</span><span class="p">]))</span>
 
 
-<div class="viewcode-block" id="grad_nuc"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.grad.html#pyscf.grad.dhf.grad_nuc">[docs]</a><span class="k">def</span> <span class="nf">grad_nuc</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">atmlst</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="grad_nuc"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.grad.html#pyscf.scf.hf.grad_nuc">[docs]</a><span class="k">def</span> <span class="nf">grad_nuc</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">atmlst</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">'''</span>
 <span class="sd">    Derivatives of nuclear repulsion energy wrt nuclear coordinates</span>
 <span class="sd">    '''</span>
@@ -400,7 +403,7 @@
     <span class="k">return</span> <span class="n">gs</span></div>
 
 
-<div class="viewcode-block" id="get_hcore"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.grad.html#pyscf.grad.dhf.get_hcore">[docs]</a><span class="k">def</span> <span class="nf">get_hcore</span><span class="p">(</span><span class="n">mol</span><span class="p">):</span>
+<div class="viewcode-block" id="get_hcore"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.grad.html#pyscf.scf.hf.get_hcore">[docs]</a><span class="k">def</span> <span class="nf">get_hcore</span><span class="p">(</span><span class="n">mol</span><span class="p">):</span>
     <span class="sd">'''Part of the nuclear gradients of core Hamiltonian'''</span>
     <span class="n">h</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">intor</span><span class="p">(</span><span class="s1">'int1e_ipkin'</span><span class="p">,</span> <span class="n">comp</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">mol</span><span class="o">.</span><span class="n">_pseudo</span><span class="p">:</span>
@@ -412,7 +415,7 @@
     <span class="k">return</span> <span class="o">-</span><span class="n">h</span></div>
 
 
-<div class="viewcode-block" id="hcore_generator"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.grad.html#pyscf.grad.dhf.hcore_generator">[docs]</a><span class="k">def</span> <span class="nf">hcore_generator</span><span class="p">(</span><span class="n">mf</span><span class="p">,</span> <span class="n">mol</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="hcore_generator"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.grad.html#pyscf.scf.hf.hcore_generator">[docs]</a><span class="k">def</span> <span class="nf">hcore_generator</span><span class="p">(</span><span class="n">mf</span><span class="p">,</span> <span class="n">mol</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">mol</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="n">mol</span> <span class="o">=</span> <span class="n">mf</span><span class="o">.</span><span class="n">mol</span>
     <span class="n">with_x2c</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">mf</span><span class="o">.</span><span class="n">base</span><span class="p">,</span> <span class="s1">'with_x2c'</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">with_x2c</span><span class="p">:</span>
@@ -436,11 +439,11 @@
             <span class="k">return</span> <span class="n">vrinv</span> <span class="o">+</span> <span class="n">vrinv</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">hcore_deriv</span></div>
 
-<div class="viewcode-block" id="get_ovlp"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.grad.html#pyscf.grad.dhf.get_ovlp">[docs]</a><span class="k">def</span> <span class="nf">get_ovlp</span><span class="p">(</span><span class="n">mol</span><span class="p">):</span>
+<div class="viewcode-block" id="get_ovlp"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.grad.html#pyscf.scf.hf.get_ovlp">[docs]</a><span class="k">def</span> <span class="nf">get_ovlp</span><span class="p">(</span><span class="n">mol</span><span class="p">):</span>
     <span class="k">return</span> <span class="o">-</span><span class="n">mol</span><span class="o">.</span><span class="n">intor</span><span class="p">(</span><span class="s1">'int1e_ipovlp'</span><span class="p">,</span> <span class="n">comp</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="get_jk"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.grad.html#pyscf.grad.dhf.get_jk">[docs]</a><span class="k">def</span> <span class="nf">get_jk</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">dm</span><span class="p">):</span>
+<div class="viewcode-block" id="get_jk"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.grad.html#pyscf.scf.hf.get_jk">[docs]</a><span class="k">def</span> <span class="nf">get_jk</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">dm</span><span class="p">):</span>
     <span class="sd">'''J = ((-nabla i) j| kl) D_lk</span>
 <span class="sd">    K = ((-nabla i) j| kl) D_jk</span>
 <span class="sd">    '''</span>
@@ -473,20 +476,20 @@
                                <span class="n">mol</span><span class="o">.</span><span class="n">_atm</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">_bas</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">_env</span><span class="p">,</span> <span class="n">vhfopt</span><span class="o">=</span><span class="n">vhfopt</span><span class="p">)</span>
     <span class="k">return</span> <span class="o">-</span><span class="n">vj</span><span class="p">,</span> <span class="o">-</span><span class="n">vk</span></div>
 
-<div class="viewcode-block" id="get_veff"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.grad.html#pyscf.grad.dhf.get_veff">[docs]</a><span class="k">def</span> <span class="nf">get_veff</span><span class="p">(</span><span class="n">mf_grad</span><span class="p">,</span> <span class="n">mol</span><span class="p">,</span> <span class="n">dm</span><span class="p">):</span>
+<div class="viewcode-block" id="get_veff"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.grad.html#pyscf.scf.hf.get_veff">[docs]</a><span class="k">def</span> <span class="nf">get_veff</span><span class="p">(</span><span class="n">mf_grad</span><span class="p">,</span> <span class="n">mol</span><span class="p">,</span> <span class="n">dm</span><span class="p">):</span>
     <span class="sd">'''NR Hartree-Fock Coulomb repulsion'''</span>
     <span class="n">vj</span><span class="p">,</span> <span class="n">vk</span> <span class="o">=</span> <span class="n">mf_grad</span><span class="o">.</span><span class="n">get_jk</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">dm</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">vj</span> <span class="o">-</span> <span class="n">vk</span> <span class="o">*</span> <span class="o">.</span><span class="mi">5</span></div>
 
-<div class="viewcode-block" id="make_rdm1e"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.grad.html#pyscf.grad.dhf.make_rdm1e">[docs]</a><span class="k">def</span> <span class="nf">make_rdm1e</span><span class="p">(</span><span class="n">mo_energy</span><span class="p">,</span> <span class="n">mo_coeff</span><span class="p">,</span> <span class="n">mo_occ</span><span class="p">):</span>
+<div class="viewcode-block" id="make_rdm1e"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.grad.html#pyscf.scf.hf.make_rdm1e">[docs]</a><span class="k">def</span> <span class="nf">make_rdm1e</span><span class="p">(</span><span class="n">mo_energy</span><span class="p">,</span> <span class="n">mo_coeff</span><span class="p">,</span> <span class="n">mo_occ</span><span class="p">):</span>
     <span class="sd">'''Energy weighted density matrix'''</span>
     <span class="n">mo0</span> <span class="o">=</span> <span class="n">mo_coeff</span><span class="p">[:,</span><span class="n">mo_occ</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">mo0e</span> <span class="o">=</span> <span class="n">mo0</span> <span class="o">*</span> <span class="p">(</span><span class="n">mo_energy</span><span class="p">[</span><span class="n">mo_occ</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">mo_occ</span><span class="p">[</span><span class="n">mo_occ</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">])</span>
     <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">mo0e</span><span class="p">,</span> <span class="n">mo0</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">conj</span><span class="p">())</span></div>
 
-<div class="viewcode-block" id="symmetrize"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.grad.html#pyscf.grad.dhf.symmetrize">[docs]</a><span class="k">def</span> <span class="nf">symmetrize</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">de</span><span class="p">,</span> <span class="n">atmlst</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="symmetrize"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.grad.html#pyscf.scf.hf.symmetrize">[docs]</a><span class="k">def</span> <span class="nf">symmetrize</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">de</span><span class="p">,</span> <span class="n">atmlst</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">'''Symmetrize the gradients wrt the point group symmetry of the molecule.'''</span>
-    <span class="k">assert</span><span class="p">(</span><span class="n">mol</span><span class="o">.</span><span class="n">symmetry</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="p">(</span><span class="n">mol</span><span class="o">.</span><span class="n">symmetry</span><span class="p">)</span>
     <span class="n">pmol</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
     <span class="c1"># The symmetry of gradients should be the same to the p-type functions.</span>
     <span class="c1"># We use p-type AOs to generate the symmetry adaptation projector.</span>
@@ -511,7 +514,7 @@
     <span class="k">return</span> <span class="n">proj_de</span></div>
 
 
-<div class="viewcode-block" id="as_scanner"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.grad.html#pyscf.grad.dhf.as_scanner">[docs]</a><span class="k">def</span> <span class="nf">as_scanner</span><span class="p">(</span><span class="n">mf_grad</span><span class="p">):</span>
+<div class="viewcode-block" id="as_scanner"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.grad.html#pyscf.scf.hf.as_scanner">[docs]</a><span class="k">def</span> <span class="nf">as_scanner</span><span class="p">(</span><span class="n">mf_grad</span><span class="p">):</span>
     <span class="sd">'''Generating a nuclear gradients scanner/solver (for geometry optimizer).</span>
 
 <span class="sd">    The returned solver is a function. This function requires one argument</span>
@@ -561,7 +564,7 @@
     <span class="k">return</span> <span class="n">SCF_GradScanner</span><span class="p">(</span><span class="n">mf_grad</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="GradientsMixin"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.grad.html#pyscf.grad.dhf.GradientsMixin">[docs]</a><span class="k">class</span> <span class="nc">GradientsMixin</span><span class="p">(</span><span class="n">lib</span><span class="o">.</span><span class="n">StreamObject</span><span class="p">):</span>
+<div class="viewcode-block" id="GradientsMixin"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.grad.html#pyscf.scf.hf.GradientsMixin">[docs]</a><span class="k">class</span> <span class="nc">GradientsMixin</span><span class="p">(</span><span class="n">lib</span><span class="o">.</span><span class="n">StreamObject</span><span class="p">):</span>
     <span class="sd">'''</span>
 <span class="sd">    Basic nuclear gradient functions for non-relativistic methods</span>
 <span class="sd">    '''</span>
@@ -577,7 +580,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">de</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_keys</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
 
-<div class="viewcode-block" id="GradientsMixin.dump_flags"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.grad.html#pyscf.grad.dhf.GradientsMixin.dump_flags">[docs]</a>    <span class="k">def</span> <span class="nf">dump_flags</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="GradientsMixin.dump_flags"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.grad.html#pyscf.scf.hf.GradientsMixin.dump_flags">[docs]</a>    <span class="k">def</span> <span class="nf">dump_flags</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="n">log</span> <span class="o">=</span> <span class="n">logger</span><span class="o">.</span><span class="n">new_logger</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="p">)</span>
         <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">'</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">base</span><span class="p">,</span> <span class="s1">'converged'</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">converged</span><span class="p">:</span>
@@ -585,7 +588,7 @@
                      <span class="bp">self</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
         <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">'******** </span><span class="si">%s</span><span class="s1"> for </span><span class="si">%s</span><span class="s1"> ********'</span><span class="p">,</span>
                  <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="vm">__class__</span><span class="p">)</span>
-        <span class="k">if</span> <span class="s1">'ANG'</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">upper</span><span class="p">():</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">is_au</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">unit</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">'unit Eh/Ang is not supported'</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">'unit = Eh/Bohr'</span><span class="p">)</span>
@@ -593,50 +596,62 @@
                  <span class="bp">self</span><span class="o">.</span><span class="n">max_memory</span><span class="p">,</span> <span class="n">lib</span><span class="o">.</span><span class="n">current_memory</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
         <span class="k">return</span> <span class="bp">self</span></div>
 
-<div class="viewcode-block" id="GradientsMixin.get_hcore"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.grad.html#pyscf.grad.dhf.GradientsMixin.get_hcore">[docs]</a>    <span class="k">def</span> <span class="nf">get_hcore</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mol</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="GradientsMixin.get_hcore"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.grad.html#pyscf.scf.hf.GradientsMixin.get_hcore">[docs]</a>    <span class="k">def</span> <span class="nf">get_hcore</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mol</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">mol</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="n">mol</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mol</span>
         <span class="k">return</span> <span class="n">get_hcore</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span></div>
 
     <span class="n">hcore_generator</span> <span class="o">=</span> <span class="n">hcore_generator</span>
 
-<div class="viewcode-block" id="GradientsMixin.get_ovlp"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.grad.html#pyscf.grad.dhf.GradientsMixin.get_ovlp">[docs]</a>    <span class="k">def</span> <span class="nf">get_ovlp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mol</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="GradientsMixin.get_ovlp"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.grad.html#pyscf.scf.hf.GradientsMixin.get_ovlp">[docs]</a>    <span class="k">def</span> <span class="nf">get_ovlp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mol</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">mol</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="n">mol</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mol</span>
         <span class="k">return</span> <span class="n">get_ovlp</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="GradientsMixin.get_jk"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.grad.html#pyscf.grad.dhf.GradientsMixin.get_jk">[docs]</a>    <span class="nd">@lib</span><span class="o">.</span><span class="n">with_doc</span><span class="p">(</span><span class="n">get_jk</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">get_jk</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mol</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dm</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">hermi</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<div class="viewcode-block" id="GradientsMixin.get_jk"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.grad.html#pyscf.scf.hf.GradientsMixin.get_jk">[docs]</a>    <span class="nd">@lib</span><span class="o">.</span><span class="n">with_doc</span><span class="p">(</span><span class="n">get_jk</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">get_jk</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mol</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dm</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">hermi</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">omega</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">mol</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="n">mol</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mol</span>
         <span class="k">if</span> <span class="n">dm</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="n">dm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">make_rdm1</span><span class="p">()</span>
-        <span class="n">cpu0</span> <span class="o">=</span> <span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">clock</span><span class="p">(),</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">())</span>
-        <span class="n">vj</span><span class="p">,</span> <span class="n">vk</span> <span class="o">=</span> <span class="n">get_jk</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">dm</span><span class="p">)</span>
+        <span class="n">cpu0</span> <span class="o">=</span> <span class="p">(</span><span class="n">logger</span><span class="o">.</span><span class="n">process_clock</span><span class="p">(),</span> <span class="n">logger</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">())</span>
+        <span class="k">if</span> <span class="n">omega</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">vj</span><span class="p">,</span> <span class="n">vk</span> <span class="o">=</span> <span class="n">get_jk</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">dm</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">mol</span><span class="o">.</span><span class="n">with_range_coulomb</span><span class="p">(</span><span class="n">omega</span><span class="p">):</span>
+                <span class="n">vj</span><span class="p">,</span> <span class="n">vk</span> <span class="o">=</span> <span class="n">get_jk</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">dm</span><span class="p">)</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">timer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">'vj and vk'</span><span class="p">,</span> <span class="o">*</span><span class="n">cpu0</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">vj</span><span class="p">,</span> <span class="n">vk</span></div>
 
-<div class="viewcode-block" id="GradientsMixin.get_j"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.grad.html#pyscf.grad.dhf.GradientsMixin.get_j">[docs]</a>    <span class="k">def</span> <span class="nf">get_j</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mol</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dm</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">hermi</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<div class="viewcode-block" id="GradientsMixin.get_j"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.grad.html#pyscf.scf.hf.GradientsMixin.get_j">[docs]</a>    <span class="k">def</span> <span class="nf">get_j</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mol</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dm</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">hermi</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">omega</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">mol</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="n">mol</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mol</span>
         <span class="k">if</span> <span class="n">dm</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="n">dm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">make_rdm1</span><span class="p">()</span>
         <span class="n">intor</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">_add_suffix</span><span class="p">(</span><span class="s1">'int2e_ip1'</span><span class="p">)</span>
-        <span class="k">return</span> <span class="o">-</span><span class="n">_vhf</span><span class="o">.</span><span class="n">direct_mapdm</span><span class="p">(</span><span class="n">intor</span><span class="p">,</span> <span class="s1">'s2kl'</span><span class="p">,</span> <span class="s1">'lk-&gt;s1ij'</span><span class="p">,</span> <span class="n">dm</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span>
-                                  <span class="n">mol</span><span class="o">.</span><span class="n">_atm</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">_bas</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">_env</span><span class="p">)</span></div>
+        <span class="k">if</span> <span class="n">omega</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="o">-</span><span class="n">_vhf</span><span class="o">.</span><span class="n">direct_mapdm</span><span class="p">(</span><span class="n">intor</span><span class="p">,</span> <span class="s1">'s2kl'</span><span class="p">,</span> <span class="s1">'lk-&gt;s1ij'</span><span class="p">,</span> <span class="n">dm</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span>
+                                      <span class="n">mol</span><span class="o">.</span><span class="n">_atm</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">_bas</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">_env</span><span class="p">)</span>
+        <span class="k">with</span> <span class="n">mol</span><span class="o">.</span><span class="n">with_range_coulomb</span><span class="p">(</span><span class="n">omega</span><span class="p">):</span>
+            <span class="k">return</span> <span class="o">-</span><span class="n">_vhf</span><span class="o">.</span><span class="n">direct_mapdm</span><span class="p">(</span><span class="n">intor</span><span class="p">,</span> <span class="s1">'s2kl'</span><span class="p">,</span> <span class="s1">'lk-&gt;s1ij'</span><span class="p">,</span> <span class="n">dm</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span>
+                                      <span class="n">mol</span><span class="o">.</span><span class="n">_atm</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">_bas</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">_env</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="GradientsMixin.get_k"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.grad.html#pyscf.grad.dhf.GradientsMixin.get_k">[docs]</a>    <span class="k">def</span> <span class="nf">get_k</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mol</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dm</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">hermi</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<div class="viewcode-block" id="GradientsMixin.get_k"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.grad.html#pyscf.scf.hf.GradientsMixin.get_k">[docs]</a>    <span class="k">def</span> <span class="nf">get_k</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mol</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dm</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">hermi</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">omega</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">mol</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="n">mol</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mol</span>
         <span class="k">if</span> <span class="n">dm</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="n">dm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">make_rdm1</span><span class="p">()</span>
         <span class="n">intor</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">_add_suffix</span><span class="p">(</span><span class="s1">'int2e_ip1'</span><span class="p">)</span>
-        <span class="k">return</span> <span class="o">-</span><span class="n">_vhf</span><span class="o">.</span><span class="n">direct_mapdm</span><span class="p">(</span><span class="n">intor</span><span class="p">,</span> <span class="s1">'s2kl'</span><span class="p">,</span> <span class="s1">'jk-&gt;s1il'</span><span class="p">,</span> <span class="n">dm</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span>
-                                  <span class="n">mol</span><span class="o">.</span><span class="n">_atm</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">_bas</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">_env</span><span class="p">)</span></div>
+        <span class="k">if</span> <span class="n">omega</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="o">-</span><span class="n">_vhf</span><span class="o">.</span><span class="n">direct_mapdm</span><span class="p">(</span><span class="n">intor</span><span class="p">,</span> <span class="s1">'s2kl'</span><span class="p">,</span> <span class="s1">'jk-&gt;s1il'</span><span class="p">,</span> <span class="n">dm</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span>
+                                      <span class="n">mol</span><span class="o">.</span><span class="n">_atm</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">_bas</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">_env</span><span class="p">)</span>
+        <span class="k">with</span> <span class="n">mol</span><span class="o">.</span><span class="n">with_range_coulomb</span><span class="p">(</span><span class="n">omega</span><span class="p">):</span>
+            <span class="k">return</span> <span class="o">-</span><span class="n">_vhf</span><span class="o">.</span><span class="n">direct_mapdm</span><span class="p">(</span><span class="n">intor</span><span class="p">,</span> <span class="s1">'s2kl'</span><span class="p">,</span> <span class="s1">'jk-&gt;s1il'</span><span class="p">,</span> <span class="n">dm</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span>
+                                      <span class="n">mol</span><span class="o">.</span><span class="n">_atm</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">_bas</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">_env</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="GradientsMixin.get_veff"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.grad.html#pyscf.grad.dhf.GradientsMixin.get_veff">[docs]</a>    <span class="k">def</span> <span class="nf">get_veff</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mol</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dm</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="GradientsMixin.get_veff"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.grad.html#pyscf.scf.hf.GradientsMixin.get_veff">[docs]</a>    <span class="k">def</span> <span class="nf">get_veff</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mol</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dm</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
-<div class="viewcode-block" id="GradientsMixin.make_rdm1e"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.grad.html#pyscf.grad.dhf.GradientsMixin.make_rdm1e">[docs]</a>    <span class="k">def</span> <span class="nf">make_rdm1e</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mo_energy</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mo_coeff</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mo_occ</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="GradientsMixin.make_rdm1e"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.grad.html#pyscf.scf.hf.GradientsMixin.make_rdm1e">[docs]</a>    <span class="k">def</span> <span class="nf">make_rdm1e</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mo_energy</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mo_coeff</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mo_occ</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
-<div class="viewcode-block" id="GradientsMixin.grad_nuc"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.grad.html#pyscf.grad.dhf.GradientsMixin.grad_nuc">[docs]</a>    <span class="k">def</span> <span class="nf">grad_nuc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mol</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">atmlst</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="GradientsMixin.grad_nuc"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.grad.html#pyscf.scf.hf.GradientsMixin.grad_nuc">[docs]</a>    <span class="k">def</span> <span class="nf">grad_nuc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mol</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">atmlst</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">mol</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="n">mol</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mol</span>
         <span class="k">return</span> <span class="n">grad_nuc</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">atmlst</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="GradientsMixin.optimizer"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.grad.html#pyscf.grad.dhf.GradientsMixin.optimizer">[docs]</a>    <span class="k">def</span> <span class="nf">optimizer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">solver</span><span class="o">=</span><span class="s1">'geometric'</span><span class="p">):</span>
+<div class="viewcode-block" id="GradientsMixin.optimizer"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.grad.html#pyscf.scf.hf.GradientsMixin.optimizer">[docs]</a>    <span class="k">def</span> <span class="nf">optimizer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">solver</span><span class="o">=</span><span class="s1">'geometric'</span><span class="p">):</span>
         <span class="sd">'''Geometry optimization solver</span>
 
 <span class="sd">        Kwargs:</span>
@@ -652,14 +667,14 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">'Unknown geometry optimization solver </span><span class="si">%s</span><span class="s1">'</span> <span class="o">%</span> <span class="n">solver</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="GradientsMixin.symmetrize"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.grad.html#pyscf.grad.dhf.GradientsMixin.symmetrize">[docs]</a>    <span class="nd">@lib</span><span class="o">.</span><span class="n">with_doc</span><span class="p">(</span><span class="n">symmetrize</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">)</span>
+<div class="viewcode-block" id="GradientsMixin.symmetrize"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.grad.html#pyscf.scf.hf.GradientsMixin.symmetrize">[docs]</a>    <span class="nd">@lib</span><span class="o">.</span><span class="n">with_doc</span><span class="p">(</span><span class="n">symmetrize</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">symmetrize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">de</span><span class="p">,</span> <span class="n">atmlst</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">symmetrize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mol</span><span class="p">,</span> <span class="n">de</span><span class="p">,</span> <span class="n">atmlst</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="GradientsMixin.grad_elec"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.grad.html#pyscf.grad.dhf.GradientsMixin.grad_elec">[docs]</a>    <span class="k">def</span> <span class="nf">grad_elec</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="GradientsMixin.grad_elec"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.grad.html#pyscf.scf.hf.GradientsMixin.grad_elec">[docs]</a>    <span class="k">def</span> <span class="nf">grad_elec</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
-<div class="viewcode-block" id="GradientsMixin.extra_force"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.grad.html#pyscf.grad.dhf.GradientsMixin.extra_force">[docs]</a>    <span class="k">def</span> <span class="nf">extra_force</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atom_id</span><span class="p">,</span> <span class="n">envs</span><span class="p">):</span>
+<div class="viewcode-block" id="GradientsMixin.extra_force"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.grad.html#pyscf.scf.hf.GradientsMixin.extra_force">[docs]</a>    <span class="k">def</span> <span class="nf">extra_force</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atom_id</span><span class="p">,</span> <span class="n">envs</span><span class="p">):</span>
         <span class="sd">'''Hook for extra contributions in analytical gradients.</span>
 
 <span class="sd">        Contributions like the response of auxiliary basis in density fitting</span>
@@ -668,8 +683,8 @@
 <span class="sd">        '''</span>
         <span class="k">return</span> <span class="mi">0</span></div>
 
-<div class="viewcode-block" id="GradientsMixin.kernel"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.grad.html#pyscf.grad.dhf.GradientsMixin.kernel">[docs]</a>    <span class="k">def</span> <span class="nf">kernel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mo_energy</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mo_coeff</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mo_occ</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">atmlst</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="n">cput0</span> <span class="o">=</span> <span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">clock</span><span class="p">(),</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">())</span>
+<div class="viewcode-block" id="GradientsMixin.kernel"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.grad.html#pyscf.scf.hf.GradientsMixin.kernel">[docs]</a>    <span class="k">def</span> <span class="nf">kernel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mo_energy</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mo_coeff</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mo_occ</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">atmlst</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">cput0</span> <span class="o">=</span> <span class="p">(</span><span class="n">logger</span><span class="o">.</span><span class="n">process_clock</span><span class="p">(),</span> <span class="n">logger</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">())</span>
         <span class="k">if</span> <span class="n">mo_energy</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="n">mo_energy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">mo_energy</span>
         <span class="k">if</span> <span class="n">mo_coeff</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="n">mo_coeff</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">mo_coeff</span>
         <span class="k">if</span> <span class="n">mo_occ</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="n">mo_occ</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">mo_occ</span>
@@ -702,18 +717,22 @@
 
     <span class="n">_write</span> <span class="o">=</span> <span class="n">_write</span>
 
-    <span class="n">as_scanner</span> <span class="o">=</span> <span class="n">as_scanner</span></div>
+    <span class="n">as_scanner</span> <span class="o">=</span> <span class="n">as_scanner</span>
 
+    <span class="k">def</span> <span class="nf">_tag_rdm1</span> <span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dm</span><span class="p">,</span> <span class="n">mo_coeff</span><span class="p">,</span> <span class="n">mo_occ</span><span class="p">):</span>
+        <span class="sd">'''Tagging is necessary in DF subclass. Tagged arrays need</span>
+<span class="sd">        to be split into alpha,beta in DF-ROHF subclass'''</span>
+        <span class="k">return</span> <span class="n">lib</span><span class="o">.</span><span class="n">tag_array</span> <span class="p">(</span><span class="n">dm</span><span class="p">,</span> <span class="n">mo_coeff</span><span class="o">=</span><span class="n">mo_coeff</span><span class="p">,</span> <span class="n">mo_occ</span><span class="o">=</span><span class="n">mo_occ</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Gradients"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.grad.html#pyscf.grad.dhf.Gradients">[docs]</a><span class="k">class</span> <span class="nc">Gradients</span><span class="p">(</span><span class="n">GradientsMixin</span><span class="p">):</span>
+<div class="viewcode-block" id="Gradients"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.grad.html#pyscf.scf.hf.Gradients">[docs]</a><span class="k">class</span> <span class="nc">Gradients</span><span class="p">(</span><span class="n">GradientsMixin</span><span class="p">):</span>
     <span class="sd">'''Non-relativistic restricted Hartree-Fock gradients'''</span>
 
-<div class="viewcode-block" id="Gradients.get_veff"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.grad.html#pyscf.grad.dhf.Gradients.get_veff">[docs]</a>    <span class="k">def</span> <span class="nf">get_veff</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mol</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dm</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Gradients.get_veff"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.grad.html#pyscf.scf.hf.Gradients.get_veff">[docs]</a>    <span class="k">def</span> <span class="nf">get_veff</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mol</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dm</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">mol</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="n">mol</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mol</span>
         <span class="k">if</span> <span class="n">dm</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="n">dm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">make_rdm1</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">get_veff</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mol</span><span class="p">,</span> <span class="n">dm</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Gradients.make_rdm1e"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.grad.html#pyscf.grad.dhf.Gradients.make_rdm1e">[docs]</a>    <span class="k">def</span> <span class="nf">make_rdm1e</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mo_energy</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mo_coeff</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mo_occ</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Gradients.make_rdm1e"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.grad.html#pyscf.scf.hf.Gradients.make_rdm1e">[docs]</a>    <span class="k">def</span> <span class="nf">make_rdm1e</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mo_energy</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mo_coeff</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mo_occ</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">mo_energy</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="n">mo_energy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">mo_energy</span>
         <span class="k">if</span> <span class="n">mo_coeff</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="n">mo_coeff</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">mo_coeff</span>
         <span class="k">if</span> <span class="n">mo_occ</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="n">mo_occ</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">mo_occ</span>
@@ -726,47 +745,6 @@
 <span class="kn">from</span> <span class="nn">pyscf</span> <span class="kn">import</span> <span class="n">scf</span>
 <span class="c1"># Inject to RHF class</span>
 <span class="n">scf</span><span class="o">.</span><span class="n">hf</span><span class="o">.</span><span class="n">RHF</span><span class="o">.</span><span class="n">Gradients</span> <span class="o">=</span> <span class="n">lib</span><span class="o">.</span><span class="n">class_as_method</span><span class="p">(</span><span class="n">Gradients</span><span class="p">)</span>
-
-
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">'__main__'</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">pyscf</span> <span class="kn">import</span> <span class="n">scf</span>
-    <span class="n">mol</span> <span class="o">=</span> <span class="n">gto</span><span class="o">.</span><span class="n">Mole</span><span class="p">()</span>
-    <span class="n">mol</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">mol</span><span class="o">.</span><span class="n">atom</span> <span class="o">=</span> <span class="p">[[</span><span class="s1">'He'</span><span class="p">,</span> <span class="p">(</span><span class="mf">0.</span><span class="p">,</span><span class="mf">0.</span><span class="p">,</span><span class="mf">0.</span><span class="p">)],</span> <span class="p">]</span>
-    <span class="n">mol</span><span class="o">.</span><span class="n">basis</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'He'</span><span class="p">:</span> <span class="s1">'ccpvdz'</span><span class="p">}</span>
-    <span class="n">mol</span><span class="o">.</span><span class="n">build</span><span class="p">()</span>
-    <span class="n">method</span> <span class="o">=</span> <span class="n">scf</span><span class="o">.</span><span class="n">RHF</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
-    <span class="n">method</span><span class="o">.</span><span class="n">scf</span><span class="p">()</span>
-    <span class="n">g</span> <span class="o">=</span> <span class="n">Gradients</span><span class="p">(</span><span class="n">method</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">grad</span><span class="p">())</span>
-
-    <span class="n">h2o</span> <span class="o">=</span> <span class="n">gto</span><span class="o">.</span><span class="n">Mole</span><span class="p">()</span>
-    <span class="n">h2o</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">h2o</span><span class="o">.</span><span class="n">atom</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="p">[</span><span class="s1">'O'</span> <span class="p">,</span> <span class="p">(</span><span class="mf">0.</span> <span class="p">,</span> <span class="mf">0.</span>     <span class="p">,</span> <span class="mf">0.</span><span class="p">)],</span>
-        <span class="p">[</span><span class="mi">1</span>   <span class="p">,</span> <span class="p">(</span><span class="mf">0.</span> <span class="p">,</span> <span class="o">-</span><span class="mf">0.757</span> <span class="p">,</span> <span class="mf">0.587</span><span class="p">)],</span>
-        <span class="p">[</span><span class="mi">1</span>   <span class="p">,</span> <span class="p">(</span><span class="mf">0.</span> <span class="p">,</span> <span class="mf">0.757</span>  <span class="p">,</span> <span class="mf">0.587</span><span class="p">)]</span> <span class="p">]</span>
-    <span class="n">h2o</span><span class="o">.</span><span class="n">basis</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'H'</span><span class="p">:</span> <span class="s1">'631g'</span><span class="p">,</span>
-                 <span class="s1">'O'</span><span class="p">:</span> <span class="s1">'631g'</span><span class="p">,}</span>
-    <span class="n">h2o</span><span class="o">.</span><span class="n">symmetry</span> <span class="o">=</span> <span class="kc">True</span>
-    <span class="n">h2o</span><span class="o">.</span><span class="n">build</span><span class="p">()</span>
-    <span class="n">mf</span> <span class="o">=</span> <span class="n">scf</span><span class="o">.</span><span class="n">RHF</span><span class="p">(</span><span class="n">h2o</span><span class="p">)</span>
-    <span class="n">mf</span><span class="o">.</span><span class="n">conv_tol</span> <span class="o">=</span> <span class="mf">1e-14</span>
-    <span class="n">e0</span> <span class="o">=</span> <span class="n">mf</span><span class="o">.</span><span class="n">scf</span><span class="p">()</span>
-    <span class="n">g</span> <span class="o">=</span> <span class="n">Gradients</span><span class="p">(</span><span class="n">mf</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">grad</span><span class="p">())</span>
-<span class="c1">#[[ 0   0               -2.41134256e-02]</span>
-<span class="c1"># [ 0   4.39690522e-03   1.20567128e-02]</span>
-<span class="c1"># [ 0  -4.39690522e-03   1.20567128e-02]]</span>
-
-    <span class="n">mf</span> <span class="o">=</span> <span class="n">scf</span><span class="o">.</span><span class="n">RHF</span><span class="p">(</span><span class="n">h2o</span><span class="p">)</span><span class="o">.</span><span class="n">x2c</span><span class="p">()</span>
-    <span class="n">mf</span><span class="o">.</span><span class="n">conv_tol</span> <span class="o">=</span> <span class="mf">1e-14</span>
-    <span class="n">e0</span> <span class="o">=</span> <span class="n">mf</span><span class="o">.</span><span class="n">scf</span><span class="p">()</span>
-    <span class="n">g</span> <span class="o">=</span> <span class="n">mf</span><span class="o">.</span><span class="n">Gradients</span><span class="p">()</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">grad</span><span class="p">())</span>
-<span class="c1">#[[ 0   0               -2.40286232e-02]</span>
-<span class="c1"># [ 0   4.27908498e-03   1.20143116e-02]</span>
-<span class="c1"># [ 0  -4.27908498e-03   1.20143116e-02]]</span>
 </pre></div>
 
           </article>
@@ -791,7 +769,7 @@
               
           </div>
             Created using
-            <a href="http://www.sphinx-doc.org/">Sphinx</a> 4.0.1.
+            <a href="http://www.sphinx-doc.org/">Sphinx</a> 5.1.1.
              and
             <a href="https://github.com/bashtage/sphinx-material/">Material for
               Sphinx</a>

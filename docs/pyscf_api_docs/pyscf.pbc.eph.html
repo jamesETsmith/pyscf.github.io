@@ -4,7 +4,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -54,6 +54,7 @@
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="shortcut icon" href="../_static/favicon-32x32.png"/>
@@ -98,7 +99,7 @@
       </div>
       <div class="md-flex__cell md-flex__cell--stretch">
         <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
-          <span class="md-header-nav__topic">PySCF 2.0</span>
+          <span class="md-header-nav__topic">PySCF 2.2</span>
           <span class="md-header-nav__topic"> pyscf.pbc.eph package </span>
         </div>
       </div>
@@ -108,7 +109,7 @@
 <div class="md-search" data-md-component="search" role="dialog">
   <label class="md-search__overlay" for="__search"></label>
   <div class="md-search__inner" role="search">
-    <form class="md-search__form" action="../search.html" method="GET" name="search">
+    <form class="md-search__form" action="../search.html" method="get" name="search">
       <input type="text" class="md-search__input" name="q" placeholder="Search"
              autocapitalize="off" autocomplete="off" spellcheck="false"
              data-md-component="query" data-md-state="active">
@@ -205,7 +206,7 @@
       
     </a>
     <a href="../index.html"
-       title="PySCF">PySCF 2.0</a>
+       title="PySCF">PySCF 2.2</a>
   </label>
     <div class="md-nav__source">
       <a href="https://github.com/pyscf/pyscf/" title="Go to repository" class="md-source" data-md-source="github">
@@ -335,12 +336,12 @@
           <article class="md-content__inner md-typeset" role="main">
             
   <section id="pyscf-pbc-eph-package">
-<h1 id="pyscf-api-docs-pyscf-pbc-eph--page-root">pyscf.pbc.eph package<a class="headerlink" href="#pyscf-api-docs-pyscf-pbc-eph--page-root" title="Permalink to this headline">¶</a></h1>
+<h1 id="pyscf-api-docs-pyscf-pbc-eph--page-root">pyscf.pbc.eph package<a class="headerlink" href="#pyscf-api-docs-pyscf-pbc-eph--page-root" title="Permalink to this heading">¶</a></h1>
 <section id="submodules">
-<h2 id="submodules">Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+<h2 id="submodules">Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading">¶</a></h2>
 </section>
 <section id="module-pyscf.pbc.eph.eph_fd">
-<span id="pyscf-pbc-eph-eph-fd-module"></span><h2 id="module-pyscf.pbc.eph.eph_fd">pyscf.pbc.eph.eph_fd module<a class="headerlink" href="#module-pyscf.pbc.eph.eph_fd" title="Permalink to this headline">¶</a></h2>
+<span id="pyscf-pbc-eph-eph-fd-module"></span><h2 id="module-pyscf.pbc.eph.eph_fd">pyscf.pbc.eph.eph_fd module<a class="headerlink" href="#module-pyscf.pbc.eph.eph_fd" title="Permalink to this heading">¶</a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="pyscf.pbc.eph.eph_fd.copy_mf">
 <span class="sig-prename descclassname"><span class="pre">pyscf.pbc.eph.eph_fd.</span></span><span class="sig-name descname"><span class="pre">copy_mf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cell</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyscf/pbc/eph/eph_fd.html#copy_mf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyscf.pbc.eph.eph_fd.copy_mf" title="Permalink to this definition">¶</a></dt>
@@ -348,7 +349,9 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="pyscf.pbc.eph.eph_fd.gen_cells">
 <span class="sig-prename descclassname"><span class="pre">pyscf.pbc.eph.eph_fd.</span></span><span class="sig-name descname"><span class="pre">gen_cells</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cell</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">disp</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyscf/pbc/eph/eph_fd.html#gen_cells"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyscf.pbc.eph.eph_fd.gen_cells" title="Permalink to this definition">¶</a></dt>
-<dd><p>From the given cell, generate 3N cells with a shift on + displacement(cell_a) and - displacement(cell_s) on each Cartesian coordinates</p>
+<dd><p>From the given cell, generate 3N cells with a shift on
++ displacement(cell_a) and - displacement(cell_s) on each Cartesian
+coordinates</p>
 </dd></dl>
 <dl class="py function">
 <dt class="sig sig-object py" id="pyscf.pbc.eph.eph_fd.get_vmat">
@@ -369,7 +372,7 @@
 </dd></dl>
 </section>
 <section id="module-pyscf.pbc.eph">
-<span id="module-contents"></span><h2 id="module-pyscf.pbc.eph">Module contents<a class="headerlink" href="#module-pyscf.pbc.eph" title="Permalink to this headline">¶</a></h2>
+<span id="module-contents"></span><h2 id="module-pyscf.pbc.eph">Module contents<a class="headerlink" href="#module-pyscf.pbc.eph" title="Permalink to this heading">¶</a></h2>
 </section>
 </section>
 
@@ -420,7 +423,7 @@
               
           </div>
             Created using
-            <a href="http://www.sphinx-doc.org/">Sphinx</a> 4.0.1.
+            <a href="http://www.sphinx-doc.org/">Sphinx</a> 5.1.1.
              and
             <a href="https://github.com/bashtage/sphinx-material/">Material for
               Sphinx</a>

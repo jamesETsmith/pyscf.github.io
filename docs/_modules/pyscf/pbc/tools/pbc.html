@@ -53,6 +53,7 @@
     <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
     <script src="../../../../_static/jquery.js"></script>
     <script src="../../../../_static/underscore.js"></script>
+    <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../../../_static/doctools.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="shortcut icon" href="../../../../_static/favicon-32x32.png"/>
@@ -95,7 +96,7 @@
       </div>
       <div class="md-flex__cell md-flex__cell--stretch">
         <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
-          <span class="md-header-nav__topic">PySCF 2.0</span>
+          <span class="md-header-nav__topic">PySCF 2.2</span>
           <span class="md-header-nav__topic"> pyscf.pbc.tools.pbc </span>
         </div>
       </div>
@@ -105,7 +106,7 @@
 <div class="md-search" data-md-component="search" role="dialog">
   <label class="md-search__overlay" for="__search"></label>
   <div class="md-search__inner" role="search">
-    <form class="md-search__form" action="../../../../search.html" method="GET" name="search">
+    <form class="md-search__form" action="../../../../search.html" method="get" name="search">
       <input type="text" class="md-search__input" name="q" placeholder="Search"
              autocapitalize="off" autocomplete="off" spellcheck="false"
              data-md-component="query" data-md-state="active">
@@ -202,7 +203,7 @@
       
     </a>
     <a href="../../../../index.html"
-       title="PySCF">PySCF 2.0</a>
+       title="PySCF">PySCF 2.2</a>
   </label>
     <div class="md-nav__source">
       <a href="https://github.com/pyscf/pyscf/" title="Go to repository" class="md-source" data-md-source="github">
@@ -293,7 +294,7 @@
             
   <h1 id="modules-pyscf-pbc-tools-pbc--page-root">Source code for pyscf.pbc.tools.pbc</h1><div class="highlight"><pre>
 <span></span><span class="ch">#!/usr/bin/env python</span>
-<span class="c1"># Copyright 2014-2020 The PySCF Developers. All Rights Reserved.</span>
+<span class="c1"># Copyright 2014-2021 The PySCF Developers. All Rights Reserved.</span>
 <span class="c1">#</span>
 <span class="c1"># Licensed under the Apache License, Version 2.0 (the "License");</span>
 <span class="c1"># you may not use this file except in compliance with the License.</span>
@@ -402,7 +403,7 @@
         <span class="k">return</span> <span class="n">_ifftn_blas</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">mesh</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="fft"><a class="viewcode-back" href="../../../../pyscf_api_docs/pyscf.pbc.tools.html#pyscf.pbc.tools.pbc.fft">[docs]</a><span class="k">def</span> <span class="nf">fft</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">mesh</span><span class="p">):</span>
+<div class="viewcode-block" id="fft"><a class="viewcode-back" href="../../../../pyscf_api_docs/pyscf.pbc.tools.html#pyscf.pbc.gto.cell.fft">[docs]</a><span class="k">def</span> <span class="nf">fft</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">mesh</span><span class="p">):</span>
     <span class="sd">'''Perform the 3D FFT from real (R) to reciprocal (G) space.</span>
 
 <span class="sd">    After FFT, (u, v, w) -&gt; (j, k, l).</span>
@@ -427,7 +428,7 @@
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
 
     <span class="n">f3d</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">*</span><span class="n">mesh</span><span class="p">)</span>
-    <span class="k">assert</span><span class="p">(</span><span class="n">f3d</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">f</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="n">f3d</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="p">(</span><span class="n">f3d</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">f</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="n">f3d</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
     <span class="n">g3d</span> <span class="o">=</span> <span class="n">_fftn_wrapper</span><span class="p">(</span><span class="n">f3d</span><span class="p">)</span>
     <span class="n">ngrids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">f</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">or</span> <span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">3</span> <span class="ow">and</span> <span class="n">f</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="n">ngrids</span><span class="p">):</span>
@@ -435,7 +436,7 @@
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">g3d</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">ngrids</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="ifft"><a class="viewcode-back" href="../../../../pyscf_api_docs/pyscf.pbc.tools.html#pyscf.pbc.tools.pbc.ifft">[docs]</a><span class="k">def</span> <span class="nf">ifft</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">mesh</span><span class="p">):</span>
+<div class="viewcode-block" id="ifft"><a class="viewcode-back" href="../../../../pyscf_api_docs/pyscf.pbc.tools.html#pyscf.pbc.gto.cell.ifft">[docs]</a><span class="k">def</span> <span class="nf">ifft</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">mesh</span><span class="p">):</span>
     <span class="sd">'''Perform the 3D inverse FFT from reciprocal (G) space to real (R) space.</span>
 
 <span class="sd">    Inverse FFT normalization factor is 1./N, same as in `numpy.fft` but</span>
@@ -458,7 +459,7 @@
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
 
     <span class="n">g3d</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">*</span><span class="n">mesh</span><span class="p">)</span>
-    <span class="k">assert</span><span class="p">(</span><span class="n">g3d</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">g</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="n">g3d</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="p">(</span><span class="n">g3d</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">g</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="n">g3d</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
     <span class="n">f3d</span> <span class="o">=</span> <span class="n">_ifftn_wrapper</span><span class="p">(</span><span class="n">g3d</span><span class="p">)</span>
     <span class="n">ngrids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">g</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">or</span> <span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">3</span> <span class="ow">and</span> <span class="n">g</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="n">ngrids</span><span class="p">):</span>
@@ -467,7 +468,7 @@
         <span class="k">return</span> <span class="n">f3d</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">ngrids</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="fftk"><a class="viewcode-back" href="../../../../pyscf_api_docs/pyscf.pbc.tools.html#pyscf.pbc.tools.pbc.fftk">[docs]</a><span class="k">def</span> <span class="nf">fftk</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">mesh</span><span class="p">,</span> <span class="n">expmikr</span><span class="p">):</span>
+<div class="viewcode-block" id="fftk"><a class="viewcode-back" href="../../../../pyscf_api_docs/pyscf.pbc.tools.html#pyscf.pbc.gto.cell.fftk">[docs]</a><span class="k">def</span> <span class="nf">fftk</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">mesh</span><span class="p">,</span> <span class="n">expmikr</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">'''Perform the 3D FFT of a real-space function which is (periodic*e^{ikr}).</span>
 
 <span class="sd">    fk(k+G) = \sum_r fk(r) e^{-i(k+G)r} = \sum_r [f(k)e^{-ikr}] e^{-iGr}</span>
@@ -475,7 +476,7 @@
     <span class="k">return</span> <span class="n">fft</span><span class="p">(</span><span class="n">f</span><span class="o">*</span><span class="n">expmikr</span><span class="p">,</span> <span class="n">mesh</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="ifftk"><a class="viewcode-back" href="../../../../pyscf_api_docs/pyscf.pbc.tools.html#pyscf.pbc.tools.pbc.ifftk">[docs]</a><span class="k">def</span> <span class="nf">ifftk</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">mesh</span><span class="p">,</span> <span class="n">expikr</span><span class="p">):</span>
+<div class="viewcode-block" id="ifftk"><a class="viewcode-back" href="../../../../pyscf_api_docs/pyscf.pbc.tools.html#pyscf.pbc.gto.cell.ifftk">[docs]</a><span class="k">def</span> <span class="nf">ifftk</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">mesh</span><span class="p">,</span> <span class="n">expikr</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">'''Perform the 3D inverse FFT of f(k+G) into a function which is (periodic*e^{ikr}).</span>
 
 <span class="sd">    fk(r) = (1/Ng) \sum_G fk(k+G) e^{i(k+G)r} = (1/Ng) \sum_G [fk(k+G)e^{iGr}] e^{ikr}</span>
@@ -483,7 +484,7 @@
     <span class="k">return</span> <span class="n">ifft</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">mesh</span><span class="p">)</span> <span class="o">*</span> <span class="n">expikr</span></div>
 
 
-<div class="viewcode-block" id="get_coulG"><a class="viewcode-back" href="../../../../pyscf_api_docs/pyscf.pbc.tools.html#pyscf.pbc.tools.pbc.get_coulG">[docs]</a><span class="k">def</span> <span class="nf">get_coulG</span><span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="n">exx</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">mf</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mesh</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">Gv</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<div class="viewcode-block" id="get_coulG"><a class="viewcode-back" href="../../../../pyscf_api_docs/pyscf.pbc.tools.html#pyscf.pbc.gto.cell.get_coulG">[docs]</a><span class="k">def</span> <span class="nf">get_coulG</span><span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="n">exx</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">mf</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mesh</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">Gv</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
               <span class="n">wrap_around</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">omega</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="sd">'''Calculate the Coulomb kernel for all G-vectors, handling G=0 and exchange.</span>
 
@@ -504,11 +505,11 @@
 <span class="sd">            and erfc(|omega|*r12)/r12 if omega &lt; 0.</span>
 <span class="sd">            Note this parameter is slightly different to setting cell.omega</span>
 <span class="sd">            for the treatment of exxdiv (at G0).  cell.omega affects Ewald</span>
-<span class="sd">            probe charge at G0. It is used mostly with RSH functional for</span>
+<span class="sd">            probe charge at G0. It is used mostly by RSH functionals for</span>
 <span class="sd">            the long-range part of HF exchange. This parameter is used by</span>
-<span class="sd">            real-space JK builder which requires Ewald probe charge to be</span>
-<span class="sd">            computed with regular Coulomb interaction (1/r12) while the rest</span>
-<span class="sd">            coulG is scaled as long-range Coulomb kernel.</span>
+<span class="sd">            range-separated JK builder and range-separated DF (and other</span>
+<span class="sd">            range-separated integral methods) which require Ewald probe charge</span>
+<span class="sd">            to be computed with regular Coulomb interaction (1/r12).</span>
 <span class="sd">    '''</span>
     <span class="n">exxdiv</span> <span class="o">=</span> <span class="n">exx</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">exx</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
@@ -537,7 +538,7 @@
         <span class="c1"># answers to agree</span>
         <span class="n">b</span> <span class="o">=</span> <span class="n">cell</span><span class="o">.</span><span class="n">reciprocal_vectors</span><span class="p">()</span>
         <span class="n">box_edge</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">'i,ij-&gt;ij'</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span><span class="o">//</span><span class="mi">2</span><span class="o">+</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
-        <span class="k">assert</span><span class="p">(</span><span class="nb">all</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">box_edge</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span><span class="o">==</span><span class="mi">0</span><span class="p">))</span>
+        <span class="k">assert</span> <span class="p">(</span><span class="nb">all</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">box_edge</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span><span class="o">==</span><span class="mi">0</span><span class="p">))</span>
         <span class="n">reduced_coords</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">box_edge</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">kG</span><span class="o">.</span><span class="n">T</span><span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span>
         <span class="n">on_edge</span> <span class="o">=</span> <span class="n">reduced_coords</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">cell</span><span class="o">.</span><span class="n">dimension</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
@@ -574,7 +575,7 @@
             <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
     <span class="k">elif</span> <span class="n">exxdiv</span> <span class="o">==</span> <span class="s1">'vcut_ws'</span><span class="p">:</span>  <span class="c1"># PRB 87, 165122</span>
-        <span class="k">assert</span><span class="p">(</span><span class="n">cell</span><span class="o">.</span><span class="n">dimension</span> <span class="o">==</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="p">(</span><span class="n">cell</span><span class="o">.</span><span class="n">dimension</span> <span class="o">==</span> <span class="mi">3</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">mf</span><span class="p">,</span> <span class="s1">'_ws_exx'</span><span class="p">,</span> <span class="kc">None</span><span class="p">):</span>
             <span class="n">mf</span><span class="o">.</span><span class="n">_ws_exx</span> <span class="o">=</span> <span class="n">precompute_exx</span><span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="n">kpts</span><span class="p">)</span>
         <span class="n">exx_alpha</span> <span class="o">=</span> <span class="n">mf</span><span class="o">.</span><span class="n">_ws_exx</span><span class="p">[</span><span class="s1">'alpha'</span><span class="p">]</span>
@@ -655,21 +656,25 @@
     <span class="n">coulG</span><span class="p">[</span><span class="n">equal2boundary</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
 
     <span class="c1"># Scale the coulG kernel for attenuated Coulomb integrals.</span>
-    <span class="c1"># * omega is used by RealSpaceJKBuilder which requires ewald probe charge</span>
+    <span class="c1"># * omega is used by RangeSeparatedJKBuilder which requires ewald probe charge</span>
     <span class="c1"># being evaluated with regular Coulomb interaction (1/r12).</span>
     <span class="c1"># * cell.omega, which affects the ewald probe charge, is often set by</span>
     <span class="c1"># DFT-RSH functionals to build long-range HF-exchange for erf(omega*r12)/r12</span>
     <span class="k">if</span> <span class="n">omega</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">omega</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="c1"># long range part</span>
             <span class="n">coulG</span> <span class="o">*=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-.</span><span class="mi">25</span><span class="o">/</span><span class="n">omega</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">absG2</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">omega</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="c1"># short range part</span>
             <span class="n">coulG</span> <span class="o">*=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-.</span><span class="mi">25</span><span class="o">/</span><span class="n">omega</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">absG2</span><span class="p">))</span>
-    <span class="k">elif</span> <span class="n">cell</span><span class="o">.</span><span class="n">omega</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">cell</span><span class="o">.</span><span class="n">omega</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
         <span class="n">coulG</span> <span class="o">*=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-.</span><span class="mi">25</span><span class="o">/</span><span class="n">cell</span><span class="o">.</span><span class="n">omega</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">absG2</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">cell</span><span class="o">.</span><span class="n">omega</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
     <span class="k">return</span> <span class="n">coulG</span></div>
 
-<div class="viewcode-block" id="precompute_exx"><a class="viewcode-back" href="../../../../pyscf_api_docs/pyscf.pbc.tools.html#pyscf.pbc.tools.pbc.precompute_exx">[docs]</a><span class="k">def</span> <span class="nf">precompute_exx</span><span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="n">kpts</span><span class="p">):</span>
+<div class="viewcode-block" id="precompute_exx"><a class="viewcode-back" href="../../../../pyscf_api_docs/pyscf.pbc.tools.html#pyscf.pbc.gto.cell.precompute_exx">[docs]</a><span class="k">def</span> <span class="nf">precompute_exx</span><span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="n">kpts</span><span class="p">):</span>
     <span class="kn">from</span> <span class="nn">pyscf.pbc</span> <span class="kn">import</span> <span class="n">gto</span> <span class="k">as</span> <span class="n">pbcgto</span>
     <span class="kn">from</span> <span class="nn">pyscf.pbc.dft</span> <span class="kn">import</span> <span class="n">gen_grid</span>
     <span class="n">log</span> <span class="o">=</span> <span class="n">lib</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">Logger</span><span class="p">(</span><span class="n">cell</span><span class="o">.</span><span class="n">stdout</span><span class="p">,</span> <span class="n">cell</span><span class="o">.</span><span class="n">verbose</span><span class="p">)</span>
@@ -695,7 +700,7 @@
     <span class="c1">#alpha = 3./Rin * np.sqrt(0.5)</span>
     <span class="c1">#kcell.mesh = (4*alpha*np.linalg.norm(kcell.a,axis=1)).astype(int)</span>
     <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"# kcell.mesh FFT = </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="n">kcell</span><span class="o">.</span><span class="n">mesh</span><span class="p">)</span>
-    <span class="n">rs</span> <span class="o">=</span> <span class="n">gen_grid</span><span class="o">.</span><span class="n">gen_uniform_grids</span><span class="p">(</span><span class="n">kcell</span><span class="p">)</span>
+    <span class="n">rs</span> <span class="o">=</span> <span class="n">kcell</span><span class="o">.</span><span class="n">get_uniform_grids</span><span class="p">(</span><span class="n">wrap_around</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="n">kngs</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">rs</span><span class="p">)</span>
     <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"# kcell kngs = </span><span class="si">%d</span><span class="s2">"</span><span class="p">,</span> <span class="n">kngs</span><span class="p">)</span>
     <span class="n">corners_coord</span> <span class="o">=</span> <span class="n">lib</span><span class="o">.</span><span class="n">cartesian_prod</span><span class="p">(([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]))</span>
@@ -730,7 +735,7 @@
     <span class="k">return</span> <span class="n">ws_exx</span></div>
 
 
-<div class="viewcode-block" id="madelung"><a class="viewcode-back" href="../../../../pyscf_api_docs/pyscf.pbc.tools.html#pyscf.pbc.tools.pbc.madelung">[docs]</a><span class="k">def</span> <span class="nf">madelung</span><span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="n">kpts</span><span class="p">):</span>
+<div class="viewcode-block" id="madelung"><a class="viewcode-back" href="../../../../pyscf_api_docs/pyscf.pbc.tools.html#pyscf.pbc.gto.cell.madelung">[docs]</a><span class="k">def</span> <span class="nf">madelung</span><span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="n">kpts</span><span class="p">):</span>
     <span class="n">Nk</span> <span class="o">=</span> <span class="n">get_monkhorst_pack_size</span><span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="n">kpts</span><span class="p">)</span>
     <span class="n">ecell</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span>
     <span class="n">ecell</span><span class="o">.</span><span class="n">_atm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="n">cell</span><span class="o">.</span><span class="n">_env</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
@@ -741,10 +746,7 @@
     <span class="n">ecell</span><span class="o">.</span><span class="n">mesh</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">cell</span><span class="o">.</span><span class="n">mesh</span><span class="p">)</span> <span class="o">*</span> <span class="n">Nk</span>
 
     <span class="k">if</span> <span class="n">cell</span><span class="o">.</span><span class="n">omega</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">ew_eta</span><span class="p">,</span> <span class="n">ew_cut</span> <span class="o">=</span> <span class="n">ecell</span><span class="o">.</span><span class="n">get_ewald_params</span><span class="p">(</span><span class="n">cell</span><span class="o">.</span><span class="n">precision</span><span class="p">,</span> <span class="n">ecell</span><span class="o">.</span><span class="n">mesh</span><span class="p">)</span>
-        <span class="n">lib</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug1</span><span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="s1">'Monkhorst pack size </span><span class="si">%s</span><span class="s1"> ew_eta </span><span class="si">%s</span><span class="s1"> ew_cut </span><span class="si">%s</span><span class="s1">'</span><span class="p">,</span>
-                          <span class="n">Nk</span><span class="p">,</span> <span class="n">ew_eta</span><span class="p">,</span> <span class="n">ew_cut</span><span class="p">)</span>
-        <span class="k">return</span> <span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="n">ecell</span><span class="o">.</span><span class="n">ewald</span><span class="p">(</span><span class="n">ew_eta</span><span class="p">,</span> <span class="n">ew_cut</span><span class="p">)</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="n">ecell</span><span class="o">.</span><span class="n">ewald</span><span class="p">()</span>
 
     <span class="k">else</span><span class="p">:</span>
         <span class="c1"># cell.ewald function does not use the Coulomb kernel function</span>
@@ -755,16 +757,24 @@
         <span class="n">Gv</span><span class="p">,</span> <span class="n">Gvbase</span><span class="p">,</span> <span class="n">weights</span> <span class="o">=</span> <span class="n">ecell</span><span class="o">.</span><span class="n">get_Gv_weights</span><span class="p">(</span><span class="n">ecell</span><span class="o">.</span><span class="n">mesh</span><span class="p">)</span>
         <span class="n">coulG</span> <span class="o">=</span> <span class="n">get_coulG</span><span class="p">(</span><span class="n">ecell</span><span class="p">,</span> <span class="n">Gv</span><span class="o">=</span><span class="n">Gv</span><span class="p">)</span>
         <span class="n">ZSI</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"i,ij-&gt;j"</span><span class="p">,</span> <span class="n">ecell</span><span class="o">.</span><span class="n">atom_charges</span><span class="p">(),</span> <span class="n">ecell</span><span class="o">.</span><span class="n">get_SI</span><span class="p">(</span><span class="n">Gv</span><span class="p">))</span>
-        <span class="k">return</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">'i,i,i-&gt;'</span><span class="p">,</span> <span class="n">ZSI</span><span class="o">.</span><span class="n">conj</span><span class="p">(),</span> <span class="n">ZSI</span><span class="p">,</span> <span class="n">coulG</span><span class="o">*</span><span class="n">weights</span><span class="p">)</span><span class="o">.</span><span class="n">real</span></div>
+        <span class="k">return</span> <span class="mi">2</span><span class="o">*</span><span class="n">cell</span><span class="o">.</span><span class="n">omega</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">**</span><span class="mf">0.5</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">'i,i,i-&gt;'</span><span class="p">,</span> <span class="n">ZSI</span><span class="o">.</span><span class="n">conj</span><span class="p">(),</span> <span class="n">ZSI</span><span class="p">,</span> <span class="n">coulG</span><span class="o">*</span><span class="n">weights</span><span class="p">)</span><span class="o">.</span><span class="n">real</span></div>
 
 
-<div class="viewcode-block" id="get_monkhorst_pack_size"><a class="viewcode-back" href="../../../../pyscf_api_docs/pyscf.pbc.tools.html#pyscf.pbc.tools.pbc.get_monkhorst_pack_size">[docs]</a><span class="k">def</span> <span class="nf">get_monkhorst_pack_size</span><span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="n">kpts</span><span class="p">):</span>
-    <span class="n">skpts</span> <span class="o">=</span> <span class="n">cell</span><span class="o">.</span><span class="n">get_scaled_kpts</span><span class="p">(</span><span class="n">kpts</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">decimals</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
-    <span class="n">Nk</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">ki</span><span class="p">))</span> <span class="k">for</span> <span class="n">ki</span> <span class="ow">in</span> <span class="n">skpts</span><span class="o">.</span><span class="n">T</span><span class="p">])</span>
+<div class="viewcode-block" id="get_monkhorst_pack_size"><a class="viewcode-back" href="../../../../pyscf_api_docs/pyscf.pbc.tools.html#pyscf.pbc.gto.cell.get_monkhorst_pack_size">[docs]</a><span class="k">def</span> <span class="nf">get_monkhorst_pack_size</span><span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="n">kpts</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">):</span>
+    <span class="n">kpts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">kpts</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
+    <span class="n">min_tol</span> <span class="o">=</span> <span class="n">tol</span>
+    <span class="k">assert</span> <span class="n">kpts</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="o">/</span><span class="n">min_tol</span>
+    <span class="k">if</span> <span class="n">kpts</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">Nk</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">tol</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">10</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="nb">int</span><span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">kpts</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span><span class="o">-</span><span class="mi">2</span><span class="p">),</span> <span class="n">min_tol</span><span class="p">)</span>
+        <span class="n">skpts</span> <span class="o">=</span> <span class="n">cell</span><span class="o">.</span><span class="n">get_scaled_kpts</span><span class="p">(</span><span class="n">kpts</span><span class="p">)</span>
+        <span class="n">Nk</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">ski</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="o">-</span><span class="n">ski</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">&gt;</span> <span class="n">tol</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+                       <span class="k">for</span> <span class="n">ski</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">skpts</span><span class="o">.</span><span class="n">T</span><span class="p">)])</span>
     <span class="k">return</span> <span class="n">Nk</span></div>
 
 
-<div class="viewcode-block" id="get_lattice_Ls"><a class="viewcode-back" href="../../../../pyscf_api_docs/pyscf.pbc.tools.html#pyscf.pbc.tools.pbc.get_lattice_Ls">[docs]</a><span class="k">def</span> <span class="nf">get_lattice_Ls</span><span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="n">nimgs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rcut</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dimension</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">discard</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="get_lattice_Ls"><a class="viewcode-back" href="../../../../pyscf_api_docs/pyscf.pbc.tools.html#pyscf.pbc.gto.cell.get_lattice_Ls">[docs]</a><span class="k">def</span> <span class="nf">get_lattice_Ls</span><span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="n">nimgs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rcut</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dimension</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">discard</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="sd">'''Get the (Cartesian, unitful) lattice translation vectors for nearby images.</span>
 <span class="sd">    The translation vectors can be used for the lattice summation.'''</span>
     <span class="n">a</span> <span class="o">=</span> <span class="n">cell</span><span class="o">.</span><span class="n">lattice_vectors</span><span class="p">()</span>
@@ -774,9 +784,17 @@
     <span class="k">if</span> <span class="n">nimgs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">rcut</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">rcut</span> <span class="o">=</span> <span class="n">cell</span><span class="o">.</span><span class="n">rcut</span>
-<span class="c1"># plus 1 image in rcut to handle the case atoms within the adjacent cells are</span>
-<span class="c1"># close to each other</span>
-        <span class="n">nimgs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">rcut</span><span class="o">*</span><span class="n">heights_inv</span> <span class="o">+</span> <span class="mf">1.1</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+        <span class="c1"># For atoms outside the cell, distance between certain basis of nearby</span>
+        <span class="c1"># images may be smaller than rcut threshold even the corresponding Ls is</span>
+        <span class="c1"># larger than rcut. The boundary penalty ensures that Ls would be able to</span>
+        <span class="c1"># cover the basis that sitting out of the cell.</span>
+        <span class="c1"># See issue https://github.com/pyscf/pyscf/issues/1017</span>
+        <span class="n">boundary_penalty</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">scaled_atom_coords</span> <span class="o">=</span> <span class="n">cell</span><span class="o">.</span><span class="n">atom_coords</span><span class="p">()</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">scaled_atom_coords</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">boundary_penalty</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">([</span><span class="nb">abs</span><span class="p">(</span><span class="n">scaled_atom_coords</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
+                                       <span class="nb">abs</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">scaled_atom_coords</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">nimgs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">rcut</span> <span class="o">*</span> <span class="n">heights_inv</span> <span class="o">+</span> <span class="n">boundary_penalty</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">rcut</span> <span class="o">=</span> <span class="nb">max</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">nimgs</span><span class="p">))</span><span class="o">/</span><span class="n">heights_inv</span><span class="p">)</span>
 
@@ -793,19 +811,51 @@
                              <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="n">nimgs</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">nimgs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span>
                              <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="n">nimgs</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">nimgs</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">)))</span>
     <span class="n">Ls</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">Ts</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">discard</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">Ls</span>
-    <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">Ls</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
-    <span class="n">idx</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">Ls</span><span class="p">)</span><span class="o">//</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># cell0 (Ls == 0) should always be included.</span>
-    <span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="p">(</span><span class="o">-</span><span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
-        <span class="k">for</span> <span class="n">ay</span> <span class="ow">in</span> <span class="p">(</span><span class="o">-</span><span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
-            <span class="k">for</span> <span class="n">az</span> <span class="ow">in</span> <span class="p">(</span><span class="o">-</span><span class="n">a</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="n">a</span><span class="p">[</span><span class="mi">2</span><span class="p">]):</span>
-                <span class="n">idx</span> <span class="o">|=</span> <span class="n">lib</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">Ls</span><span class="o">+</span><span class="p">(</span><span class="n">ax</span><span class="o">+</span><span class="n">ay</span><span class="o">+</span><span class="n">az</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">rcut</span>
-    <span class="n">Ls</span> <span class="o">=</span> <span class="n">Ls</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">discard</span><span class="p">:</span>
+        <span class="n">Ls</span> <span class="o">=</span> <span class="n">_discard_edge_images</span><span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="n">Ls</span><span class="p">,</span> <span class="n">rcut</span><span class="p">,</span> <span class="n">dimension</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">Ls</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="s1">'C'</span><span class="p">)</span></div>
 
+<span class="k">def</span> <span class="nf">_discard_edge_images</span><span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="n">Ls</span><span class="p">,</span> <span class="n">rcut</span><span class="p">,</span> <span class="n">dimension</span><span class="p">):</span>
+    <span class="sd">'''</span>
+<span class="sd">    Discard images if no basis in the image would contribute to lattice sum.</span>
+<span class="sd">    '''</span>
+    <span class="k">if</span> <span class="n">cell</span><span class="o">.</span><span class="n">dimension</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">rcut</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
 
-<div class="viewcode-block" id="super_cell"><a class="viewcode-back" href="../../../../pyscf_api_docs/pyscf.pbc.tools.html#pyscf.pbc.tools.pbc.super_cell">[docs]</a><span class="k">def</span> <span class="nf">super_cell</span><span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="n">ncopy</span><span class="p">):</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">cell</span><span class="o">.</span><span class="n">lattice_vectors</span><span class="p">()</span>
+    <span class="n">scaled_atom_coords</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">cell</span><span class="o">.</span><span class="n">atom_coords</span><span class="p">()</span><span class="o">.</span><span class="n">T</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+    <span class="n">atom_boundary_max</span> <span class="o">=</span> <span class="n">scaled_atom_coords</span><span class="p">[:,:</span><span class="n">dimension</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">atom_boundary_min</span> <span class="o">=</span> <span class="n">scaled_atom_coords</span><span class="p">[:,:</span><span class="n">dimension</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">atom_boundary_max</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">atom_boundary_min</span> <span class="o">&lt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">)):</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="s1">'Atoms found very far from the primitive cell. '</span>
+                    <span class="s1">'Atom coordinates may be error.'</span><span class="p">)</span>
+        <span class="n">atom_boundary_max</span><span class="p">[</span><span class="n">atom_boundary_max</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">atom_boundary_min</span><span class="p">[</span><span class="n">atom_boundary_min</span> <span class="o">&lt;-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="c1"># ovlp_penalty ensures the overlap integrals for atoms in the adjcent</span>
+    <span class="c1"># images are converged.</span>
+    <span class="n">ovlp_penalty</span> <span class="o">=</span> <span class="n">atom_boundary_max</span> <span class="o">-</span> <span class="n">atom_boundary_min</span>
+    <span class="c1"># atom_boundary_min-1 ensures the values of basis at the grids on the edge</span>
+    <span class="c1"># of the primitive cell converged</span>
+    <span class="n">boundary_max</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">([</span><span class="n">atom_boundary_max</span>  <span class="p">,</span>  <span class="n">ovlp_penalty</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+    <span class="n">boundary_min</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">([</span><span class="n">atom_boundary_min</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="n">ovlp_penalty</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+    <span class="n">penalty_x</span> <span class="o">=</span> <span class="n">penalty_y</span> <span class="o">=</span> <span class="n">penalty_z</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">dimension</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">penalty_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">boundary_min</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">boundary_max</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">dimension</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">penalty_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">boundary_min</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">boundary_max</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">penalty_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">boundary_min</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">boundary_max</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">penalty_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">boundary_min</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">boundary_max</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">penalty_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">boundary_min</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">boundary_max</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">penalty_z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">boundary_min</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">boundary_max</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">shifts</span> <span class="o">=</span> <span class="n">lib</span><span class="o">.</span><span class="n">cartesian_prod</span><span class="p">([</span><span class="n">penalty_x</span><span class="p">,</span> <span class="n">penalty_y</span><span class="p">,</span> <span class="n">penalty_z</span><span class="p">])</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+    <span class="n">Ls_mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">Ls</span> <span class="o">+</span> <span class="n">shifts</span><span class="p">[:,</span><span class="kc">None</span><span class="p">,:],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">rcut</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="c1"># cell0 (Ls == 0) should always be included.</span>
+    <span class="n">Ls_mask</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">Ls</span><span class="p">)</span><span class="o">//</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">return</span> <span class="n">Ls</span><span class="p">[</span><span class="n">Ls_mask</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="super_cell"><a class="viewcode-back" href="../../../../pyscf_api_docs/pyscf.pbc.tools.html#pyscf.pbc.gto.cell.super_cell">[docs]</a><span class="k">def</span> <span class="nf">super_cell</span><span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="n">ncopy</span><span class="p">,</span> <span class="n">wrap_around</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">'''Create an ncopy[0] x ncopy[1] x ncopy[2] supercell of the input cell</span>
 <span class="sd">    Note this function differs from :fun:`cell_plus_imgs` that cell_plus_imgs</span>
 <span class="sd">    creates images in both +/- direction.</span>
@@ -813,6 +863,10 @@
 <span class="sd">    Args:</span>
 <span class="sd">        cell : instance of :class:`Cell`</span>
 <span class="sd">        ncopy : (3,) array</span>
+<span class="sd">        wrap_around : bool</span>
+<span class="sd">            Put the original cell centered on the super cell. It has the</span>
+<span class="sd">            effects corresponding to the parameter wrap_around of</span>
+<span class="sd">            cell.make_kpts.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        supcell : instance of :class:`Cell`</span>
@@ -826,19 +880,22 @@
     <span class="c1">#:            for atom, coord in cell._atom:</span>
     <span class="c1">#:                L = np.dot([Lx, Ly, Lz], a)</span>
     <span class="c1">#:                supcell.atom.append([atom, coord + L])</span>
-    <span class="n">Ts</span> <span class="o">=</span> <span class="n">lib</span><span class="o">.</span><span class="n">cartesian_prod</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">ncopy</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
-                             <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">ncopy</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
-                             <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">ncopy</span><span class="p">[</span><span class="mi">2</span><span class="p">])))</span>
+    <span class="n">xs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">ncopy</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">ys</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">ncopy</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">zs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">ncopy</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">wrap_around</span><span class="p">:</span>
+        <span class="n">xs</span><span class="p">[(</span><span class="n">ncopy</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">//</span><span class="mi">2</span><span class="p">:]</span> <span class="o">-=</span> <span class="n">ncopy</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">ys</span><span class="p">[(</span><span class="n">ncopy</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">//</span><span class="mi">2</span><span class="p">:]</span> <span class="o">-=</span> <span class="n">ncopy</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">zs</span><span class="p">[(</span><span class="n">ncopy</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">//</span><span class="mi">2</span><span class="p">:]</span> <span class="o">-=</span> <span class="n">ncopy</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">Ts</span> <span class="o">=</span> <span class="n">lib</span><span class="o">.</span><span class="n">cartesian_prod</span><span class="p">((</span><span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="n">zs</span><span class="p">))</span>
     <span class="n">Ls</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">Ts</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
-    <span class="n">supcell</span> <span class="o">=</span> <span class="n">cell</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">supcell</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span>
     <span class="n">supcell</span><span class="o">.</span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">'i,ij-&gt;ij'</span><span class="p">,</span> <span class="n">ncopy</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
-    <span class="n">supcell</span><span class="o">.</span><span class="n">mesh</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">ncopy</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">cell</span><span class="o">.</span><span class="n">mesh</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
-                             <span class="n">ncopy</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">cell</span><span class="o">.</span><span class="n">mesh</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
-                             <span class="n">ncopy</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="n">cell</span><span class="o">.</span><span class="n">mesh</span><span class="p">[</span><span class="mi">2</span><span class="p">]])</span>
+    <span class="n">supcell</span><span class="o">.</span><span class="n">mesh</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">ncopy</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">cell</span><span class="o">.</span><span class="n">mesh</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">_build_supcell_</span><span class="p">(</span><span class="n">supcell</span><span class="p">,</span> <span class="n">cell</span><span class="p">,</span> <span class="n">Ls</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="cell_plus_imgs"><a class="viewcode-back" href="../../../../pyscf_api_docs/pyscf.pbc.tools.html#pyscf.pbc.tools.pbc.cell_plus_imgs">[docs]</a><span class="k">def</span> <span class="nf">cell_plus_imgs</span><span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="n">nimgs</span><span class="p">):</span>
+<div class="viewcode-block" id="cell_plus_imgs"><a class="viewcode-back" href="../../../../pyscf_api_docs/pyscf.pbc.tools.html#pyscf.pbc.gto.cell.cell_plus_imgs">[docs]</a><span class="k">def</span> <span class="nf">cell_plus_imgs</span><span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="n">nimgs</span><span class="p">):</span>
     <span class="sd">'''Create a supercell via nimgs[i] in each +/- direction, as in get_lattice_Ls().</span>
 <span class="sd">    Note this function differs from :fun:`super_cell` that super_cell only</span>
 <span class="sd">    stacks the images in + direction.</span>
@@ -855,7 +912,7 @@
                              <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="n">nimgs</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">nimgs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span>
                              <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="n">nimgs</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">nimgs</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">)))</span>
     <span class="n">Ls</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">Ts</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
-    <span class="n">supcell</span> <span class="o">=</span> <span class="n">cell</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">supcell</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span>
     <span class="n">supcell</span><span class="o">.</span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">'i,ij-&gt;ij'</span><span class="p">,</span> <span class="n">nimgs</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
     <span class="n">supcell</span><span class="o">.</span><span class="n">mesh</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([(</span><span class="n">nimgs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="mi">2</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">cell</span><span class="o">.</span><span class="n">mesh</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
                              <span class="p">(</span><span class="n">nimgs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="mi">2</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">cell</span><span class="o">.</span><span class="n">mesh</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
@@ -870,11 +927,15 @@
     <span class="n">nimgs</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">Ls</span><span class="p">)</span>
     <span class="n">symbs</span> <span class="o">=</span> <span class="p">[</span><span class="n">atom</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="n">cell</span><span class="o">.</span><span class="n">_atom</span><span class="p">]</span> <span class="o">*</span> <span class="n">nimgs</span>
     <span class="n">coords</span> <span class="o">=</span> <span class="n">Ls</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span> <span class="o">+</span> <span class="n">cell</span><span class="o">.</span><span class="n">atom_coords</span><span class="p">()</span>
-    <span class="n">supcell</span><span class="o">.</span><span class="n">atom</span> <span class="o">=</span> <span class="n">supcell</span><span class="o">.</span><span class="n">_atom</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">symbs</span><span class="p">,</span> <span class="n">coords</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()))</span>
+    <span class="n">coords</span> <span class="o">=</span> <span class="n">coords</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+    <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">coords</span><span class="o">.</span><span class="n">T</span>
+    <span class="n">supcell</span><span class="o">.</span><span class="n">atom</span> <span class="o">=</span> <span class="n">supcell</span><span class="o">.</span><span class="n">_atom</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">symbs</span><span class="p">,</span> <span class="nb">zip</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)))</span>
     <span class="n">supcell</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="s1">'B'</span>
 
-    <span class="c1"># Do not call supcell.build() since it may normalize the basis contraction</span>
-    <span class="c1"># coefficients</span>
+    <span class="c1"># Do not call supcell.build() to initialize supcell since it may normalize</span>
+    <span class="c1"># the basis contraction coefficients</span>
+
+    <span class="c1"># preserves environments defined in cell._env (e.g. omega, gauge origin)</span>
     <span class="n">_env</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cell</span><span class="o">.</span><span class="n">_env</span><span class="p">,</span> <span class="n">coords</span><span class="o">.</span><span class="n">ravel</span><span class="p">())</span>
     <span class="n">_atm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">cell</span><span class="o">.</span><span class="n">_atm</span><span class="p">[</span><span class="kc">None</span><span class="p">,:,:],</span> <span class="n">nimgs</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
     <span class="n">_atm</span> <span class="o">=</span> <span class="n">_atm</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">ATM_SLOTS</span><span class="p">)</span>
@@ -891,7 +952,7 @@
     <span class="k">return</span> <span class="n">supcell</span>
 
 
-<div class="viewcode-block" id="cutoff_to_mesh"><a class="viewcode-back" href="../../../../pyscf_api_docs/pyscf.pbc.tools.html#pyscf.pbc.tools.pbc.cutoff_to_mesh">[docs]</a><span class="k">def</span> <span class="nf">cutoff_to_mesh</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">cutoff</span><span class="p">):</span>
+<div class="viewcode-block" id="cutoff_to_mesh"><a class="viewcode-back" href="../../../../pyscf_api_docs/pyscf.pbc.tools.html#pyscf.pbc.gto.cell.cutoff_to_mesh">[docs]</a><span class="k">def</span> <span class="nf">cutoff_to_mesh</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">cutoff</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">'''</span>
 <span class="sd">    Convert KE cutoff to FFT-mesh</span>
 
@@ -899,7 +960,7 @@
 
 <span class="sd">    Args:</span>
 <span class="sd">        a : (3,3) ndarray</span>
-<span class="sd">            The real-space unit cell lattice vectors. Each row represents a</span>
+<span class="sd">            The real-space cell lattice vectors. Each row represents a</span>
 <span class="sd">            lattice vector.</span>
 <span class="sd">        cutoff : float</span>
 <span class="sd">            KE energy cutoff in a.u.</span>
@@ -907,42 +968,54 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        mesh : (3,) array</span>
 <span class="sd">    '''</span>
+    <span class="c1"># Let E(mesh_x) = min_{y, z}(|mesh_x*b[0]+y*b[1]+z*b[2]|^2)</span>
+    <span class="c1"># Search largest mesh_x requiring E(mesh_x) &lt;= 2*cutoff</span>
     <span class="n">b</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
-    <span class="n">cutoff</span> <span class="o">=</span> <span class="n">cutoff</span> <span class="o">*</span> <span class="n">_cubic2nonorth_factor</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
-    <span class="n">mesh</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">cutoff</span><span class="p">)</span><span class="o">/</span><span class="n">lib</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+    <span class="c1"># r is the ratio between G of each direction when E(mesh) reaches minimum</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">det</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+    <span class="n">r</span> <span class="o">/=</span> <span class="n">r</span><span class="o">.</span><span class="n">diagonal</span><span class="p">()[:,</span><span class="kc">None</span><span class="p">]</span>
+    <span class="n">Gmax</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">cutoff</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">b</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span><span class="o">**.</span><span class="mi">5</span>
+    <span class="c1"># off-diagonal r may be &gt; 1, means that the ke_cutoff is limited by the</span>
+    <span class="c1"># off-diagonal part</span>
+    <span class="c1"># e.g r[:,2] = [1, .5, 1.2], Gx = max(Gx, Gy*.5, Gz*1.2)</span>
+    <span class="n">Gmax</span> <span class="o">=</span> <span class="p">(</span><span class="n">r</span> <span class="o">*</span> <span class="n">Gmax</span><span class="p">[:,</span><span class="kc">None</span><span class="p">])</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">mesh</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">Gmax</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span>
     <span class="k">return</span> <span class="n">mesh</span></div>
 
-<div class="viewcode-block" id="mesh_to_cutoff"><a class="viewcode-back" href="../../../../pyscf_api_docs/pyscf.pbc.tools.html#pyscf.pbc.tools.pbc.mesh_to_cutoff">[docs]</a><span class="k">def</span> <span class="nf">mesh_to_cutoff</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">mesh</span><span class="p">):</span>
+<div class="viewcode-block" id="mesh_to_cutoff"><a class="viewcode-back" href="../../../../pyscf_api_docs/pyscf.pbc.tools.html#pyscf.pbc.gto.cell.mesh_to_cutoff">[docs]</a><span class="k">def</span> <span class="nf">mesh_to_cutoff</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">mesh</span><span class="p">):</span>
     <span class="sd">'''</span>
 <span class="sd">    Convert #grid points to KE cutoff</span>
 <span class="sd">    '''</span>
+    <span class="c1"># Let E(mesh_x) = min_{y, z}(|mesh_x*b[0]+y*b[1]+z*b[2]|^2)</span>
+    <span class="c1"># Search min(E(mesh_x)/2) subject to mesh_x &gt; mesh</span>
     <span class="n">b</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
-    <span class="n">Gmax</span> <span class="o">=</span> <span class="n">lib</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span> <span class="o">*</span> <span class="o">.</span><span class="mi">5</span>
-    <span class="n">ke_cutoff</span> <span class="o">=</span> <span class="n">Gmax</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="mi">2</span>
-    <span class="c1"># scale down Gmax to get the real energy cutoff for non-orthogonal lattice</span>
-    <span class="k">return</span> <span class="n">ke_cutoff</span> <span class="o">/</span> <span class="n">_cubic2nonorth_factor</span><span class="p">(</span><span class="n">a</span><span class="p">)</span></div>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+    <span class="c1"># r is the ratio between G of each direction when E(mesh) reaches minimum</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">det</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+    <span class="n">r</span> <span class="o">/=</span> <span class="n">r</span><span class="o">.</span><span class="n">diagonal</span><span class="p">()[:,</span><span class="kc">None</span><span class="p">]</span>
+    <span class="n">gs</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
+    <span class="c1"># off-diagonal r may be &gt; 1, means that the ke_cutoff is limited by the</span>
+    <span class="c1"># off-diagonal part</span>
+    <span class="c1"># e.g r[2] = [1.2, 1.2, 1], ke_cutoff_z = min(Gx/1.2, Gy/1.2, Gz)</span>
+    <span class="n">gs_eff</span> <span class="o">=</span> <span class="p">(</span><span class="n">gs</span> <span class="o">/</span> <span class="p">(</span><span class="n">r</span> <span class="o">+</span> <span class="mf">1e-100</span><span class="p">))</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">Gmax</span> <span class="o">=</span> <span class="n">gs_eff</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">b</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">ke_cutoff</span> <span class="o">=</span> <span class="n">Gmax</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="mi">2</span>
+    <span class="k">return</span> <span class="n">ke_cutoff</span></div>
 
-<span class="k">def</span> <span class="nf">_cubic2nonorth_factor</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
-    <span class="sd">'''The factors to transform the energy cutoff from cubic lattice to</span>
-<span class="sd">    non-orthogonal lattice. Energy cutoff is estimated based on cubic lattice.</span>
-<span class="sd">    It needs to be rescaled for the non-orthogonal lattice to ensure that the</span>
-<span class="sd">    minimal Gv vector in the reciprocal space is larger than the required</span>
-<span class="sd">    energy cutoff.</span>
-<span class="sd">    '''</span>
-    <span class="c1"># Using ke_cutoff to set up a sphere, the sphere needs to be completely</span>
-    <span class="c1"># inside the box defined by Gv vectors</span>
-    <span class="n">abase</span> <span class="o">=</span> <span class="n">a</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)[:,</span><span class="kc">None</span><span class="p">]</span>
-    <span class="n">bbase</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">abase</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
-    <span class="n">overlap</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">'ix,ix-&gt;i'</span><span class="p">,</span> <span class="n">abase</span><span class="p">,</span> <span class="n">bbase</span><span class="p">)</span>
-    <span class="k">return</span> <span class="mf">1.</span><span class="o">/</span><span class="n">overlap</span><span class="o">**</span><span class="mi">2</span>
-
-<div class="viewcode-block" id="cutoff_to_gs"><a class="viewcode-back" href="../../../../pyscf_api_docs/pyscf.pbc.tools.html#pyscf.pbc.tools.pbc.cutoff_to_gs">[docs]</a><span class="k">def</span> <span class="nf">cutoff_to_gs</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">cutoff</span><span class="p">):</span>
+<div class="viewcode-block" id="cutoff_to_gs"><a class="viewcode-back" href="../../../../pyscf_api_docs/pyscf.pbc.tools.html#pyscf.pbc.gto.cell.cutoff_to_gs">[docs]</a><span class="k">def</span> <span class="nf">cutoff_to_gs</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">cutoff</span><span class="p">):</span>
     <span class="sd">'''Deprecated.  Replaced by function cutoff_to_mesh.'''</span>
     <span class="k">return</span> <span class="p">[</span><span class="n">n</span><span class="o">//</span><span class="mi">2</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">cutoff_to_mesh</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">cutoff</span><span class="p">)]</span></div>
 
-<div class="viewcode-block" id="gs_to_cutoff"><a class="viewcode-back" href="../../../../pyscf_api_docs/pyscf.pbc.tools.html#pyscf.pbc.tools.pbc.gs_to_cutoff">[docs]</a><span class="k">def</span> <span class="nf">gs_to_cutoff</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">gs</span><span class="p">):</span>
+<div class="viewcode-block" id="gs_to_cutoff"><a class="viewcode-back" href="../../../../pyscf_api_docs/pyscf.pbc.tools.html#pyscf.pbc.gto.cell.gs_to_cutoff">[docs]</a><span class="k">def</span> <span class="nf">gs_to_cutoff</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">gs</span><span class="p">):</span>
     <span class="sd">'''Deprecated.  Replaced by function mesh_to_cutoff.'''</span>
     <span class="k">return</span> <span class="n">mesh_to_cutoff</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="p">[</span><span class="mi">2</span><span class="o">*</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">gs</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="round_to_cell0"><a class="viewcode-back" href="../../../../pyscf_api_docs/pyscf.pbc.tools.html#pyscf.pbc.gto.cell.round_to_cell0">[docs]</a><span class="k">def</span> <span class="nf">round_to_cell0</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">):</span>
+    <span class="sd">'''Round scaled coordinates to reference unit cell</span>
+<span class="sd">    '''</span>
+    <span class="kn">from</span> <span class="nn">pyscf.pbc.lib</span> <span class="kn">import</span> <span class="n">kpts_helper</span>
+    <span class="k">return</span> <span class="n">kpts_helper</span><span class="o">.</span><span class="n">round_to_fbz</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">wrap_around</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="n">tol</span><span class="p">)</span></div>
 </pre></div>
 
           </article>
@@ -967,7 +1040,7 @@
               
           </div>
             Created using
-            <a href="http://www.sphinx-doc.org/">Sphinx</a> 4.0.1.
+            <a href="http://www.sphinx-doc.org/">Sphinx</a> 5.1.1.
              and
             <a href="https://github.com/bashtage/sphinx-material/">Material for
               Sphinx</a>

@@ -4,7 +4,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -54,6 +54,7 @@
     <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../_static/doctools.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="shortcut icon" href="../../_static/favicon-32x32.png"/>
@@ -98,7 +99,7 @@
       </div>
       <div class="md-flex__cell md-flex__cell--stretch">
         <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
-          <span class="md-header-nav__topic">PySCF 2.0</span>
+          <span class="md-header-nav__topic">PySCF 2.2</span>
           <span class="md-header-nav__topic"> Mixing PBC and molecular modules </span>
         </div>
       </div>
@@ -108,7 +109,7 @@
 <div class="md-search" data-md-component="search" role="dialog">
   <label class="md-search__overlay" for="__search"></label>
   <div class="md-search__inner" role="search">
-    <form class="md-search__form" action="../../search.html" method="GET" name="search">
+    <form class="md-search__form" action="../../search.html" method="get" name="search">
       <input type="text" class="md-search__input" name="q" placeholder="Search"
              autocapitalize="off" autocomplete="off" spellcheck="false"
              data-md-component="query" data-md-state="active">
@@ -205,7 +206,7 @@
       
     </a>
     <a href="../../index.html"
-       title="PySCF">PySCF 2.0</a>
+       title="PySCF">PySCF 2.2</a>
   </label>
     <div class="md-nav__source">
       <a href="https://github.com/pyscf/pyscf/" title="Go to repository" class="md-source" data-md-source="github">
@@ -346,6 +347,13 @@
     <li class="md-nav__item">
     
     
+      <a href="../md.html" class="md-nav__link">Molecular Dynamics</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
       <a href="../df.html" class="md-nav__link">Density fitting (DF)</a>
       
     
@@ -443,7 +451,7 @@
           <article class="md-content__inner md-typeset" role="main">
             
   <section id="mixing-pbc-and-molecular-modules">
-<span id="mix-mol"></span><h1 id="user-pbc-mix-mol--page-root">Mixing PBC and molecular modules<a class="headerlink" href="#user-pbc-mix-mol--page-root" title="Permalink to this headline">¶</a></h1>
+<span id="mix-mol"></span><h1 id="user-pbc-mix-mol--page-root">Mixing PBC and molecular modules<a class="headerlink" href="#user-pbc-mix-mol--page-root" title="Permalink to this heading">¶</a></h1>
 <p>Post-HF methods, as standalone numerical solvers, do not require
 knowledge of the boundary conditions.  Calculations on finite-sized systems
 and extended systems are distinguished by the boundary conditions of the integrals (and
@@ -479,7 +487,7 @@ required by the post-HF solver.  They are <code class="xref py py-meth docutils 
 the numerical integration of DFT exchange-correlation functionals.  These are all
 overloaded in the PBC mean-field object to produce the PBC integrals.</p>
 <section id="examples">
-<h2 id="examples">Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<h2 id="examples">Examples<a class="headerlink" href="#examples" title="Permalink to this heading">¶</a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python</span>
 
 <span class="sd">'''</span>
@@ -571,7 +579,7 @@ overloaded in the PBC mean-field object to produce the PBC integrals.</p>
               
           </div>
             Created using
-            <a href="http://www.sphinx-doc.org/">Sphinx</a> 4.0.1.
+            <a href="http://www.sphinx-doc.org/">Sphinx</a> 5.1.1.
              and
             <a href="https://github.com/bashtage/sphinx-material/">Material for
               Sphinx</a>

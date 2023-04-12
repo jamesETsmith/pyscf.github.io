@@ -53,6 +53,7 @@
     <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
     <script src="../../../_static/jquery.js"></script>
     <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../../_static/doctools.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon-32x32.png"/>
@@ -95,7 +96,7 @@
       </div>
       <div class="md-flex__cell md-flex__cell--stretch">
         <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
-          <span class="md-header-nav__topic">PySCF 2.0</span>
+          <span class="md-header-nav__topic">PySCF 2.2</span>
           <span class="md-header-nav__topic"> pyscf.lib.misc </span>
         </div>
       </div>
@@ -105,7 +106,7 @@
 <div class="md-search" data-md-component="search" role="dialog">
   <label class="md-search__overlay" for="__search"></label>
   <div class="md-search__inner" role="search">
-    <form class="md-search__form" action="../../../search.html" method="GET" name="search">
+    <form class="md-search__form" action="../../../search.html" method="get" name="search">
       <input type="text" class="md-search__input" name="q" placeholder="Search"
              autocapitalize="off" autocomplete="off" spellcheck="false"
              data-md-component="query" data-md-state="active">
@@ -202,7 +203,7 @@
       
     </a>
     <a href="../../../index.html"
-       title="PySCF">PySCF 2.0</a>
+       title="PySCF">PySCF 2.2</a>
   </label>
     <div class="md-nav__source">
       <a href="https://github.com/pyscf/pyscf/" title="Go to repository" class="md-source" data-md-source="github">
@@ -319,6 +320,8 @@
 <span class="kn">import</span> <span class="nn">tempfile</span>
 <span class="kn">import</span> <span class="nn">functools</span>
 <span class="kn">import</span> <span class="nn">itertools</span>
+<span class="kn">import</span> <span class="nn">inspect</span>
+<span class="kn">import</span> <span class="nn">collections</span>
 <span class="kn">import</span> <span class="nn">ctypes</span>
 <span class="kn">import</span> <span class="nn">numpy</span>
 <span class="kn">import</span> <span class="nn">h5py</span>
@@ -329,6 +332,41 @@
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
     <span class="n">ThreadPoolExecutor</span> <span class="o">=</span> <span class="kc">None</span>
 
+<span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">'linux'</span><span class="p">):</span>
+    <span class="c1"># Avoid too many threads being created in OMP loops.</span>
+    <span class="c1"># See issue https://github.com/pyscf/pyscf/issues/317</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">from</span> <span class="nn">elftools.elf.elffile</span> <span class="kn">import</span> <span class="n">ELFFile</span>
+    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+        <span class="k">pass</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">def</span> <span class="nf">_ldd</span><span class="p">(</span><span class="n">so_file</span><span class="p">):</span>
+            <span class="n">libs</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">so_file</span><span class="p">,</span> <span class="s1">'rb'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">elf</span> <span class="o">=</span> <span class="n">ELFFile</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">seg</span> <span class="ow">in</span> <span class="n">elf</span><span class="o">.</span><span class="n">iter_segments</span><span class="p">():</span>
+                    <span class="k">if</span> <span class="n">seg</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">p_type</span> <span class="o">!=</span> <span class="s1">'PT_DYNAMIC'</span><span class="p">:</span>
+                        <span class="k">continue</span>
+                    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">seg</span><span class="o">.</span><span class="n">iter_tags</span><span class="p">():</span>
+                        <span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">entry</span><span class="o">.</span><span class="n">d_tag</span> <span class="o">==</span> <span class="s1">'DT_NEEDED'</span><span class="p">:</span>
+                            <span class="n">libs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">needed</span><span class="p">)</span>
+                    <span class="k">break</span>
+            <span class="k">return</span> <span class="n">libs</span>
+
+        <span class="n">so_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="vm">__file__</span><span class="p">,</span> <span class="s1">'..'</span><span class="p">,</span> <span class="s1">'libnp_helper.so'</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">_ldd</span><span class="p">(</span><span class="n">so_file</span><span class="p">):</span>
+            <span class="k">if</span> <span class="s1">'mkl'</span> <span class="ow">in</span> <span class="n">p</span> <span class="ow">and</span> <span class="s1">'thread'</span> <span class="ow">in</span> <span class="n">p</span><span class="p">:</span>
+                <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s1">'PySCF C exteions are incompatible with </span><span class="si">{</span><span class="n">p</span><span class="si">}</span><span class="s1">. '</span>
+                              <span class="s1">'MKL_NUM_THREADS is set to 1'</span><span class="p">)</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">'MKL_NUM_THREADS'</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'1'</span>
+                <span class="k">break</span>
+            <span class="k">elif</span> <span class="s1">'openblasp'</span> <span class="ow">in</span> <span class="n">p</span> <span class="ow">or</span> <span class="s1">'openblaso'</span> <span class="ow">in</span> <span class="n">p</span><span class="p">:</span>
+                <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s1">'PySCF C exteions are incompatible with </span><span class="si">{</span><span class="n">p</span><span class="si">}</span><span class="s1">. '</span>
+                              <span class="s1">'OPENBLAS_NUM_THREADS is set to 1'</span><span class="p">)</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">'OPENBLAS_NUM_THREADS'</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'1'</span>
+                <span class="k">break</span>
+        <span class="k">del</span> <span class="n">p</span><span class="p">,</span> <span class="n">so_file</span><span class="p">,</span> <span class="n">_ldd</span>
+
 <span class="kn">from</span> <span class="nn">pyscf.lib</span> <span class="kn">import</span> <span class="n">param</span>
 <span class="kn">from</span> <span class="nn">pyscf</span> <span class="kn">import</span> <span class="n">__config__</span>
 
@@ -336,37 +374,31 @@
     <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">'h5py-</span><span class="si">%s</span><span class="s1"> is found in your environment. '</span>
                      <span class="s1">'h5py-</span><span class="si">%s</span><span class="s1"> has bug in threading mode.</span><span class="se">\n</span><span class="s1">'</span>
                      <span class="s1">'Async-IO is disabled.</span><span class="se">\n</span><span class="s1">'</span> <span class="o">%</span> <span class="p">((</span><span class="n">h5py</span><span class="o">.</span><span class="n">version</span><span class="o">.</span><span class="n">version</span><span class="p">,)</span><span class="o">*</span><span class="mi">2</span><span class="p">))</span>
-<span class="k">if</span> <span class="n">h5py</span><span class="o">.</span><span class="n">version</span><span class="o">.</span><span class="n">version</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s1">'3.'</span><span class="p">:</span>
-    <span class="n">h5py</span><span class="o">.</span><span class="n">get_config</span><span class="p">()</span><span class="o">.</span><span class="n">default_file_mode</span> <span class="o">=</span> <span class="s1">'a'</span>
 
 <span class="n">c_double_p</span> <span class="o">=</span> <span class="n">ctypes</span><span class="o">.</span><span class="n">POINTER</span><span class="p">(</span><span class="n">ctypes</span><span class="o">.</span><span class="n">c_double</span><span class="p">)</span>
 <span class="n">c_int_p</span> <span class="o">=</span> <span class="n">ctypes</span><span class="o">.</span><span class="n">POINTER</span><span class="p">(</span><span class="n">ctypes</span><span class="o">.</span><span class="n">c_int</span><span class="p">)</span>
 <span class="n">c_null_ptr</span> <span class="o">=</span> <span class="n">ctypes</span><span class="o">.</span><span class="n">POINTER</span><span class="p">(</span><span class="n">ctypes</span><span class="o">.</span><span class="n">c_void_p</span><span class="p">)</span>
 
-<div class="viewcode-block" id="load_library"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.lib.misc.load_library">[docs]</a><span class="k">def</span> <span class="nf">load_library</span><span class="p">(</span><span class="n">libname</span><span class="p">):</span>
-<span class="c1"># numpy 1.6 has bug in ctypeslib.load_library, see numpy/distutils/misc_util.py</span>
-    <span class="k">if</span> <span class="s1">'1.6'</span> <span class="ow">in</span> <span class="n">numpy</span><span class="o">.</span><span class="n">__version__</span><span class="p">:</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">platform</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">'linux'</span><span class="p">)</span> <span class="ow">or</span>
-            <span class="n">sys</span><span class="o">.</span><span class="n">platform</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">'gnukfreebsd'</span><span class="p">)):</span>
-            <span class="n">so_ext</span> <span class="o">=</span> <span class="s1">'.so'</span>
-        <span class="k">elif</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">'darwin'</span><span class="p">):</span>
-            <span class="n">so_ext</span> <span class="o">=</span> <span class="s1">'.dylib'</span>
-        <span class="k">elif</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">'win'</span><span class="p">):</span>
-            <span class="n">so_ext</span> <span class="o">=</span> <span class="s1">'.dll'</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">OSError</span><span class="p">(</span><span class="s1">'Unknown platform'</span><span class="p">)</span>
-        <span class="n">libname_so</span> <span class="o">=</span> <span class="n">libname</span> <span class="o">+</span> <span class="n">so_ext</span>
-        <span class="k">return</span> <span class="n">ctypes</span><span class="o">.</span><span class="n">CDLL</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span> <span class="n">libname_so</span><span class="p">))</span>
-    <span class="k">else</span><span class="p">:</span>
+<div class="viewcode-block" id="load_library"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.pbc.tdscf.krhf.load_library">[docs]</a><span class="k">def</span> <span class="nf">load_library</span><span class="p">(</span><span class="n">libname</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
         <span class="n">_loaderpath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ctypeslib</span><span class="o">.</span><span class="n">load_library</span><span class="p">(</span><span class="n">libname</span><span class="p">,</span> <span class="n">_loaderpath</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ctypeslib</span><span class="o">.</span><span class="n">load_library</span><span class="p">(</span><span class="n">libname</span><span class="p">,</span> <span class="n">_loaderpath</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>
+        <span class="kn">from</span> <span class="nn">pyscf</span> <span class="kn">import</span> <span class="n">__path__</span> <span class="k">as</span> <span class="n">ext_modules</span>
+        <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">ext_modules</span><span class="p">:</span>
+            <span class="n">libpath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">'lib'</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">libpath</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">files</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">libpath</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">files</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">libname</span><span class="p">):</span>
+                        <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ctypeslib</span><span class="o">.</span><span class="n">load_library</span><span class="p">(</span><span class="n">libname</span><span class="p">,</span> <span class="n">libpath</span><span class="p">)</span>
+        <span class="k">raise</span></div>
 
 <span class="c1">#Fixme, the standard resouce module gives wrong number when objects are released</span>
-<span class="c1">#see http://fa.bianp.net/blog/2013/different-ways-to-get-memory-consumption-or-lessons-learned-from-memory_profiler/#fn:1</span>
+<span class="c1"># http://fa.bianp.net/blog/2013/different-ways-to-get-memory-consumption-or-lessons-learned-from-memory_profiler/#fn:1</span>
 <span class="c1">#or use slow functions as memory_profiler._get_memory did</span>
 <span class="n">CLOCK_TICKS</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">sysconf</span><span class="p">(</span><span class="s2">"SC_CLK_TCK"</span><span class="p">)</span>
 <span class="n">PAGESIZE</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">sysconf</span><span class="p">(</span><span class="s2">"SC_PAGE_SIZE"</span><span class="p">)</span>
-<div class="viewcode-block" id="current_memory"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.lib.misc.current_memory">[docs]</a><span class="k">def</span> <span class="nf">current_memory</span><span class="p">():</span>
+<div class="viewcode-block" id="current_memory"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.pbc.tdscf.krhf.current_memory">[docs]</a><span class="k">def</span> <span class="nf">current_memory</span><span class="p">():</span>
     <span class="sd">'''Return the size of used memory and allocated virtual memory (in MB)'''</span>
     <span class="c1">#import resource</span>
     <span class="c1">#return resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 1000</span>
@@ -377,7 +409,7 @@
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span></div>
 
-<div class="viewcode-block" id="num_threads"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.lib.misc.num_threads">[docs]</a><span class="k">def</span> <span class="nf">num_threads</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="num_threads"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.pbc.tdscf.krhf.num_threads">[docs]</a><span class="k">def</span> <span class="nf">num_threads</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">'''Set the number of OMP threads.  If argument is not specified, the</span>
 <span class="sd">    function will return the total number of available OMP threads.</span>
 
@@ -408,7 +440,7 @@
         <span class="n">_np_helper</span><span class="o">.</span><span class="n">get_omp_threads</span><span class="o">.</span><span class="n">restype</span> <span class="o">=</span> <span class="n">ctypes</span><span class="o">.</span><span class="n">c_int</span>
         <span class="k">return</span> <span class="n">_np_helper</span><span class="o">.</span><span class="n">get_omp_threads</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="with_omp_threads"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.lib.misc.with_omp_threads">[docs]</a><span class="k">class</span> <span class="nc">with_omp_threads</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="with_omp_threads"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.pbc.tdscf.krhf.with_omp_threads">[docs]</a><span class="k">class</span> <span class="nc">with_omp_threads</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">'''Using this macro to create a temporary context in which the number of</span>
 <span class="sd">    OpenMP threads are set to the required value. When the program exits the</span>
 <span class="sd">    context, the number OpenMP threads will be restored.</span>
@@ -439,34 +471,55 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sys_threads</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">num_threads</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sys_threads</span><span class="p">)</span></div>
 
+<div class="viewcode-block" id="with_multiproc_nproc"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.pbc.tdscf.krhf.with_multiproc_nproc">[docs]</a><span class="k">class</span> <span class="nc">with_multiproc_nproc</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">'''</span>
+<span class="sd">    Using this macro to create a temporary context in which the number of</span>
+<span class="sd">    multi-processing processes are set to the required value.</span>
+<span class="sd">    '''</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nproc</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nproc</span> <span class="o">=</span> <span class="n">nproc</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sys_threads</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">def</span> <span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">nproc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">nproc</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sys_threads</span> <span class="o">=</span> <span class="n">num_threads</span><span class="p">()</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">nproc</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">sys_threads</span><span class="p">:</span>
+                <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">'Reset nproc to nthreads: </span><span class="si">%s</span><span class="s1">'</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">sys_threads</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">nproc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sys_threads</span>
+            <span class="n">nthreads</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sys_threads</span> <span class="o">//</span> <span class="bp">self</span><span class="o">.</span><span class="n">nproc</span><span class="p">)</span>
+            <span class="n">num_threads</span><span class="p">(</span><span class="n">nthreads</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span>
+    <span class="k">def</span> <span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">traceback</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sys_threads</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">num_threads</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sys_threads</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">nproc</span> <span class="o">=</span> <span class="mi">1</span></div>
 
-<div class="viewcode-block" id="c_int_arr"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.lib.misc.c_int_arr">[docs]</a><span class="k">def</span> <span class="nf">c_int_arr</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
+<div class="viewcode-block" id="c_int_arr"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.pbc.tdscf.krhf.c_int_arr">[docs]</a><span class="k">def</span> <span class="nf">c_int_arr</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
     <span class="n">npm</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">m</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">(</span><span class="s1">'C'</span><span class="p">)</span>
     <span class="n">arr</span> <span class="o">=</span> <span class="p">(</span><span class="n">ctypes</span><span class="o">.</span><span class="n">c_int</span> <span class="o">*</span> <span class="n">npm</span><span class="o">.</span><span class="n">size</span><span class="p">)(</span><span class="o">*</span><span class="n">npm</span><span class="p">)</span>
     <span class="c1"># cannot return LP_c_double class,</span>
     <span class="c1">#Xreturn npm.ctypes.data_as(c_int_p), which destructs npm before return</span>
     <span class="k">return</span> <span class="n">arr</span></div>
-<div class="viewcode-block" id="f_int_arr"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.lib.misc.f_int_arr">[docs]</a><span class="k">def</span> <span class="nf">f_int_arr</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
+<div class="viewcode-block" id="f_int_arr"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.pbc.tdscf.krhf.f_int_arr">[docs]</a><span class="k">def</span> <span class="nf">f_int_arr</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
     <span class="n">npm</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">m</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">(</span><span class="s1">'F'</span><span class="p">)</span>
     <span class="n">arr</span> <span class="o">=</span> <span class="p">(</span><span class="n">ctypes</span><span class="o">.</span><span class="n">c_int</span> <span class="o">*</span> <span class="n">npm</span><span class="o">.</span><span class="n">size</span><span class="p">)(</span><span class="o">*</span><span class="n">npm</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">arr</span></div>
-<div class="viewcode-block" id="c_double_arr"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.lib.misc.c_double_arr">[docs]</a><span class="k">def</span> <span class="nf">c_double_arr</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
+<div class="viewcode-block" id="c_double_arr"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.pbc.tdscf.krhf.c_double_arr">[docs]</a><span class="k">def</span> <span class="nf">c_double_arr</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
     <span class="n">npm</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">m</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">(</span><span class="s1">'C'</span><span class="p">)</span>
     <span class="n">arr</span> <span class="o">=</span> <span class="p">(</span><span class="n">ctypes</span><span class="o">.</span><span class="n">c_double</span> <span class="o">*</span> <span class="n">npm</span><span class="o">.</span><span class="n">size</span><span class="p">)(</span><span class="o">*</span><span class="n">npm</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">arr</span></div>
-<div class="viewcode-block" id="f_double_arr"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.lib.misc.f_double_arr">[docs]</a><span class="k">def</span> <span class="nf">f_double_arr</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
+<div class="viewcode-block" id="f_double_arr"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.pbc.tdscf.krhf.f_double_arr">[docs]</a><span class="k">def</span> <span class="nf">f_double_arr</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
     <span class="n">npm</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">m</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">(</span><span class="s1">'F'</span><span class="p">)</span>
     <span class="n">arr</span> <span class="o">=</span> <span class="p">(</span><span class="n">ctypes</span><span class="o">.</span><span class="n">c_double</span> <span class="o">*</span> <span class="n">npm</span><span class="o">.</span><span class="n">size</span><span class="p">)(</span><span class="o">*</span><span class="n">npm</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">arr</span></div>
 
 
-<div class="viewcode-block" id="member"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.lib.misc.member">[docs]</a><span class="k">def</span> <span class="nf">member</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">lst</span><span class="p">):</span>
+<div class="viewcode-block" id="member"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.pbc.tdscf.krhf.member">[docs]</a><span class="k">def</span> <span class="nf">member</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">lst</span><span class="p">):</span>
     <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">lst</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">test</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">l</span><span class="p">):</span>
             <span class="k">return</span> <span class="kc">True</span>
     <span class="k">return</span> <span class="kc">False</span></div>
 
-<div class="viewcode-block" id="remove_dup"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.lib.misc.remove_dup">[docs]</a><span class="k">def</span> <span class="nf">remove_dup</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="n">lst</span><span class="p">,</span> <span class="n">from_end</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="remove_dup"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.pbc.tdscf.krhf.remove_dup">[docs]</a><span class="k">def</span> <span class="nf">remove_dup</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="n">lst</span><span class="p">,</span> <span class="n">from_end</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">test</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">return</span> <span class="nb">set</span><span class="p">(</span><span class="n">lst</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
@@ -478,16 +531,16 @@
                 <span class="n">seen</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">l</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">seen</span></div>
 
-<div class="viewcode-block" id="remove_if"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.lib.misc.remove_if">[docs]</a><span class="k">def</span> <span class="nf">remove_if</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="n">lst</span><span class="p">):</span>
+<div class="viewcode-block" id="remove_if"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.pbc.tdscf.krhf.remove_if">[docs]</a><span class="k">def</span> <span class="nf">remove_if</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="n">lst</span><span class="p">):</span>
     <span class="k">return</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">lst</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">test</span><span class="p">(</span><span class="n">x</span><span class="p">)]</span></div>
 
-<div class="viewcode-block" id="find_if"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.lib.misc.find_if">[docs]</a><span class="k">def</span> <span class="nf">find_if</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="n">lst</span><span class="p">):</span>
+<div class="viewcode-block" id="find_if"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.pbc.tdscf.krhf.find_if">[docs]</a><span class="k">def</span> <span class="nf">find_if</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="n">lst</span><span class="p">):</span>
     <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">lst</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">test</span><span class="p">(</span><span class="n">l</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">l</span>
     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'No element of the given list matches the test condition.'</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="arg_first_match"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.lib.misc.arg_first_match">[docs]</a><span class="k">def</span> <span class="nf">arg_first_match</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="n">lst</span><span class="p">):</span>
+<div class="viewcode-block" id="arg_first_match"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.pbc.tdscf.krhf.arg_first_match">[docs]</a><span class="k">def</span> <span class="nf">arg_first_match</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="n">lst</span><span class="p">):</span>
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">lst</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">test</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">i</span>
@@ -513,7 +566,7 @@
     <span class="n">displs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">displs</span>
 
-<div class="viewcode-block" id="flatten"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.lib.misc.flatten">[docs]</a><span class="k">def</span> <span class="nf">flatten</span><span class="p">(</span><span class="n">lst</span><span class="p">):</span>
+<div class="viewcode-block" id="flatten"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.pbc.tdscf.krhf.flatten">[docs]</a><span class="k">def</span> <span class="nf">flatten</span><span class="p">(</span><span class="n">lst</span><span class="p">):</span>
     <span class="sd">'''flatten nested lists</span>
 <span class="sd">    x[0] + x[1] + x[2] + ...</span>
 
@@ -524,7 +577,7 @@
 <span class="sd">    '''</span>
     <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">itertools</span><span class="o">.</span><span class="n">chain</span><span class="o">.</span><span class="n">from_iterable</span><span class="p">(</span><span class="n">lst</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="prange"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.lib.misc.prange">[docs]</a><span class="k">def</span> <span class="nf">prange</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">step</span><span class="p">):</span>
+<div class="viewcode-block" id="prange"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.pbc.tdscf.krhf.prange">[docs]</a><span class="k">def</span> <span class="nf">prange</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">step</span><span class="p">):</span>
     <span class="sd">'''This function splits the number sequence between "start" and "end"</span>
 <span class="sd">    using uniform "step" length. It yields the boundary (start, end) for each</span>
 <span class="sd">    fragment.</span>
@@ -542,7 +595,7 @@
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">step</span><span class="p">):</span>
             <span class="k">yield</span> <span class="n">i</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="n">step</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="prange_tril"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.lib.misc.prange_tril">[docs]</a><span class="k">def</span> <span class="nf">prange_tril</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">stop</span><span class="p">,</span> <span class="n">blocksize</span><span class="p">):</span>
+<div class="viewcode-block" id="prange_tril"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.pbc.tdscf.krhf.prange_tril">[docs]</a><span class="k">def</span> <span class="nf">prange_tril</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">stop</span><span class="p">,</span> <span class="n">blocksize</span><span class="p">):</span>
     <span class="sd">'''Similar to :func:`prange`, yeilds start (p0) and end (p1) with the</span>
 <span class="sd">    restriction p1*(p1+1)/2-p0*(p0+1)/2 &lt; blocksize</span>
 
@@ -561,7 +614,29 @@
     <span class="n">displs</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">+</span><span class="n">start</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">_blocksize_partition</span><span class="p">(</span><span class="n">cum_costs</span><span class="p">,</span> <span class="n">blocksize</span><span class="p">)]</span>
     <span class="k">return</span> <span class="nb">zip</span><span class="p">(</span><span class="n">displs</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">displs</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span></div>
 
-<div class="viewcode-block" id="map_with_prefetch"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.lib.misc.map_with_prefetch">[docs]</a><span class="k">def</span> <span class="nf">map_with_prefetch</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="o">*</span><span class="n">iterables</span><span class="p">):</span>
+<div class="viewcode-block" id="prange_split"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.pbc.tdscf.krhf.prange_split">[docs]</a><span class="k">def</span> <span class="nf">prange_split</span><span class="p">(</span><span class="n">n_total</span><span class="p">,</span> <span class="n">n_sections</span><span class="p">):</span>
+    <span class="sd">'''</span>
+<span class="sd">    Generate prange sequence that splits n_total elements into n sections.</span>
+<span class="sd">    The splits parallel to the np.array_split convention: the first (l % n)</span>
+<span class="sd">    sections of size l//n + 1 and the rest of size l//n.</span>
+
+<span class="sd">    Examples:</span>
+
+<span class="sd">    &gt;&gt;&gt; for p0, p1 in lib.prange_split(10, 3):</span>
+<span class="sd">    ...     print(p0, p1)</span>
+<span class="sd">    (0, 4)</span>
+<span class="sd">    (4, 7)</span>
+<span class="sd">    (7, 10)</span>
+<span class="sd">    '''</span>
+    <span class="n">n_each_section</span><span class="p">,</span> <span class="n">extras</span> <span class="o">=</span> <span class="nb">divmod</span><span class="p">(</span><span class="n">n_total</span><span class="p">,</span> <span class="n">n_sections</span><span class="p">)</span>
+    <span class="n">section_sizes</span> <span class="o">=</span> <span class="p">([</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span>
+                     <span class="n">extras</span> <span class="o">*</span> <span class="p">[</span><span class="n">n_each_section</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span>
+                     <span class="p">(</span><span class="n">n_sections</span><span class="o">-</span><span class="n">extras</span><span class="p">)</span> <span class="o">*</span> <span class="p">[</span><span class="n">n_each_section</span><span class="p">])</span>
+    <span class="n">div_points</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">section_sizes</span><span class="p">)</span><span class="o">.</span><span class="n">cumsum</span><span class="p">()</span>
+    <span class="k">return</span> <span class="nb">zip</span><span class="p">(</span><span class="n">div_points</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">div_points</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span></div>
+
+
+<div class="viewcode-block" id="map_with_prefetch"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.pbc.tdscf.krhf.map_with_prefetch">[docs]</a><span class="k">def</span> <span class="nf">map_with_prefetch</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="o">*</span><span class="n">iterables</span><span class="p">):</span>
     <span class="sd">'''</span>
 <span class="sd">    Apply function to an task and prefetch the next task</span>
 <span class="sd">    '''</span>
@@ -570,7 +645,7 @@
         <span class="kn">import</span> <span class="nn">imp</span>
         <span class="n">global_import_lock</span> <span class="o">=</span> <span class="n">imp</span><span class="o">.</span><span class="n">lock_held</span><span class="p">()</span>
 
-    <span class="k">if</span> <span class="n">global_import_lock</span><span class="p">:</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">ASYNC_IO</span> <span class="ow">or</span> <span class="n">global_import_lock</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">task</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">iterables</span><span class="p">):</span>
             <span class="k">yield</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">task</span><span class="p">)</span>
 
@@ -601,7 +676,7 @@
         <span class="k">if</span> <span class="n">buf0</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">yield</span> <span class="n">buf0</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
 
-<div class="viewcode-block" id="index_tril_to_pair"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.lib.misc.index_tril_to_pair">[docs]</a><span class="k">def</span> <span class="nf">index_tril_to_pair</span><span class="p">(</span><span class="n">ij</span><span class="p">):</span>
+<div class="viewcode-block" id="index_tril_to_pair"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.pbc.tdscf.krhf.index_tril_to_pair">[docs]</a><span class="k">def</span> <span class="nf">index_tril_to_pair</span><span class="p">(</span><span class="n">ij</span><span class="p">):</span>
     <span class="sd">'''Given tril-index ij, compute the pair indices (i,j) which satisfy</span>
 <span class="sd">    ij = i * (i+1) / 2 + j</span>
 <span class="sd">    '''</span>
@@ -610,7 +685,7 @@
     <span class="k">return</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span></div>
 
 
-<div class="viewcode-block" id="tril_product"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.lib.misc.tril_product">[docs]</a><span class="k">def</span> <span class="nf">tril_product</span><span class="p">(</span><span class="o">*</span><span class="n">iterables</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+<div class="viewcode-block" id="tril_product"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.pbc.tdscf.krhf.tril_product">[docs]</a><span class="k">def</span> <span class="nf">tril_product</span><span class="p">(</span><span class="o">*</span><span class="n">iterables</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
     <span class="sd">'''Cartesian product in lower-triangular form for multiple indices</span>
 
 <span class="sd">    For a given list of indices (`iterables`), this function yields all</span>
@@ -664,7 +739,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">pass</span></div>
 
-<div class="viewcode-block" id="square_mat_in_trilu_indices"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.lib.misc.square_mat_in_trilu_indices">[docs]</a><span class="k">def</span> <span class="nf">square_mat_in_trilu_indices</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+<div class="viewcode-block" id="square_mat_in_trilu_indices"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.pbc.tdscf.krhf.square_mat_in_trilu_indices">[docs]</a><span class="k">def</span> <span class="nf">square_mat_in_trilu_indices</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
     <span class="sd">'''Return a n x n symmetric index matrix, in which the elements are the</span>
 <span class="sd">    indices of the unique elements of a tril vector</span>
 <span class="sd">    [0 1 3 ... ]</span>
@@ -677,7 +752,7 @@
     <span class="n">tril2sq</span><span class="p">[</span><span class="n">idx</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">idx</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span> <span class="o">=</span> <span class="n">tril2sq</span><span class="p">[</span><span class="n">idx</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">idx</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n</span><span class="o">*</span><span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">//</span><span class="mi">2</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">tril2sq</span></div>
 
-<div class="viewcode-block" id="capture_stdout"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.lib.misc.capture_stdout">[docs]</a><span class="k">class</span> <span class="nc">capture_stdout</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="capture_stdout"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.pbc.tdscf.krhf.capture_stdout">[docs]</a><span class="k">class</span> <span class="nc">capture_stdout</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">'''redirect all stdout (c printf &amp; python print) into a string</span>
 
 <span class="sd">    Examples:</span>
@@ -704,7 +779,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">ftmp</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
         <span class="n">os</span><span class="o">.</span><span class="n">dup2</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bak_stdout_fd</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">old_stdout_fileno</span><span class="p">)</span>
         <span class="n">os</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bak_stdout_fd</span><span class="p">)</span>
-<div class="viewcode-block" id="capture_stdout.read"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.lib.misc.capture_stdout.read">[docs]</a>    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="capture_stdout.read"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.pbc.tdscf.krhf.capture_stdout.read">[docs]</a>    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_contents</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_contents</span>
         <span class="k">else</span><span class="p">:</span>
@@ -713,7 +788,7 @@
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ftmp</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">read</span><span class="p">()</span></div></div>
 <span class="n">ctypes_stdout</span> <span class="o">=</span> <span class="n">capture_stdout</span>
 
-<div class="viewcode-block" id="quite_run"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.lib.misc.quite_run">[docs]</a><span class="k">class</span> <span class="nc">quite_run</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="quite_run"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.pbc.tdscf.krhf.quite_run">[docs]</a><span class="k">class</span> <span class="nc">quite_run</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">'''capture all stdout (c printf &amp; python print) but output nothing</span>
 
 <span class="sd">    Examples:</span>
@@ -740,7 +815,7 @@
 <span class="c1"># this decorator lets me use methods as both static and instance methods</span>
 <span class="c1"># In contrast to classmethod, when obj.function() is called, the first</span>
 <span class="c1"># argument is obj in omnimethod rather than obj.__class__ in classmethod</span>
-<div class="viewcode-block" id="omnimethod"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.lib.misc.omnimethod">[docs]</a><span class="k">class</span> <span class="nc">omnimethod</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="omnimethod"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.pbc.tdscf.krhf.omnimethod">[docs]</a><span class="k">class</span> <span class="nc">omnimethod</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">func</span> <span class="o">=</span> <span class="n">func</span>
 
@@ -749,7 +824,7 @@
 
 
 <span class="n">SANITY_CHECK</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">__config__</span><span class="p">,</span> <span class="s1">'SANITY_CHECK'</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
-<div class="viewcode-block" id="StreamObject"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.lib.misc.StreamObject">[docs]</a><span class="k">class</span> <span class="nc">StreamObject</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="StreamObject"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.pbc.tdscf.krhf.StreamObject">[docs]</a><span class="k">class</span> <span class="nc">StreamObject</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">'''For most methods, there are three stream functions to pipe computing stream:</span>
 
 <span class="sd">    1 ``.set_`` function to update object attributes, eg</span>
@@ -774,7 +849,7 @@
     <span class="n">stdout</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span>
     <span class="n">_keys</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([</span><span class="s1">'verbose'</span><span class="p">,</span> <span class="s1">'stdout'</span><span class="p">])</span>
 
-<div class="viewcode-block" id="StreamObject.kernel"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.lib.misc.StreamObject.kernel">[docs]</a>    <span class="k">def</span> <span class="nf">kernel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="StreamObject.kernel"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.pbc.tdscf.krhf.StreamObject.kernel">[docs]</a>    <span class="k">def</span> <span class="nf">kernel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">'''</span>
 <span class="sd">        Kernel function is the main driver of a method.  Every method should</span>
 <span class="sd">        define the kernel function as the entry of the calculation.  Note the</span>
@@ -784,7 +859,7 @@
 <span class="sd">        '''</span>
         <span class="k">pass</span></div>
 
-<div class="viewcode-block" id="StreamObject.pre_kernel"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.lib.misc.StreamObject.pre_kernel">[docs]</a>    <span class="k">def</span> <span class="nf">pre_kernel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">envs</span><span class="p">):</span>
+<div class="viewcode-block" id="StreamObject.pre_kernel"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.pbc.tdscf.krhf.StreamObject.pre_kernel">[docs]</a>    <span class="k">def</span> <span class="nf">pre_kernel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">envs</span><span class="p">):</span>
         <span class="sd">'''</span>
 <span class="sd">        A hook to be run before the main body of kernel function is executed.</span>
 <span class="sd">        Internal variables are exposed to pre_kernel through the "envs"</span>
@@ -792,7 +867,7 @@
 <span class="sd">        '''</span>
         <span class="k">pass</span></div>
 
-<div class="viewcode-block" id="StreamObject.post_kernel"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.lib.misc.StreamObject.post_kernel">[docs]</a>    <span class="k">def</span> <span class="nf">post_kernel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">envs</span><span class="p">):</span>
+<div class="viewcode-block" id="StreamObject.post_kernel"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.pbc.tdscf.krhf.StreamObject.post_kernel">[docs]</a>    <span class="k">def</span> <span class="nf">post_kernel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">envs</span><span class="p">):</span>
         <span class="sd">'''</span>
 <span class="sd">        A hook to be run after the main body of the kernel function.  Internal</span>
 <span class="sd">        variables are exposed to post_kernel through the "envs" dictionary.</span>
@@ -800,7 +875,7 @@
 <span class="sd">        '''</span>
         <span class="k">pass</span></div>
 
-<div class="viewcode-block" id="StreamObject.run"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.lib.misc.StreamObject.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="StreamObject.run"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.pbc.tdscf.krhf.StreamObject.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">'''</span>
 <span class="sd">        Call the kernel function of current object.  `args` will be passed</span>
 <span class="sd">        to kernel function.  `kwargs` will be used to update the attributes of</span>
@@ -811,7 +886,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">kernel</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span></div>
 
-<div class="viewcode-block" id="StreamObject.set"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.lib.misc.StreamObject.set">[docs]</a>    <span class="k">def</span> <span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="StreamObject.set"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.pbc.tdscf.krhf.StreamObject.set">[docs]</a>    <span class="k">def</span> <span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">'''</span>
 <span class="sd">        Update the attributes of the current object.  The return value of</span>
 <span class="sd">        method set is the object itself.  This allows a series of</span>
@@ -834,7 +909,7 @@
     <span class="c1"># An alias to .set method</span>
     <span class="fm">__call__</span> <span class="o">=</span> <span class="nb">set</span>
 
-<div class="viewcode-block" id="StreamObject.apply"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.lib.misc.StreamObject.apply">[docs]</a>    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fn</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="StreamObject.apply"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.pbc.tdscf.krhf.StreamObject.apply">[docs]</a>    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fn</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">'''</span>
 <span class="sd">        Apply the fn to rest arguments:  return fn(*args, **kwargs).  The</span>
 <span class="sd">        return value of method set is the object itself.  This allows a series</span>
@@ -846,7 +921,7 @@
 <span class="c1">#        args1 = [kwargs.pop(k, v) for k, v in kernel_kw_lst]</span>
 <span class="c1">#        return args + args1[len(args):], kwargs</span>
 
-<div class="viewcode-block" id="StreamObject.check_sanity"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.lib.misc.StreamObject.check_sanity">[docs]</a>    <span class="k">def</span> <span class="nf">check_sanity</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="StreamObject.check_sanity"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.pbc.tdscf.krhf.StreamObject.check_sanity">[docs]</a>    <span class="k">def</span> <span class="nf">check_sanity</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">'''</span>
 <span class="sd">        Check input of class/object attributes, check whether a class method is</span>
 <span class="sd">        overwritten.  It does not check the attributes which are prefixed with</span>
@@ -860,14 +935,21 @@
             <span class="n">check_sanity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_keys</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span></div>
 
-<div class="viewcode-block" id="StreamObject.view"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.lib.misc.StreamObject.view">[docs]</a>    <span class="k">def</span> <span class="nf">view</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">cls</span><span class="p">):</span>
+<div class="viewcode-block" id="StreamObject.view"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.pbc.tdscf.krhf.StreamObject.view">[docs]</a>    <span class="k">def</span> <span class="nf">view</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">cls</span><span class="p">):</span>
         <span class="sd">'''New view of object with the same attributes.'''</span>
         <span class="n">obj</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span>
         <span class="n">obj</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">obj</span></div></div>
+        <span class="k">return</span> <span class="n">obj</span></div>
+
+<div class="viewcode-block" id="StreamObject.add_keys"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.pbc.tdscf.krhf.StreamObject.add_keys">[docs]</a>    <span class="k">def</span> <span class="nf">add_keys</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">'''Add or update attributes of the object and register these attributes in ._keys'''</span>
+        <span class="k">if</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_keys</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_keys</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">kwargs</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="k">return</span> <span class="bp">self</span></div></div>
 
 <span class="n">_warn_once_registry</span> <span class="o">=</span> <span class="p">{}</span>
-<div class="viewcode-block" id="check_sanity"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.lib.misc.check_sanity">[docs]</a><span class="k">def</span> <span class="nf">check_sanity</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">keysref</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">):</span>
+<div class="viewcode-block" id="check_sanity"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.pbc.tdscf.krhf.check_sanity">[docs]</a><span class="k">def</span> <span class="nf">check_sanity</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">keysref</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">):</span>
     <span class="sd">'''Check misinput of class attributes, check whether a class method is</span>
 <span class="sd">    overwritten.  It does not check the attributes which are prefixed with</span>
 <span class="sd">    "_".</span>
@@ -896,7 +978,7 @@
                     <span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">obj</span></div>
 
-<div class="viewcode-block" id="with_doc"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.lib.misc.with_doc">[docs]</a><span class="k">def</span> <span class="nf">with_doc</span><span class="p">(</span><span class="n">doc</span><span class="p">):</span>
+<div class="viewcode-block" id="with_doc"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.pbc.tdscf.krhf.with_doc">[docs]</a><span class="k">def</span> <span class="nf">with_doc</span><span class="p">(</span><span class="n">doc</span><span class="p">):</span>
     <span class="sd">'''Use this decorator to add doc string for function</span>
 
 <span class="sd">        @with_doc(doc)</span>
@@ -912,7 +994,7 @@
         <span class="k">return</span> <span class="n">fn</span>
     <span class="k">return</span> <span class="n">fn_with_doc</span></div>
 
-<div class="viewcode-block" id="alias"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.lib.misc.alias">[docs]</a><span class="k">def</span> <span class="nf">alias</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="n">alias_name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="alias"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.pbc.tdscf.krhf.alias">[docs]</a><span class="k">def</span> <span class="nf">alias</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="n">alias_name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">'''</span>
 <span class="sd">    The statement "fn1 = alias(fn)" in a class is equivalent to define the</span>
 <span class="sd">    following method in the class:</span>
@@ -925,32 +1007,92 @@
 <span class="sd">    overloaded in the child class. Using "alias" can make sure that the</span>
 <span class="sd">    overloaded mehods were called when calling the aliased method.</span>
 <span class="sd">    '''</span>
-    <span class="n">fname</span> <span class="o">=</span> <span class="n">fn</span><span class="o">.</span><span class="vm">__name__</span>
-    <span class="k">def</span> <span class="nf">aliased_fn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fname</span><span class="p">)(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">fn</span><span class="o">.</span><span class="vm">__name__</span>
+    <span class="k">if</span> <span class="n">alias_name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">alias_name</span> <span class="o">=</span> <span class="n">name</span>
 
-    <span class="k">if</span> <span class="n">alias_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">aliased_fn</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">=</span> <span class="n">alias_name</span>
-
-    <span class="n">doc_str</span> <span class="o">=</span> <span class="s1">'An alias to method </span><span class="si">%s</span><span class="se">\n</span><span class="s1">'</span> <span class="o">%</span> <span class="n">fname</span>
-    <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span> <span class="o">&gt;=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,):</span>
-        <span class="kn">from</span> <span class="nn">inspect</span> <span class="kn">import</span> <span class="n">signature</span>
-        <span class="n">sig</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">signature</span><span class="p">(</span><span class="n">fn</span><span class="p">))</span>
-        <span class="k">if</span> <span class="n">alias_name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">doc_str</span> <span class="o">+=</span> <span class="s1">'Function Signature: </span><span class="si">%s</span><span class="se">\n</span><span class="s1">'</span> <span class="o">%</span> <span class="n">sig</span>
+    <span class="n">_locals</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">sig</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">signature</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>
+    <span class="n">var_args</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">sig</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">v</span><span class="o">.</span><span class="n">kind</span> <span class="o">==</span> <span class="n">v</span><span class="o">.</span><span class="n">VAR_POSITIONAL</span> <span class="ow">or</span> <span class="n">v</span><span class="o">.</span><span class="n">kind</span> <span class="o">==</span> <span class="n">v</span><span class="o">.</span><span class="n">VAR_KEYWORD</span><span class="p">:</span>
+            <span class="n">var_args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">v</span><span class="p">))</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">doc_str</span> <span class="o">+=</span> <span class="s1">'Function Signature: </span><span class="si">%s%s</span><span class="se">\n</span><span class="s1">'</span> <span class="o">%</span> <span class="p">(</span><span class="n">alias_name</span><span class="p">,</span> <span class="n">sig</span><span class="p">)</span>
-    <span class="n">doc_str</span> <span class="o">+=</span> <span class="s1">'----------------------------------------</span><span class="se">\n\n</span><span class="s1">'</span>
+            <span class="n">var_args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+    <span class="n">txt</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">'''def </span><span class="si">{</span><span class="n">alias_name</span><span class="si">}</span><span class="s1">(</span><span class="si">{</span><span class="s2">", "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">var_args</span><span class="p">)</span><span class="si">}</span><span class="s1">):</span>
+<span class="s1">    return </span><span class="si">{</span><span class="n">var_args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">(</span><span class="si">{</span><span class="s2">", "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">var_args</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span><span class="si">}</span><span class="s1">)'''</span>
+    <span class="n">exec</span><span class="p">(</span><span class="n">txt</span><span class="p">,</span> <span class="n">fn</span><span class="o">.</span><span class="vm">__globals__</span><span class="p">,</span> <span class="n">_locals</span><span class="p">)</span>
+    <span class="n">new_fn</span> <span class="o">=</span> <span class="n">_locals</span><span class="p">[</span><span class="n">alias_name</span><span class="p">]</span>
 
-    <span class="k">if</span> <span class="n">fn</span><span class="o">.</span><span class="vm">__doc__</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">doc_str</span> <span class="o">+=</span> <span class="n">fn</span><span class="o">.</span><span class="vm">__doc__</span>
+    <span class="n">new_fn</span><span class="o">.</span><span class="vm">__defaults__</span> <span class="o">=</span> <span class="n">fn</span><span class="o">.</span><span class="vm">__defaults__</span>
+    <span class="n">new_fn</span><span class="o">.</span><span class="vm">__module__</span> <span class="o">=</span> <span class="n">fn</span><span class="o">.</span><span class="vm">__module__</span>
+    <span class="n">new_fn</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="n">fn</span><span class="o">.</span><span class="vm">__doc__</span>
+    <span class="n">new_fn</span><span class="o">.</span><span class="vm">__annotations__</span> <span class="o">=</span> <span class="n">fn</span><span class="o">.</span><span class="vm">__annotations__</span>
+    <span class="k">return</span> <span class="n">new_fn</span></div>
 
-    <span class="n">aliased_fn</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="n">doc_str</span>
-    <span class="k">return</span> <span class="n">aliased_fn</span></div>
-
-<div class="viewcode-block" id="class_as_method"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.lib.misc.class_as_method">[docs]</a><span class="k">def</span> <span class="nf">class_as_method</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+<div class="viewcode-block" id="module_method"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.pbc.tdscf.krhf.module_method">[docs]</a><span class="k">def</span> <span class="nf">module_method</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="n">absences</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">'''</span>
-<span class="sd">    The statement "fn1 = alias(Class)" is equivalent to:</span>
+<span class="sd">    The statement "fn1 = module_method(fn, absences=['a'])"</span>
+<span class="sd">    in a class is equivalent to define the following method in the class:</span>
+
+<span class="sd">    .. code-block:: python</span>
+<span class="sd">        def fn1(self, ..., a=None, b, ...):</span>
+<span class="sd">            if a is None: a = self.a</span>
+<span class="sd">            return fn(..., a, b, ...)</span>
+
+<span class="sd">    If absences are not specified, all position arguments will be assigned in</span>
+<span class="sd">    terms of the corresponding attributes of self, i.e.</span>
+
+<span class="sd">    .. code-block:: python</span>
+<span class="sd">        def fn1(self, a=None, b=None):</span>
+<span class="sd">            if a is None: a = self.a</span>
+<span class="sd">            if b is None: b = self.b</span>
+<span class="sd">            return fn(a, b)</span>
+<span class="sd">    '''</span>
+    <span class="n">_locals</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">fn</span><span class="o">.</span><span class="vm">__name__</span>
+    <span class="n">sig</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">signature</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>
+    <span class="n">body</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">var_args</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">sig</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">v</span><span class="o">.</span><span class="n">kind</span> <span class="o">==</span> <span class="n">v</span><span class="o">.</span><span class="n">VAR_POSITIONAL</span> <span class="ow">or</span> <span class="n">v</span><span class="o">.</span><span class="n">kind</span> <span class="o">==</span> <span class="n">v</span><span class="o">.</span><span class="n">VAR_KEYWORD</span><span class="p">:</span>
+            <span class="n">var_args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">v</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">var_args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">absences</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">v</span><span class="o">.</span><span class="n">default</span> <span class="o">==</span> <span class="n">v</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>  <span class="c1"># positional argument</span>
+                <span class="n">body</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s1">'    if </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s1"> is None: </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s1"> = self.</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
+
+    <span class="n">fn_defaults</span> <span class="o">=</span> <span class="n">fn</span><span class="o">.</span><span class="vm">__defaults__</span>
+    <span class="n">nargs</span> <span class="o">=</span> <span class="n">fn</span><span class="o">.</span><span class="vm">__code__</span><span class="o">.</span><span class="n">co_argcount</span>
+    <span class="k">if</span> <span class="n">fn_defaults</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">fn_defaults</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">nargs</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">fn_defaults</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">nargs</span><span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">fn_defaults</span><span class="p">))</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">fn_defaults</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">absences</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">absences</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">idx</span> <span class="o">=</span> <span class="n">var_args</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Unknown argument </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
+            <span class="n">body</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s1">'    if </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s1"> is None: </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s1"> = self.</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
+            <span class="n">fn_defaults</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="n">body</span> <span class="o">=</span> <span class="s1">'</span><span class="se">\n</span><span class="s1">'</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">body</span><span class="p">)</span>
+    <span class="n">txt</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">'''def </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">(self, </span><span class="si">{</span><span class="s2">", "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">var_args</span><span class="p">)</span><span class="si">}</span><span class="s1">):</span>
+<span class="si">{</span><span class="n">body</span><span class="si">}</span><span class="s1"></span>
+<span class="s1">    return </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">(</span><span class="si">{</span><span class="s2">", "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">var_args</span><span class="p">)</span><span class="si">}</span><span class="s1">)'''</span>
+    <span class="n">exec</span><span class="p">(</span><span class="n">txt</span><span class="p">,</span> <span class="n">fn</span><span class="o">.</span><span class="vm">__globals__</span><span class="p">,</span> <span class="n">_locals</span><span class="p">)</span>
+    <span class="n">new_fn</span> <span class="o">=</span> <span class="n">_locals</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+    <span class="n">new_fn</span><span class="o">.</span><span class="vm">__module__</span> <span class="o">=</span> <span class="n">fn</span><span class="o">.</span><span class="vm">__module__</span>
+    <span class="n">new_fn</span><span class="o">.</span><span class="vm">__defaults__</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">fn_defaults</span><span class="p">)</span>
+    <span class="n">new_fn</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="n">fn</span><span class="o">.</span><span class="vm">__doc__</span>
+    <span class="n">new_fn</span><span class="o">.</span><span class="vm">__annotations__</span> <span class="o">=</span> <span class="n">fn</span><span class="o">.</span><span class="vm">__annotations__</span>
+    <span class="k">return</span> <span class="n">new_fn</span></div>
+
+<div class="viewcode-block" id="class_as_method"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.pbc.tdscf.krhf.class_as_method">[docs]</a><span class="k">def</span> <span class="nf">class_as_method</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+    <span class="sd">'''</span>
+<span class="sd">    The statement "fn1 = class_as_method(Class)" is equivalent to:</span>
 
 <span class="sd">    .. code-block:: python</span>
 <span class="sd">        def fn1(self, *args, **kwargs):</span>
@@ -963,7 +1105,15 @@
     <span class="n">fn</span><span class="o">.</span><span class="vm">__module__</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="vm">__module__</span>
     <span class="k">return</span> <span class="n">fn</span></div>
 
-<div class="viewcode-block" id="overwrite_mro"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.lib.misc.overwrite_mro">[docs]</a><span class="k">def</span> <span class="nf">overwrite_mro</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">mro</span><span class="p">):</span>
+<div class="viewcode-block" id="invalid_method"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.pbc.tdscf.krhf.invalid_method">[docs]</a><span class="k">def</span> <span class="nf">invalid_method</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    <span class="sd">'''</span>
+<span class="sd">    The statement "fn1 = invalid_method(name)" can de-register a method</span>
+<span class="sd">    '''</span>
+    <span class="k">def</span> <span class="nf">fn</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Method </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1"> invalid or not implemented'</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">fn</span></div>
+
+<div class="viewcode-block" id="overwrite_mro"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.pbc.tdscf.krhf.overwrite_mro">[docs]</a><span class="k">def</span> <span class="nf">overwrite_mro</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">mro</span><span class="p">):</span>
     <span class="sd">'''A hacky function to overwrite the __mro__ attribute'''</span>
     <span class="k">class</span> <span class="nc">HackMRO</span><span class="p">(</span><span class="nb">type</span><span class="p">):</span>
         <span class="k">pass</span>
@@ -979,17 +1129,17 @@
     <span class="n">obj</span> <span class="o">=</span> <span class="n">Temp</span><span class="p">()</span>
 <span class="c1"># Delete mro function otherwise all subclass of Temp are not able to</span>
 <span class="c1"># resolve the right mro</span>
-    <span class="k">del</span><span class="p">(</span><span class="n">HackMRO</span><span class="o">.</span><span class="n">mro</span><span class="p">)</span>
+    <span class="k">del</span> <span class="p">(</span><span class="n">HackMRO</span><span class="o">.</span><span class="n">mro</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">obj</span></div>
 
-<div class="viewcode-block" id="izip"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.lib.misc.izip">[docs]</a><span class="k">def</span> <span class="nf">izip</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span>
+<div class="viewcode-block" id="izip"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.pbc.tdscf.krhf.izip">[docs]</a><span class="k">def</span> <span class="nf">izip</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span>
     <span class="sd">'''python2 izip == python3 zip'''</span>
     <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span> <span class="o">&lt;</span> <span class="p">(</span><span class="mi">3</span><span class="p">,):</span>
         <span class="k">return</span> <span class="n">itertools</span><span class="o">.</span><span class="n">izip</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="ProcessWithReturnValue"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.lib.misc.ProcessWithReturnValue">[docs]</a><span class="k">class</span> <span class="nc">ProcessWithReturnValue</span><span class="p">(</span><span class="n">Process</span><span class="p">):</span>
+<div class="viewcode-block" id="ProcessWithReturnValue"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.pbc.tdscf.krhf.ProcessWithReturnValue">[docs]</a><span class="k">class</span> <span class="nc">ProcessWithReturnValue</span><span class="p">(</span><span class="n">Process</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(),</span>
                  <span class="n">kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_q</span> <span class="o">=</span> <span class="n">Queue</span><span class="p">()</span>
@@ -1001,7 +1151,7 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">_e</span> <span class="o">=</span> <span class="n">e</span>
                 <span class="k">raise</span> <span class="n">e</span>
         <span class="n">Process</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">group</span><span class="p">,</span> <span class="n">qwrap</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span>
-<div class="viewcode-block" id="ProcessWithReturnValue.join"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.lib.misc.ProcessWithReturnValue.join">[docs]</a>    <span class="k">def</span> <span class="nf">join</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="ProcessWithReturnValue.join"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.pbc.tdscf.krhf.ProcessWithReturnValue.join">[docs]</a>    <span class="k">def</span> <span class="nf">join</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">Process</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_e</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">ProcessRuntimeError</span><span class="p">(</span><span class="s1">'Error on process </span><span class="si">%s</span><span class="s1">:</span><span class="se">\n</span><span class="si">%s</span><span class="s1">'</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_e</span><span class="p">))</span>
@@ -1009,10 +1159,10 @@
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_q</span><span class="o">.</span><span class="n">get</span><span class="p">()</span></div>
     <span class="n">get</span> <span class="o">=</span> <span class="n">join</span></div>
 
-<div class="viewcode-block" id="ProcessRuntimeError"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.lib.misc.ProcessRuntimeError">[docs]</a><span class="k">class</span> <span class="nc">ProcessRuntimeError</span><span class="p">(</span><span class="ne">RuntimeError</span><span class="p">):</span>
+<div class="viewcode-block" id="ProcessRuntimeError"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.pbc.tdscf.krhf.ProcessRuntimeError">[docs]</a><span class="k">class</span> <span class="nc">ProcessRuntimeError</span><span class="p">(</span><span class="ne">RuntimeError</span><span class="p">):</span>
     <span class="k">pass</span></div>
 
-<div class="viewcode-block" id="ThreadWithReturnValue"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.lib.misc.ThreadWithReturnValue">[docs]</a><span class="k">class</span> <span class="nc">ThreadWithReturnValue</span><span class="p">(</span><span class="n">Thread</span><span class="p">):</span>
+<div class="viewcode-block" id="ThreadWithReturnValue"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.pbc.tdscf.krhf.ThreadWithReturnValue">[docs]</a><span class="k">class</span> <span class="nc">ThreadWithReturnValue</span><span class="p">(</span><span class="n">Thread</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(),</span>
                  <span class="n">kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_q</span> <span class="o">=</span> <span class="n">Queue</span><span class="p">()</span>
@@ -1024,19 +1174,19 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">_e</span> <span class="o">=</span> <span class="n">e</span>
                 <span class="k">raise</span> <span class="n">e</span>
         <span class="n">Thread</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">group</span><span class="p">,</span> <span class="n">qwrap</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span>
-<div class="viewcode-block" id="ThreadWithReturnValue.join"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.lib.misc.ThreadWithReturnValue.join">[docs]</a>    <span class="k">def</span> <span class="nf">join</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="ThreadWithReturnValue.join"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.pbc.tdscf.krhf.ThreadWithReturnValue.join">[docs]</a>    <span class="k">def</span> <span class="nf">join</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">Thread</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_e</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">ThreadRuntimeError</span><span class="p">(</span><span class="s1">'Error on thread </span><span class="si">%s</span><span class="s1">:</span><span class="se">\n</span><span class="si">%s</span><span class="s1">'</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_e</span><span class="p">))</span>
         <span class="k">else</span><span class="p">:</span>
-<span class="c1"># Note: If the return value of target is huge, Queue.get may raise</span>
-<span class="c1"># SystemError: NULL result without error in PyObject_Call</span>
-<span class="c1"># It is because return value is cached somewhere by pickle but pickle is</span>
-<span class="c1"># unable to handle huge amount of data.</span>
+            <span class="c1"># Note: If the return value of target is huge, Queue.get may raise</span>
+            <span class="c1"># SystemError: NULL result without error in PyObject_Call</span>
+            <span class="c1"># It is because return value is cached somewhere by pickle but pickle is</span>
+            <span class="c1"># unable to handle huge amount of data.</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_q</span><span class="o">.</span><span class="n">get</span><span class="p">()</span></div>
     <span class="n">get</span> <span class="o">=</span> <span class="n">join</span></div>
 
-<div class="viewcode-block" id="ThreadWithTraceBack"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.lib.misc.ThreadWithTraceBack">[docs]</a><span class="k">class</span> <span class="nc">ThreadWithTraceBack</span><span class="p">(</span><span class="n">Thread</span><span class="p">):</span>
+<div class="viewcode-block" id="ThreadWithTraceBack"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.pbc.tdscf.krhf.ThreadWithTraceBack">[docs]</a><span class="k">class</span> <span class="nc">ThreadWithTraceBack</span><span class="p">(</span><span class="n">Thread</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(),</span>
                  <span class="n">kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_e</span> <span class="o">=</span> <span class="kc">None</span>
@@ -1047,21 +1197,21 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">_e</span> <span class="o">=</span> <span class="n">e</span>
                 <span class="k">raise</span> <span class="n">e</span>
         <span class="n">Thread</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">group</span><span class="p">,</span> <span class="n">qwrap</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span>
-<div class="viewcode-block" id="ThreadWithTraceBack.join"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.lib.misc.ThreadWithTraceBack.join">[docs]</a>    <span class="k">def</span> <span class="nf">join</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="ThreadWithTraceBack.join"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.pbc.tdscf.krhf.ThreadWithTraceBack.join">[docs]</a>    <span class="k">def</span> <span class="nf">join</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">Thread</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_e</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">ThreadRuntimeError</span><span class="p">(</span><span class="s1">'Error on thread </span><span class="si">%s</span><span class="s1">:</span><span class="se">\n</span><span class="si">%s</span><span class="s1">'</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_e</span><span class="p">))</span></div></div>
 
-<div class="viewcode-block" id="ThreadRuntimeError"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.lib.misc.ThreadRuntimeError">[docs]</a><span class="k">class</span> <span class="nc">ThreadRuntimeError</span><span class="p">(</span><span class="ne">RuntimeError</span><span class="p">):</span>
+<div class="viewcode-block" id="ThreadRuntimeError"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.pbc.tdscf.krhf.ThreadRuntimeError">[docs]</a><span class="k">class</span> <span class="nc">ThreadRuntimeError</span><span class="p">(</span><span class="ne">RuntimeError</span><span class="p">):</span>
     <span class="k">pass</span></div>
 
-<div class="viewcode-block" id="background_thread"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.lib.misc.background_thread">[docs]</a><span class="k">def</span> <span class="nf">background_thread</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="background_thread"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.pbc.tdscf.krhf.background_thread">[docs]</a><span class="k">def</span> <span class="nf">background_thread</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="sd">'''applying function in background'''</span>
     <span class="n">thread</span> <span class="o">=</span> <span class="n">ThreadWithReturnValue</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">func</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">=</span><span class="n">kwargs</span><span class="p">)</span>
     <span class="n">thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">thread</span></div>
 
-<div class="viewcode-block" id="background_process"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.lib.misc.background_process">[docs]</a><span class="k">def</span> <span class="nf">background_process</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="background_process"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.pbc.tdscf.krhf.background_process">[docs]</a><span class="k">def</span> <span class="nf">background_process</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="sd">'''applying function in background'''</span>
     <span class="n">thread</span> <span class="o">=</span> <span class="n">ProcessWithReturnValue</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">func</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">=</span><span class="n">kwargs</span><span class="p">)</span>
     <span class="n">thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
@@ -1071,7 +1221,7 @@
 <span class="n">bp</span> <span class="o">=</span> <span class="n">bg_process</span> <span class="o">=</span> <span class="n">background_process</span>
 
 <span class="n">ASYNC_IO</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">__config__</span><span class="p">,</span> <span class="s1">'ASYNC_IO'</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
-<div class="viewcode-block" id="call_in_background"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.lib.misc.call_in_background">[docs]</a><span class="k">class</span> <span class="nc">call_in_background</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="call_in_background"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.pbc.tdscf.krhf.call_in_background">[docs]</a><span class="k">class</span> <span class="nc">call_in_background</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">'''Within this macro, function(s) can be executed asynchronously (the</span>
 <span class="sd">    given functions are executed in background).</span>
 
@@ -1120,13 +1270,13 @@
                 <span class="n">global_import_lock</span> <span class="o">=</span> <span class="n">imp</span><span class="o">.</span><span class="n">lock_held</span><span class="p">()</span>
 
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sync</span> <span class="ow">or</span> <span class="n">global_import_lock</span><span class="p">:</span>
-<span class="c1"># Some modules like nosetests, coverage etc</span>
-<span class="c1">#   python -m unittest test_xxx.py  or  nosetests test_xxx.py</span>
-<span class="c1"># hang when Python multi-threading was used in the import stage due to (Python</span>
-<span class="c1"># import lock) bug in the threading module.  See also</span>
-<span class="c1"># https://github.com/paramiko/paramiko/issues/104</span>
-<span class="c1"># https://docs.python.org/2/library/threading.html#importing-in-threaded-code</span>
-<span class="c1"># Disable the asynchoronous mode for safe importing</span>
+                <span class="c1"># Some modules like nosetests, coverage etc</span>
+                <span class="c1">#   python -m unittest test_xxx.py  or  nosetests test_xxx.py</span>
+                <span class="c1"># hang when Python multi-threading was used in the import stage due to (Python</span>
+                <span class="c1"># import lock) bug in the threading module.  See also</span>
+                <span class="c1"># https://github.com/paramiko/paramiko/issues/104</span>
+                <span class="c1"># https://docs.python.org/2/library/threading.html#importing-in-threaded-code</span>
+                <span class="c1"># Disable the asynchoronous mode for safe importing</span>
                 <span class="k">def</span> <span class="nf">def_async_fn</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
                     <span class="k">return</span> <span class="n">fns</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
 
@@ -1175,7 +1325,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">executor</span><span class="o">.</span><span class="n">shutdown</span><span class="p">(</span><span class="n">wait</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="H5TmpFile"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.lib.misc.H5TmpFile">[docs]</a><span class="k">class</span> <span class="nc">H5TmpFile</span><span class="p">(</span><span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">):</span>
+<div class="viewcode-block" id="H5TmpFile"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.pbc.tdscf.krhf.H5TmpFile">[docs]</a><span class="k">class</span> <span class="nc">H5TmpFile</span><span class="p">(</span><span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">):</span>
     <span class="sd">'''Create and return an HDF5 temporary file.</span>
 
 <span class="sd">    Kwargs:</span>
@@ -1211,14 +1361,14 @@
         <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>  <span class="c1"># exit program before de-referring the object</span>
             <span class="k">pass</span></div>
 
-<div class="viewcode-block" id="fingerprint"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.lib.misc.fingerprint">[docs]</a><span class="k">def</span> <span class="nf">fingerprint</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+<div class="viewcode-block" id="fingerprint"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.pbc.tdscf.krhf.fingerprint">[docs]</a><span class="k">def</span> <span class="nf">fingerprint</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
     <span class="sd">'''Fingerprint of numpy array'''</span>
     <span class="n">a</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">size</span><span class="p">)),</span> <span class="n">a</span><span class="o">.</span><span class="n">ravel</span><span class="p">())</span></div>
 <span class="n">finger</span> <span class="o">=</span> <span class="n">fp</span> <span class="o">=</span> <span class="n">fingerprint</span>
 
 
-<div class="viewcode-block" id="ndpointer"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.lib.misc.ndpointer">[docs]</a><span class="k">def</span> <span class="nf">ndpointer</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="ndpointer"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.pbc.tdscf.krhf.ndpointer">[docs]</a><span class="k">def</span> <span class="nf">ndpointer</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="n">base</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ctypeslib</span><span class="o">.</span><span class="n">ndpointer</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
     <span class="nd">@classmethod</span>
@@ -1230,8 +1380,8 @@
 
 
 <span class="c1"># A tag to label the derived Scanner class</span>
-<div class="viewcode-block" id="SinglePointScanner"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.lib.misc.SinglePointScanner">[docs]</a><span class="k">class</span> <span class="nc">SinglePointScanner</span><span class="p">:</span> <span class="k">pass</span></div>
-<div class="viewcode-block" id="GradScanner"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.lib.misc.GradScanner">[docs]</a><span class="k">class</span> <span class="nc">GradScanner</span><span class="p">:</span>
+<div class="viewcode-block" id="SinglePointScanner"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.pbc.tdscf.krhf.SinglePointScanner">[docs]</a><span class="k">class</span> <span class="nc">SinglePointScanner</span><span class="p">:</span> <span class="k">pass</span></div>
+<div class="viewcode-block" id="GradScanner"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.pbc.tdscf.krhf.GradScanner">[docs]</a><span class="k">class</span> <span class="nc">GradScanner</span><span class="p">:</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">g</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">base</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">as_scanner</span><span class="p">()</span>
@@ -1244,11 +1394,11 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">converged</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="c1"># Some base methods like MP2 does not have the attribute converged</span>
+        <span class="c1"># Some base methods like MP2 does not have the attribute converged</span>
         <span class="n">conv</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">base</span><span class="p">,</span> <span class="s1">'converged'</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">conv</span></div>
 
-<div class="viewcode-block" id="temporary_env"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.lib.misc.temporary_env">[docs]</a><span class="k">class</span> <span class="nc">temporary_env</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="temporary_env"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.pbc.tdscf.krhf.temporary_env">[docs]</a><span class="k">class</span> <span class="nc">temporary_env</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">'''Within the context of this macro, the attributes of the object are</span>
 <span class="sd">    temporarily updated. When the program goes out of the scope of the</span>
 <span class="sd">    context, the original value of each attribute will be restored.</span>
@@ -1284,7 +1434,7 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="light_speed"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.lib.misc.light_speed">[docs]</a><span class="k">class</span> <span class="nc">light_speed</span><span class="p">(</span><span class="n">temporary_env</span><span class="p">):</span>
+<div class="viewcode-block" id="light_speed"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.pbc.tdscf.krhf.light_speed">[docs]</a><span class="k">class</span> <span class="nc">light_speed</span><span class="p">(</span><span class="n">temporary_env</span><span class="p">):</span>
     <span class="sd">'''Within the context of this macro, the environment varialbe LIGHT_SPEED</span>
 <span class="sd">    can be customized.</span>
 
@@ -1303,10 +1453,100 @@
         <span class="n">temporary_env</span><span class="o">.</span><span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">c</span></div>
 
+<div class="viewcode-block" id="repo_info"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.pbc.tdscf.krhf.repo_info">[docs]</a><span class="k">def</span> <span class="nf">repo_info</span><span class="p">(</span><span class="n">repo_path</span><span class="p">):</span>
+    <span class="sd">'''</span>
+<span class="sd">    Repo location, version, git branch and commit ID</span>
+<span class="sd">    '''</span>
 
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">'__main__'</span><span class="p">:</span>
-    <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">j</span> <span class="ow">in</span> <span class="n">prange_tril</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">300</span><span class="p">):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">j</span><span class="o">*</span><span class="p">(</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">//</span><span class="mi">2</span><span class="o">-</span><span class="n">i</span><span class="o">*</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">//</span><span class="mi">2</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">git_version</span><span class="p">(</span><span class="n">orig_head</span><span class="p">,</span> <span class="n">head</span><span class="p">,</span> <span class="n">branch</span><span class="p">):</span>
+        <span class="n">git_version</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="n">orig_head</span><span class="p">:</span>
+            <span class="n">git_version</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">'GIT ORIG_HEAD </span><span class="si">%s</span><span class="s1">'</span> <span class="o">%</span> <span class="n">orig_head</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">branch</span><span class="p">:</span>
+            <span class="n">git_version</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">'GIT HEAD (branch </span><span class="si">%s</span><span class="s1">) </span><span class="si">%s</span><span class="s1">'</span> <span class="o">%</span> <span class="p">(</span><span class="n">branch</span><span class="p">,</span> <span class="n">head</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="n">head</span><span class="p">:</span>
+            <span class="n">git_version</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">'GIT HEAD      </span><span class="si">%s</span><span class="s1">'</span> <span class="o">%</span> <span class="n">head</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s1">'</span><span class="se">\n</span><span class="s1">'</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">git_version</span><span class="p">)</span>
+
+    <span class="n">repo_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">repo_path</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">repo_path</span><span class="p">,</span> <span class="s1">'.git'</span><span class="p">)):</span>
+        <span class="n">git_str</span> <span class="o">=</span> <span class="n">git_version</span><span class="p">(</span><span class="o">*</span><span class="n">git_info</span><span class="p">(</span><span class="n">repo_path</span><span class="p">))</span>
+
+    <span class="k">elif</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">repo_path</span><span class="p">,</span> <span class="s1">'..'</span><span class="p">,</span> <span class="s1">'.git'</span><span class="p">))):</span>
+        <span class="n">repo_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">repo_path</span><span class="p">,</span> <span class="s1">'..'</span><span class="p">))</span>
+        <span class="n">git_str</span> <span class="o">=</span> <span class="n">git_version</span><span class="p">(</span><span class="o">*</span><span class="n">git_info</span><span class="p">(</span><span class="n">repo_path</span><span class="p">))</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">git_str</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="c1"># TODO: Add info of BLAS, libcint, libxc, libxcfun, tblis if applicable</span>
+
+    <span class="n">info</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'path'</span><span class="p">:</span> <span class="n">repo_path</span><span class="p">}</span>
+    <span class="k">if</span> <span class="n">git_str</span><span class="p">:</span>
+        <span class="n">info</span><span class="p">[</span><span class="s1">'git'</span><span class="p">]</span> <span class="o">=</span> <span class="n">git_str</span>
+    <span class="k">return</span> <span class="n">info</span></div>
+
+<div class="viewcode-block" id="git_info"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.pbc.tdscf.krhf.git_info">[docs]</a><span class="k">def</span> <span class="nf">git_info</span><span class="p">(</span><span class="n">repo_path</span><span class="p">):</span>
+    <span class="n">orig_head</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">head</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">branch</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">repo_path</span><span class="p">,</span> <span class="s1">'.git'</span><span class="p">,</span> <span class="s1">'ORIG_HEAD'</span><span class="p">),</span> <span class="s1">'r'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">orig_head</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="k">except</span> <span class="ne">IOError</span><span class="p">:</span>
+        <span class="k">pass</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">head</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">repo_path</span><span class="p">,</span> <span class="s1">'.git'</span><span class="p">,</span> <span class="s1">'HEAD'</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">head</span><span class="p">,</span> <span class="s1">'r'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">head</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">head</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">'ref:'</span><span class="p">):</span>
+            <span class="n">branch</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">head</span><span class="p">)</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">repo_path</span><span class="p">,</span> <span class="s1">'.git'</span><span class="p">,</span> <span class="n">head</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">' '</span><span class="p">)[</span><span class="mi">1</span><span class="p">]),</span> <span class="s1">'r'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">head</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="k">except</span> <span class="ne">IOError</span><span class="p">:</span>
+        <span class="k">pass</span>
+    <span class="k">return</span> <span class="n">orig_head</span><span class="p">,</span> <span class="n">head</span><span class="p">,</span> <span class="n">branch</span></div>
+
+
+<div class="viewcode-block" id="isinteger"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.pbc.tdscf.krhf.isinteger">[docs]</a><span class="k">def</span> <span class="nf">isinteger</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+    <span class="sd">'''</span>
+<span class="sd">    Check if an object is an integer.</span>
+<span class="sd">    '''</span>
+    <span class="c1"># A bool is also an int in python, but we don't want that.</span>
+    <span class="c1"># On the other hand, numpy.bool_ is probably not a numpy.integer, but just to be sure...</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="p">(</span><span class="nb">bool</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">bool_</span><span class="p">)):</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="c1"># These are actual ints we expect to encounter.</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">integer</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="issequence"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.pbc.tdscf.krhf.issequence">[docs]</a><span class="k">def</span> <span class="nf">issequence</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+    <span class="sd">'''</span>
+<span class="sd">    Determine if the object provided is a sequence.</span>
+<span class="sd">    '''</span>
+    <span class="c1"># These are the types of sequences that we permit.</span>
+    <span class="c1"># numpy.ndarray is not a subclass of collections.abc.Sequence as of version 1.19.</span>
+    <span class="n">sequence_types</span> <span class="o">=</span> <span class="p">(</span><span class="n">collections</span><span class="o">.</span><span class="n">abc</span><span class="o">.</span><span class="n">Sequence</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">sequence_types</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="isintsequence"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.pbc.tdscf.krhf.isintsequence">[docs]</a><span class="k">def</span> <span class="nf">isintsequence</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+    <span class="sd">'''</span>
+<span class="sd">    Determine if the object provided is a sequence of integers.</span>
+<span class="sd">    '''</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">issequence</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">type</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">integer</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">are_ints</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">obj</span><span class="p">:</span>
+            <span class="n">are_ints</span> <span class="o">=</span> <span class="n">are_ints</span> <span class="ow">and</span> <span class="n">isinteger</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">are_ints</span></div>
 </pre></div>
 
           </article>
@@ -1331,7 +1571,7 @@
               
           </div>
             Created using
-            <a href="http://www.sphinx-doc.org/">Sphinx</a> 4.0.1.
+            <a href="http://www.sphinx-doc.org/">Sphinx</a> 5.1.1.
              and
             <a href="https://github.com/bashtage/sphinx-material/">Material for
               Sphinx</a>

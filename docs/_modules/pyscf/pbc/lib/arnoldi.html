@@ -53,6 +53,7 @@
     <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
     <script src="../../../../_static/jquery.js"></script>
     <script src="../../../../_static/underscore.js"></script>
+    <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../../../_static/doctools.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="shortcut icon" href="../../../../_static/favicon-32x32.png"/>
@@ -95,7 +96,7 @@
       </div>
       <div class="md-flex__cell md-flex__cell--stretch">
         <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
-          <span class="md-header-nav__topic">PySCF 2.0</span>
+          <span class="md-header-nav__topic">PySCF 2.2</span>
           <span class="md-header-nav__topic"> pyscf.pbc.lib.arnoldi </span>
         </div>
       </div>
@@ -105,7 +106,7 @@
 <div class="md-search" data-md-component="search" role="dialog">
   <label class="md-search__overlay" for="__search"></label>
   <div class="md-search__inner" role="search">
-    <form class="md-search__form" action="../../../../search.html" method="GET" name="search">
+    <form class="md-search__form" action="../../../../search.html" method="get" name="search">
       <input type="text" class="md-search__input" name="q" placeholder="Search"
              autocapitalize="off" autocomplete="off" spellcheck="false"
              data-md-component="query" data-md-state="active">
@@ -202,7 +203,7 @@
       
     </a>
     <a href="../../../../index.html"
-       title="PySCF">PySCF 2.0</a>
+       title="PySCF">PySCF 2.2</a>
   </label>
     <div class="md-nav__source">
       <a href="https://github.com/pyscf/pyscf/" title="Go to repository" class="md-source" data-md-source="github">
@@ -292,7 +293,7 @@
           <article class="md-content__inner md-typeset" role="main">
             
   <h1 id="modules-pyscf-pbc-lib-arnoldi--page-root">Source code for pyscf.pbc.lib.arnoldi</h1><div class="highlight"><pre>
-<span></span><span class="c1"># Copyright 2014-2020 The PySCF Developers. All Rights Reserved.</span>
+<span></span><span class="c1"># Copyright 2014-2021 The PySCF Developers. All Rights Reserved.</span>
 <span class="c1">#</span>
 <span class="c1"># Licensed under the Apache License, Version 2.0 (the "License");</span>
 <span class="c1"># you may not use this file except in compliance with the License.</span>
@@ -314,7 +315,7 @@
 <span class="kn">import</span> <span class="nn">scipy.linalg</span>
 
 <div class="viewcode-block" id="davidson_nosymm"><a class="viewcode-back" href="../../../../pyscf_api_docs/pyscf.pbc.lib.html#pyscf.pbc.lib.arnoldi.davidson_nosymm">[docs]</a><span class="k">def</span> <span class="nf">davidson_nosymm</span><span class="p">(</span><span class="n">matvec</span><span class="p">,</span><span class="n">size</span><span class="p">,</span><span class="n">nroots</span><span class="p">,</span><span class="n">Adiag</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">'''Davidson diagonalization method to solve A c = E c </span>
+    <span class="sd">'''Davidson diagonalization method to solve A c = E c</span>
 <span class="sd">    when A is not Hermitian.</span>
 <span class="sd">    '''</span>
 
@@ -441,8 +442,8 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">totalIter</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">deflated</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span> <span class="c1"># construct the full block of v^*Av</span>
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">currentSize</span><span class="p">):</span>
                 <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">currentSize</span><span class="p">):</span>
-                   <span class="n">val</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vdot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vlist</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="bp">self</span><span class="o">.</span><span class="n">Avlist</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
-                   <span class="bp">self</span><span class="o">.</span><span class="n">subH</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
+                    <span class="n">val</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vdot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vlist</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="bp">self</span><span class="o">.</span><span class="n">Avlist</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">subH</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">currentSize</span><span class="p">):</span>
                 <span class="k">if</span> <span class="n">j</span> <span class="o">&lt;=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">currentSize</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
@@ -547,17 +548,22 @@
             <span class="c1">#print "deflating..."</span>
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nEigen</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">sol</span><span class="p">[:</span><span class="bp">self</span><span class="o">.</span><span class="n">currentSize</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">evecs</span><span class="p">[:</span><span class="bp">self</span><span class="o">.</span><span class="n">currentSize</span><span class="p">,</span><span class="n">i</span><span class="p">]</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">constructSolV</span><span class="p">()</span>            <span class="c1"># Finds the "best" eigenvector for this eigenvalue</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">Avlist</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cv</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span> <span class="c1"># Puts this guess in self.Avlist rather than self.vlist for now...</span>
-                                                <span class="c1"># since this would mess up self.constructSolV()'s solution</span>
+                <span class="c1"># Finds the "best" eigenvector for this eigenvalue</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">constructSolV</span><span class="p">()</span>
+                <span class="c1"># Puts this guess in self.Avlist rather than self.vlist for now...</span>
+                <span class="c1"># since this would mess up self.constructSolV()'s solution</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">Avlist</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cv</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nEigen</span><span class="p">):</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">cv</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Avlist</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span> <span class="c1"># This is actually the "best" eigenvector v, not A*v (see above)</span>
+                <span class="c1"># This is actually the "best" eigenvector v, not A*v (see above)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">cv</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Avlist</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">gramSchmidtCurrentVec</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">vlist</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cv</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nEigen</span><span class="p">):</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">cv</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vlist</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span> <span class="c1"># This is actually the "best" eigenvector v, not A*v (see above)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">hMult</span><span class="p">()</span>                   <span class="c1"># Use current vector cv to create cAv</span>
+                <span class="c1"># This is actually the "best" eigenvector v, not A*v (see above)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">cv</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vlist</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+                <span class="c1"># Use current vector cv to create cAv</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">hMult</span><span class="p">()</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">Avlist</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cAv</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="Arnoldi.constructDeflatedSub"><a class="viewcode-back" href="../../../../pyscf_api_docs/pyscf.pbc.lib.html#pyscf.pbc.lib.arnoldi.Arnoldi.constructDeflatedSub">[docs]</a>    <span class="k">def</span> <span class="nf">constructDeflatedSub</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -588,7 +594,7 @@
               
           </div>
             Created using
-            <a href="http://www.sphinx-doc.org/">Sphinx</a> 4.0.1.
+            <a href="http://www.sphinx-doc.org/">Sphinx</a> 5.1.1.
              and
             <a href="https://github.com/bashtage/sphinx-material/">Material for
               Sphinx</a>

@@ -53,6 +53,7 @@
     <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
     <script src="../../../_static/jquery.js"></script>
     <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../../_static/doctools.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon-32x32.png"/>
@@ -95,7 +96,7 @@
       </div>
       <div class="md-flex__cell md-flex__cell--stretch">
         <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
-          <span class="md-header-nav__topic">PySCF 2.0</span>
+          <span class="md-header-nav__topic">PySCF 2.2</span>
           <span class="md-header-nav__topic"> pyscf.dft.uks_symm </span>
         </div>
       </div>
@@ -105,7 +106,7 @@
 <div class="md-search" data-md-component="search" role="dialog">
   <label class="md-search__overlay" for="__search"></label>
   <div class="md-search__inner" role="search">
-    <form class="md-search__form" action="../../../search.html" method="GET" name="search">
+    <form class="md-search__form" action="../../../search.html" method="get" name="search">
       <input type="text" class="md-search__input" name="q" placeholder="Search"
              autocapitalize="off" autocomplete="off" spellcheck="false"
              data-md-component="query" data-md-state="active">
@@ -203,7 +204,7 @@
       
     </a>
     <a href="../../../index.html"
-       title="PySCF">PySCF 2.0</a>
+       title="PySCF">PySCF 2.2</a>
   </label>
     <div class="md-nav__source">
       <a href="https://github.com/pyscf/pyscf/" title="Go to repository" class="md-source" data-md-source="github">
@@ -321,7 +322,7 @@
 <span class="kn">from</span> <span class="nn">pyscf.dft</span> <span class="kn">import</span> <span class="n">rks</span>
 
 
-<div class="viewcode-block" id="SymAdaptedUKS"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.dft.html#pyscf.dft.uks_symm.SymAdaptedUKS">[docs]</a><span class="k">class</span> <span class="nc">SymAdaptedUKS</span><span class="p">(</span><span class="n">uhf_symm</span><span class="o">.</span><span class="n">UHF</span><span class="p">,</span> <span class="n">rks</span><span class="o">.</span><span class="n">KohnShamDFT</span><span class="p">):</span>
+<div class="viewcode-block" id="SymAdaptedUKS"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.dft.html#pyscf.dft.uks_symm.SymAdaptedUKS">[docs]</a><span class="k">class</span> <span class="nc">SymAdaptedUKS</span><span class="p">(</span><span class="n">rks</span><span class="o">.</span><span class="n">KohnShamDFT</span><span class="p">,</span> <span class="n">uhf_symm</span><span class="o">.</span><span class="n">UHF</span><span class="p">):</span>
     <span class="sd">''' Restricted Kohn-Sham '''</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mol</span><span class="p">,</span> <span class="n">xc</span><span class="o">=</span><span class="s1">'LDA,VWN'</span><span class="p">):</span>
         <span class="n">uhf_symm</span><span class="o">.</span><span class="n">UHF</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mol</span><span class="p">)</span>
@@ -337,8 +338,6 @@
     <span class="n">energy_elec</span> <span class="o">=</span> <span class="n">uks</span><span class="o">.</span><span class="n">energy_elec</span>
 
     <span class="n">init_guess_by_vsap</span> <span class="o">=</span> <span class="n">rks</span><span class="o">.</span><span class="n">init_guess_by_vsap</span>
-
-    <span class="n">reset</span> <span class="o">=</span> <span class="n">rks</span><span class="o">.</span><span class="n">KohnShamDFT</span><span class="o">.</span><span class="n">reset</span>
 
 <div class="viewcode-block" id="SymAdaptedUKS.nuc_grad_method"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.dft.html#pyscf.dft.uks_symm.SymAdaptedUKS.nuc_grad_method">[docs]</a>    <span class="k">def</span> <span class="nf">nuc_grad_method</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="kn">from</span> <span class="nn">pyscf.grad</span> <span class="kn">import</span> <span class="n">uks</span>
@@ -386,7 +385,7 @@
               
           </div>
             Created using
-            <a href="http://www.sphinx-doc.org/">Sphinx</a> 4.0.1.
+            <a href="http://www.sphinx-doc.org/">Sphinx</a> 5.1.1.
              and
             <a href="https://github.com/bashtage/sphinx-material/">Material for
               Sphinx</a>

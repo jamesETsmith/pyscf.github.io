@@ -4,7 +4,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -54,10 +54,11 @@
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "document", "processHtmlClass": "math|output_area"}}</script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="shortcut icon" href="../_static/favicon-32x32.png"/>
     <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
@@ -100,7 +101,7 @@
       </div>
       <div class="md-flex__cell md-flex__cell--stretch">
         <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
-          <span class="md-header-nav__topic">PySCF 2.0</span>
+          <span class="md-header-nav__topic">PySCF 2.2</span>
           <span class="md-header-nav__topic"> Time-dependent Hartree-Fock and density functional theory </span>
         </div>
       </div>
@@ -110,7 +111,7 @@
 <div class="md-search" data-md-component="search" role="dialog">
   <label class="md-search__overlay" for="__search"></label>
   <div class="md-search__inner" role="search">
-    <form class="md-search__form" action="../search.html" method="GET" name="search">
+    <form class="md-search__form" action="../search.html" method="get" name="search">
       <input type="text" class="md-search__input" name="q" placeholder="Search"
              autocapitalize="off" autocomplete="off" spellcheck="false"
              data-md-component="query" data-md-state="active">
@@ -206,7 +207,7 @@
       
     </a>
     <a href="../index.html"
-       title="PySCF">PySCF 2.0</a>
+       title="PySCF">PySCF 2.2</a>
   </label>
     <div class="md-nav__source">
       <a href="https://github.com/pyscf/pyscf/" title="Go to repository" class="md-source" data-md-source="github">
@@ -384,6 +385,13 @@
     <li class="md-nav__item">
     
     
+      <a href="md.html" class="md-nav__link">Molecular Dynamics</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
       <a href="df.html" class="md-nav__link">Density fitting (DF)</a>
       
     
@@ -499,10 +507,10 @@
           <article class="md-content__inner md-typeset" role="main">
             
   <section id="time-dependent-hartree-fock-and-density-functional-theory">
-<span id="theory-tdscf"></span><h1 id="user-tddft--page-root">Time-dependent Hartree-Fock and density functional theory<a class="headerlink" href="#user-tddft--page-root" title="Permalink to this headline">¶</a></h1>
+<span id="theory-tdscf"></span><h1 id="user-tddft--page-root">Time-dependent Hartree-Fock and density functional theory<a class="headerlink" href="#user-tddft--page-root" title="Permalink to this heading">¶</a></h1>
 <p><em>Modules</em>: <code class="xref py py-mod docutils literal notranslate"><span class="pre">tdscf</span></code>, <code class="xref py py-mod docutils literal notranslate"><span class="pre">pbc.tdscf</span></code></p>
 <section id="introduction">
-<h2 id="introduction">Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<h2 id="introduction">Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading">¶</a></h2>
 <p>PySCF implements the time-dependent Hartree-Fock (TDHF) and
 time-dependent density functional theory (TDDFT) (frequency domain)
 linear response theories to compute excited-state energies
@@ -531,10 +539,10 @@ A minimal example that runs a TDDFT calculation is as follows</p>
 and transition dipole moments of the ten lowest singlet exicted states.</p>
 </section>
 <section id="theory">
-<h2 id="theory">Theory<a class="headerlink" href="#theory" title="Permalink to this headline">¶</a></h2>
+<h2 id="theory">Theory<a class="headerlink" href="#theory" title="Permalink to this heading">¶</a></h2>
 <p>Using first-order time-dependent perturbation theory within HF or KS theory,
 one obtains the non-Hermitian TDHF or TDDFT equations for the excitation energies
-<a class="bibtex reference internal" href="#drehea2005" id="id1">[1]</a>:</p>
+<span id="id1">[]</span>:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\left(\!\!\begin{array}{ll}
     \mathbf{A} &amp; \mathbf{B} \\
@@ -556,14 +564,14 @@ hessians which also appear in the stability analysis for reference states (see <
 <span class="math notranslate nohighlight">\(\mathbf{X}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{Y}\)</span> represent the response of the density matrix.
 In cases where the system possesses
 a degenerate ground state or has triplet instabilities, the algorithms used to solve the
-above equations may be unstable. This can be solved by applying the Tamm-Dancoff approximation (TDA) <a class="bibtex reference internal" href="#hirhea1999" id="id2">[2]</a>,
+above equations may be unstable. This can be solved by applying the Tamm-Dancoff approximation (TDA) <span id="id2">[]</span>,
 which simply neglects the <span class="math notranslate nohighlight">\(\mathbf{B}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{Y}\)</span> matrices and leads to a
 Hermitian eigenvalue problem</p>
 <div class="math notranslate nohighlight">
 \[\mathbf{AX} = \omega\mathbf{X} \;.\]</div>
 </section>
 <section id="methods">
-<h2 id="methods">Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<h2 id="methods">Methods<a class="headerlink" href="#methods" title="Permalink to this heading">¶</a></h2>
 <p>For TDHF or TDDFT calculations,
 the reference state can be either restricted or unrestricted:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mytd</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">RKS</span><span class="p">()</span><span class="o">.</span><span class="n">run</span><span class="p">()</span><span class="o">.</span><span class="n">TDDFT</span><span class="p">()</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
@@ -572,28 +580,28 @@ the reference state can be either restricted or unrestricted:</p>
 </div>
 <p>By default, only singlet excited states are computed.
 In order to compute triplet excited states, one needs to set the
-attribute <a class="reference internal" href="../pyscf_api_docs/pyscf.tdscf.html#pyscf.tdscf.rhf.TDA.singlet" title="pyscf.tdscf.rhf.TDA.singlet"><code class="xref py py-attr docutils literal notranslate"><span class="pre">singlet</span></code></a> to <code class="docutils literal notranslate"><span class="pre">False</span></code>:</p>
+attribute <a class="reference internal" href="../pyscf_api_docs/pyscf.pbc.tdscf.html#pyscf.pbc.tdscf.uhf.TDA.singlet" title="pyscf.pbc.tdscf.uhf.TDA.singlet"><code class="xref py py-attr docutils literal notranslate"><span class="pre">singlet</span></code></a> to <code class="docutils literal notranslate"><span class="pre">False</span></code>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mytd</span><span class="o">.</span><span class="n">singlet</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="n">mytd</span><span class="o">.</span><span class="n">kernel</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>One can also perform symmetry analysis by calling the <a class="reference internal" href="../pyscf_api_docs/pyscf.adc.html#pyscf.adc.radc.analyze" title="pyscf.adc.radc.analyze"><code class="xref py py-func docutils literal notranslate"><span class="pre">analyze()</span></code></a> method,
+<p>One can also perform symmetry analysis by calling the <a class="reference internal" href="../pyscf_api_docs/pyscf.x2c.html#pyscf.x2c.tdscf.analyze" title="pyscf.x2c.tdscf.analyze"><code class="xref py py-func docutils literal notranslate"><span class="pre">analyze()</span></code></a> method,
 which also computes the oscillator strengths and dipole moments:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mytd</span><span class="o">.</span><span class="n">analyze</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
 <section id="property-calculation">
-<h2 id="property-calculation">Property calculation<a class="headerlink" href="#property-calculation" title="Permalink to this headline">¶</a></h2>
+<h2 id="property-calculation">Property calculation<a class="headerlink" href="#property-calculation" title="Permalink to this heading">¶</a></h2>
 <section id="oscillator-strengths">
-<h3 id="oscillator-strengths">Oscillator strengths<a class="headerlink" href="#oscillator-strengths" title="Permalink to this headline">¶</a></h3>
+<h3 id="oscillator-strengths">Oscillator strengths<a class="headerlink" href="#oscillator-strengths" title="Permalink to this heading">¶</a></h3>
 <p>Oscillator strengths for each excited state can be computed in
 both length and velocity gauges:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mytd</span><span class="o">.</span><span class="n">oscillator_strength</span><span class="p">(</span><span class="n">gauge</span><span class="o">=</span><span class="s1">'length'</span><span class="p">)</span>
 <span class="n">mytd</span><span class="o">.</span><span class="n">oscillator_strength</span><span class="p">(</span><span class="n">gauge</span><span class="o">=</span><span class="s1">'velocity'</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Higher order corrections <a class="bibtex reference internal" href="#lesegili2015" id="id3">[3]</a>
+<p>Higher order corrections <span id="id3">[]</span>
 to the oscillator strength can also be included:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include corrections due to magnetic dipole and electric quadruple</span>
 <span class="n">mytd</span><span class="o">.</span><span class="n">oscillator_strength</span><span class="p">(</span><span class="n">gauge</span><span class="o">=</span><span class="s1">'velocity'</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
@@ -603,7 +611,7 @@ to the oscillator strength can also be included:</p>
 </div>
 </section>
 <section id="transition-moments">
-<h3 id="transition-moments">Transition moments<a class="headerlink" href="#transition-moments" title="Permalink to this headline">¶</a></h3>
+<h3 id="transition-moments">Transition moments<a class="headerlink" href="#transition-moments" title="Permalink to this heading">¶</a></h3>
 <p>PySCF implements various types of transition moments between the reference SCF state and
 the TDHF or TDDFT excited states. These include:</p>
 <ul>
@@ -626,7 +634,7 @@ the TDHF or TDDFT excited states. These include:</p>
 </ul>
 </section>
 <section id="nuclear-gradients">
-<h3 id="nuclear-gradients">Nuclear gradients<a class="headerlink" href="#nuclear-gradients" title="Permalink to this headline">¶</a></h3>
+<h3 id="nuclear-gradients">Nuclear gradients<a class="headerlink" href="#nuclear-gradients" title="Permalink to this heading">¶</a></h3>
 <p>Analytic nuclear gradients are available for TDHF and TDDFT,
 and they can be computed as follows:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tdg</span> <span class="o">=</span> <span class="n">mytd</span><span class="o">.</span><span class="n">Gradients</span><span class="p">()</span>
@@ -637,7 +645,7 @@ and they can be computed as follows:</p>
 </div>
 </section>
 <section id="natural-transition-orbital-analysis">
-<h3 id="natural-transition-orbital-analysis">Natural transition orbital analysis<a class="headerlink" href="#natural-transition-orbital-analysis" title="Permalink to this headline">¶</a></h3>
+<h3 id="natural-transition-orbital-analysis">Natural transition orbital analysis<a class="headerlink" href="#natural-transition-orbital-analysis" title="Permalink to this heading">¶</a></h3>
 <p>Natural transition orbitals (NTOs) can be computed by
 singular value decomposition of the transition density matrix.
 In PySCF, these orbitals can be obtained as follows:</p>
@@ -649,20 +657,8 @@ and they are ordered as occupied orbitals followed by virtual orbitals.</p>
 </section>
 </section>
 <section id="references">
-<h2 id="references">References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
-<p id="bibtex-bibliography-user/tddft-0"><dl class="bibtex citation">
-<dt class="bibtex label" id="drehea2005"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
-<dd><p>Andreas Dreuw and Martin Head-Gordon. Single-reference ab initio methods for the calculation of excited states of large molecules. <em>Chemical reviews</em>, 105(11):4009–4037, 2005.</p>
-</dd>
-<dt class="bibtex label" id="hirhea1999"><span class="brackets"><a class="fn-backref" href="#id2">2</a></span></dt>
-<dd><p>So Hirata and Martin Head-Gordon. Time-dependent density functional theory within the tamm–dancoff approximation. <em>Chemical Physics Letters</em>, 314(3-4):291–299, 1999.</p>
-</dd>
-<dt class="bibtex label" id="lesegili2015"><span class="brackets"><a class="fn-backref" href="#id3">3</a></span></dt>
-<dd><p>Patrick J Lestrange, Franco Egidi, and Xiaosong Li. The consequences of improperly describing oscillator strengths beyond the electric dipole approximation. <em>The Journal of chemical physics</em>, 143(23):234103, 2015.</p>
-</dd>
-</dl>
-</p>
-</section>
+<h2 id="references">References<a class="headerlink" href="#references" title="Permalink to this heading">¶</a></h2>
+<span class="target" id="id4"></span></section>
 </section>
 
 
@@ -712,7 +708,7 @@ and they are ordered as occupied orbitals followed by virtual orbitals.</p>
               
           </div>
             Created using
-            <a href="http://www.sphinx-doc.org/">Sphinx</a> 4.0.1.
+            <a href="http://www.sphinx-doc.org/">Sphinx</a> 5.1.1.
              and
             <a href="https://github.com/bashtage/sphinx-material/">Material for
               Sphinx</a>

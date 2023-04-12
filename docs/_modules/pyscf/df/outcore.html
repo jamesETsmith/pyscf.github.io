@@ -53,6 +53,7 @@
     <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
     <script src="../../../_static/jquery.js"></script>
     <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../../_static/doctools.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon-32x32.png"/>
@@ -95,7 +96,7 @@
       </div>
       <div class="md-flex__cell md-flex__cell--stretch">
         <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
-          <span class="md-header-nav__topic">PySCF 2.0</span>
+          <span class="md-header-nav__topic">PySCF 2.2</span>
           <span class="md-header-nav__topic"> pyscf.df.outcore </span>
         </div>
       </div>
@@ -105,7 +106,7 @@
 <div class="md-search" data-md-component="search" role="dialog">
   <label class="md-search__overlay" for="__search"></label>
   <div class="md-search__inner" role="search">
-    <form class="md-search__form" action="../../../search.html" method="GET" name="search">
+    <form class="md-search__form" action="../../../search.html" method="get" name="search">
       <input type="text" class="md-search__input" name="q" placeholder="Search"
              autocapitalize="off" autocomplete="off" spellcheck="false"
              data-md-component="query" data-md-state="active">
@@ -203,7 +204,7 @@
       
     </a>
     <a href="../../../index.html"
-       title="PySCF">PySCF 2.0</a>
+       title="PySCF">PySCF 2.2</a>
   </label>
     <div class="md-nav__source">
       <a href="https://github.com/pyscf/pyscf/" title="Go to repository" class="md-source" data-md-source="github">
@@ -294,7 +295,7 @@
             
   <h1 id="modules-pyscf-df-outcore--page-root">Source code for pyscf.df.outcore</h1><div class="highlight"><pre>
 <span></span><span class="ch">#!/usr/bin/env python</span>
-<span class="c1"># Copyright 2014-2020 The PySCF Developers. All Rights Reserved.</span>
+<span class="c1"># Copyright 2014-2021 The PySCF Developers. All Rights Reserved.</span>
 <span class="c1">#</span>
 <span class="c1"># Licensed under the Apache License, Version 2.0 (the "License");</span>
 <span class="c1"># you may not use this file except in compliance with the License.</span>
@@ -311,7 +312,7 @@
 <span class="c1"># Author: Qiming Sun &lt;osirpt.sun@gmail.com&gt;</span>
 <span class="c1">#</span>
 
-<span class="kn">import</span> <span class="nn">time</span>
+
 <span class="kn">import</span> <span class="nn">tempfile</span>
 <span class="kn">import</span> <span class="nn">numpy</span>
 <span class="kn">import</span> <span class="nn">scipy.linalg</span>
@@ -337,10 +338,10 @@
                  <span class="n">max_memory</span><span class="o">=</span><span class="n">MAX_MEMORY</span><span class="p">,</span> <span class="n">auxmol</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">logger</span><span class="o">.</span><span class="n">NOTE</span><span class="p">):</span>
     <span class="sd">'''3-index density-fitting tensor.</span>
 <span class="sd">    '''</span>
-    <span class="k">assert</span><span class="p">(</span><span class="n">aosym</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">'s1'</span><span class="p">,</span> <span class="s1">'s2ij'</span><span class="p">))</span>
-    <span class="k">assert</span><span class="p">(</span><span class="n">comp</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="p">(</span><span class="n">aosym</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">'s1'</span><span class="p">,</span> <span class="s1">'s2ij'</span><span class="p">))</span>
+    <span class="k">assert</span> <span class="p">(</span><span class="n">comp</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
     <span class="n">log</span> <span class="o">=</span> <span class="n">logger</span><span class="o">.</span><span class="n">new_logger</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">verbose</span><span class="p">)</span>
-    <span class="n">time0</span> <span class="o">=</span> <span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">clock</span><span class="p">(),</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">())</span>
+    <span class="n">time0</span> <span class="o">=</span> <span class="p">(</span><span class="n">logger</span><span class="o">.</span><span class="n">process_clock</span><span class="p">(),</span> <span class="n">logger</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">())</span>
 
     <span class="k">if</span> <span class="n">auxmol</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">auxmol</span> <span class="o">=</span> <span class="n">make_auxmol</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">auxbasis</span><span class="p">)</span>
@@ -398,9 +399,9 @@
     <span class="sd">'''3-center 2-electron DF tensor. Similar to cholesky_eri while this</span>
 <span class="sd">    function stores DF tensor in blocks.</span>
 <span class="sd">    '''</span>
-    <span class="k">assert</span><span class="p">(</span><span class="n">aosym</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">'s1'</span><span class="p">,</span> <span class="s1">'s2ij'</span><span class="p">))</span>
+    <span class="k">assert</span> <span class="p">(</span><span class="n">aosym</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">'s1'</span><span class="p">,</span> <span class="s1">'s2ij'</span><span class="p">))</span>
     <span class="n">log</span> <span class="o">=</span> <span class="n">logger</span><span class="o">.</span><span class="n">new_logger</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">verbose</span><span class="p">)</span>
-    <span class="n">time0</span> <span class="o">=</span> <span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">clock</span><span class="p">(),</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">())</span>
+    <span class="n">time0</span> <span class="o">=</span> <span class="p">(</span><span class="n">logger</span><span class="o">.</span><span class="n">process_clock</span><span class="p">(),</span> <span class="n">logger</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">())</span>
 
     <span class="k">if</span> <span class="n">auxmol</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">auxmol</span> <span class="o">=</span> <span class="n">make_auxmol</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">auxbasis</span><span class="p">)</span>
@@ -495,8 +496,8 @@
             <span class="n">max_memory</span><span class="o">=</span><span class="n">MAX_MEMORY</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">compact</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="sd">''' Transform ij of (ij|L) to MOs.</span>
 <span class="sd">    '''</span>
-    <span class="k">assert</span><span class="p">(</span><span class="n">aosym</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">'s1'</span><span class="p">,</span> <span class="s1">'s2ij'</span><span class="p">))</span>
-    <span class="n">time0</span> <span class="o">=</span> <span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">clock</span><span class="p">(),</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">())</span>
+    <span class="k">assert</span> <span class="p">(</span><span class="n">aosym</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">'s1'</span><span class="p">,</span> <span class="s1">'s2ij'</span><span class="p">))</span>
+    <span class="n">time0</span> <span class="o">=</span> <span class="p">(</span><span class="n">logger</span><span class="o">.</span><span class="n">process_clock</span><span class="p">(),</span> <span class="n">logger</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">())</span>
     <span class="n">log</span> <span class="o">=</span> <span class="n">logger</span><span class="o">.</span><span class="n">new_logger</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">verbose</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">tmpdir</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -556,25 +557,25 @@
     <span class="n">log</span><span class="o">.</span><span class="n">timer</span><span class="p">(</span><span class="s1">'AO-&gt;MO CD eri transformation'</span><span class="p">,</span> <span class="o">*</span><span class="n">time0</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">erifile</span></div>
 
-<span class="k">def</span> <span class="nf">_guess_shell_ranges</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">buflen</span><span class="p">,</span> <span class="n">aosym</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">_guess_shell_ranges</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">buflen</span><span class="p">,</span> <span class="n">aosym</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="kn">from</span> <span class="nn">pyscf.ao2mo.outcore</span> <span class="kn">import</span> <span class="n">balance_partition</span>
     <span class="n">ao_loc</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">ao_loc_nr</span><span class="p">()</span>
     <span class="k">if</span> <span class="s1">'s2'</span> <span class="ow">in</span> <span class="n">aosym</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">balance_partition</span><span class="p">(</span><span class="n">ao_loc</span><span class="o">*</span><span class="p">(</span><span class="n">ao_loc</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">//</span><span class="mi">2</span><span class="p">,</span> <span class="n">buflen</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">balance_partition</span><span class="p">(</span><span class="n">ao_loc</span><span class="o">*</span><span class="p">(</span><span class="n">ao_loc</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">//</span><span class="mi">2</span><span class="p">,</span> <span class="n">buflen</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">stop</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">nao</span> <span class="o">=</span> <span class="n">ao_loc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-        <span class="k">return</span> <span class="n">balance_partition</span><span class="p">(</span><span class="n">ao_loc</span><span class="o">*</span><span class="n">nao</span><span class="p">,</span> <span class="n">buflen</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">balance_partition</span><span class="p">(</span><span class="n">ao_loc</span><span class="o">*</span><span class="n">nao</span><span class="p">,</span> <span class="n">buflen</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">stop</span><span class="p">)</span>
 
 <span class="k">def</span> <span class="nf">_create_h5file</span><span class="p">(</span><span class="n">erifile</span><span class="p">,</span> <span class="n">dataname</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">h5py</span><span class="o">.</span><span class="n">is_hdf5</span><span class="p">(</span><span class="n">erifile</span><span class="p">):</span>
         <span class="n">feri</span> <span class="o">=</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">erifile</span><span class="p">,</span> <span class="s1">'a'</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">dataname</span> <span class="ow">in</span> <span class="n">feri</span><span class="p">:</span>
-            <span class="k">del</span><span class="p">(</span><span class="n">feri</span><span class="p">[</span><span class="n">dataname</span><span class="p">])</span>
+            <span class="k">del</span> <span class="p">(</span><span class="n">feri</span><span class="p">[</span><span class="n">dataname</span><span class="p">])</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">feri</span> <span class="o">=</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">erifile</span><span class="p">,</span> <span class="s1">'w'</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">feri</span>
 
-<span class="k">del</span><span class="p">(</span><span class="n">MAX_MEMORY</span><span class="p">)</span>
+<span class="k">del</span> <span class="p">(</span><span class="n">MAX_MEMORY</span><span class="p">)</span>
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">'__main__'</span><span class="p">:</span>
@@ -629,7 +630,7 @@
               
           </div>
             Created using
-            <a href="http://www.sphinx-doc.org/">Sphinx</a> 4.0.1.
+            <a href="http://www.sphinx-doc.org/">Sphinx</a> 5.1.1.
              and
             <a href="https://github.com/bashtage/sphinx-material/">Material for
               Sphinx</a>

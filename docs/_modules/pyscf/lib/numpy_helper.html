@@ -53,6 +53,7 @@
     <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
     <script src="../../../_static/jquery.js"></script>
     <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../../_static/doctools.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon-32x32.png"/>
@@ -95,7 +96,7 @@
       </div>
       <div class="md-flex__cell md-flex__cell--stretch">
         <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
-          <span class="md-header-nav__topic">PySCF 2.0</span>
+          <span class="md-header-nav__topic">PySCF 2.2</span>
           <span class="md-header-nav__topic"> pyscf.lib.numpy_helper </span>
         </div>
       </div>
@@ -105,7 +106,7 @@
 <div class="md-search" data-md-component="search" role="dialog">
   <label class="md-search__overlay" for="__search"></label>
   <div class="md-search__inner" role="search">
-    <form class="md-search__form" action="../../../search.html" method="GET" name="search">
+    <form class="md-search__form" action="../../../search.html" method="get" name="search">
       <input type="text" class="md-search__input" name="q" placeholder="Search"
              autocapitalize="off" autocomplete="off" spellcheck="false"
              data-md-component="query" data-md-state="active">
@@ -202,7 +203,7 @@
       
     </a>
     <a href="../../../index.html"
-       title="PySCF">PySCF 2.0</a>
+       title="PySCF">PySCF 2.2</a>
   </label>
     <div class="md-nav__source">
       <a href="https://github.com/pyscf/pyscf/" title="Go to repository" class="md-source" data-md-source="github">
@@ -324,8 +325,8 @@
 <span class="n">EINSUM_MAX_SIZE</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">misc</span><span class="o">.</span><span class="n">__config__</span><span class="p">,</span> <span class="s1">'lib_einsum_max_size'</span><span class="p">,</span> <span class="mi">2000</span><span class="p">)</span>
 
 <span class="k">try</span><span class="p">:</span>
-<span class="c1"># Import tblis before libnp_helper to avoid potential dl-loading conflicts</span>
-    <span class="kn">from</span> <span class="nn">pyscf.lib</span> <span class="kn">import</span> <span class="n">tblis_einsum</span>
+    <span class="c1"># Import tblis before libnp_helper to avoid potential dl-loading conflicts</span>
+    <span class="kn">from</span> <span class="nn">pyscf</span> <span class="kn">import</span> <span class="n">tblis_einsum</span>
     <span class="n">FOUND_TBLIS</span> <span class="o">=</span> <span class="kc">True</span>
 <span class="k">except</span> <span class="p">(</span><span class="ne">ImportError</span><span class="p">,</span> <span class="ne">OSError</span><span class="p">):</span>
     <span class="n">FOUND_TBLIS</span> <span class="o">=</span> <span class="kc">False</span>
@@ -359,11 +360,10 @@
         <span class="k">if</span> <span class="s1">'-&gt;'</span> <span class="ow">in</span> <span class="n">subscripts</span><span class="p">:</span>
             <span class="n">indices_in</span><span class="p">,</span> <span class="n">idx_final</span> <span class="o">=</span> <span class="n">subscripts</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">'-&gt;'</span><span class="p">)</span>
             <span class="n">indices_in</span> <span class="o">=</span> <span class="n">indices_in</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">','</span><span class="p">)</span>
-            <span class="n">indices</span> <span class="o">=</span> <span class="n">indices_in</span> <span class="o">+</span> <span class="p">[</span><span class="n">idx_final</span><span class="p">]</span>
+            <span class="c1"># indices = indices_in + [idx_final]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">idx_final</span> <span class="o">=</span> <span class="s1">''</span>
             <span class="n">indices_in</span> <span class="o">=</span> <span class="n">subscripts</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">'-&gt;'</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">','</span><span class="p">)</span>
-            <span class="n">indices</span> <span class="o">=</span> <span class="n">indices_in</span>
 
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">indices_in</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">2</span><span class="p">:</span>
             <span class="n">idx_removed</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">indices_in</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">indices_in</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
@@ -408,7 +408,7 @@
     <span class="n">C_dtype</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">result_type</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">FOUND_TBLIS</span> <span class="ow">and</span> <span class="n">C_dtype</span> <span class="o">==</span> <span class="n">numpy</span><span class="o">.</span><span class="n">double</span><span class="p">:</span>
         <span class="c1"># tblis is slow for complex type</span>
-        <span class="k">return</span> <span class="n">tblis_einsum</span><span class="o">.</span><span class="n">_contract</span><span class="p">(</span><span class="n">idx_str</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">tblis_einsum</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span><span class="n">idx_str</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
     <span class="n">indices</span>  <span class="o">=</span> <span class="n">idx_str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">','</span><span class="p">,</span> <span class="s1">''</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">'-&gt;'</span><span class="p">,</span> <span class="s1">''</span><span class="p">)</span>
     <span class="k">if</span> <span class="s1">'-&gt;'</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">idx_str</span> <span class="ow">or</span> <span class="nb">any</span><span class="p">(</span><span class="n">indices</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="n">indices</span><span class="p">)):</span>
@@ -452,6 +452,7 @@
     <span class="n">idxBt</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">idxB</span><span class="p">)</span>
     <span class="n">inner_shape</span> <span class="o">=</span> <span class="mi">1</span>
     <span class="n">insert_B_loc</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">shared_idxAB</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">shared_idxAB</span><span class="p">))</span>
     <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">shared_idxAB</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">rangeA</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">!=</span> <span class="n">rangeB</span><span class="p">[</span><span class="n">n</span><span class="p">]:</span>
             <span class="n">err</span> <span class="o">=</span> <span class="p">(</span><span class="s1">'ERROR: In index string </span><span class="si">%s</span><span class="s1">, the range of index </span><span class="si">%s</span><span class="s1"> is '</span>
@@ -532,14 +533,9 @@
     <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">tensors</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">2</span><span class="p">:</span>
         <span class="n">out</span> <span class="o">=</span> <span class="n">_contract</span><span class="p">(</span><span class="n">subscripts</span><span class="p">,</span> <span class="o">*</span><span class="n">tensors</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">if</span> <span class="s1">'-&gt;'</span> <span class="ow">in</span> <span class="n">subscripts</span><span class="p">:</span>
-            <span class="n">indices_in</span><span class="p">,</span> <span class="n">idx_final</span> <span class="o">=</span> <span class="n">subscripts</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">'-&gt;'</span><span class="p">)</span>
-            <span class="n">indices_in</span> <span class="o">=</span> <span class="n">indices_in</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">','</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">idx_final</span> <span class="o">=</span> <span class="s1">''</span>
-            <span class="n">indices_in</span> <span class="o">=</span> <span class="n">subscripts</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">'-&gt;'</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">','</span><span class="p">)</span>
+        <span class="n">optimize</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">'optimize'</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
         <span class="n">tensors</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">tensors</span><span class="p">)</span>
-        <span class="n">contraction_list</span> <span class="o">=</span> <span class="n">_einsum_path</span><span class="p">(</span><span class="n">subscripts</span><span class="p">,</span> <span class="o">*</span><span class="n">tensors</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">contraction_list</span> <span class="o">=</span> <span class="n">_einsum_path</span><span class="p">(</span><span class="n">subscripts</span><span class="p">,</span> <span class="o">*</span><span class="n">tensors</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="n">optimize</span><span class="p">,</span>
                                         <span class="n">einsum_call</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
         <span class="k">for</span> <span class="n">contraction</span> <span class="ow">in</span> <span class="n">contraction_list</span><span class="p">:</span>
             <span class="n">inds</span><span class="p">,</span> <span class="n">idx_rm</span><span class="p">,</span> <span class="n">einsum_str</span><span class="p">,</span> <span class="n">remaining</span> <span class="o">=</span> <span class="n">contraction</span><span class="p">[:</span><span class="mi">4</span><span class="p">]</span>
@@ -577,7 +573,7 @@
         <span class="n">out</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">mat</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">buffer</span><span class="o">=</span><span class="n">out</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">mat</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="n">numpy</span><span class="o">.</span><span class="n">double</span><span class="p">:</span>
             <span class="n">fn</span> <span class="o">=</span> <span class="n">_np_helper</span><span class="o">.</span><span class="n">NPdpack_tril_2d</span>
-        <span class="k">elif</span> <span class="n">mat</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="n">numpy</span><span class="o">.</span><span class="n">complex</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">mat</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="n">numpy</span><span class="o">.</span><span class="n">complex128</span><span class="p">:</span>
             <span class="n">fn</span> <span class="o">=</span> <span class="n">_np_helper</span><span class="o">.</span><span class="n">NPzpack_tril_2d</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">out</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">mat</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">tril_indices</span><span class="p">(</span><span class="n">nd</span><span class="p">)]</span>
@@ -589,7 +585,7 @@
         <span class="k">return</span> <span class="n">out</span>
 
     <span class="k">else</span><span class="p">:</span>  <span class="c1"># pack the leading two dimension</span>
-        <span class="k">assert</span><span class="p">(</span><span class="n">axis</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="p">(</span><span class="n">axis</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
         <span class="n">out</span> <span class="o">=</span> <span class="n">mat</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">tril_indices</span><span class="p">(</span><span class="n">nd</span><span class="p">)]</span>
         <span class="k">return</span> <span class="n">out</span></div>
 
@@ -626,13 +622,17 @@
         <span class="n">count</span><span class="p">,</span> <span class="n">nd</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">tril</span><span class="o">.</span><span class="n">size</span>
         <span class="n">nd</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">nd</span><span class="o">*</span><span class="mi">2</span><span class="p">))</span>
         <span class="n">shape</span> <span class="o">=</span> <span class="p">(</span><span class="n">nd</span><span class="p">,</span><span class="n">nd</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">nd</span> <span class="o">=</span> <span class="n">tril</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span>
-        <span class="n">count</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">tril</span><span class="o">.</span><span class="n">size</span> <span class="o">//</span> <span class="n">nd</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">tril</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">axis</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">nd</span><span class="p">,</span> <span class="n">count</span> <span class="o">=</span> <span class="n">tril</span><span class="o">.</span><span class="n">shape</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">count</span><span class="p">,</span> <span class="n">nd</span> <span class="o">=</span> <span class="n">tril</span><span class="o">.</span><span class="n">shape</span>
         <span class="n">nd</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">nd</span><span class="o">*</span><span class="mi">2</span><span class="p">))</span>
         <span class="n">shape</span> <span class="o">=</span> <span class="p">(</span><span class="n">count</span><span class="p">,</span><span class="n">nd</span><span class="p">,</span><span class="n">nd</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">'unpack_tril for high dimension arrays'</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="p">(</span><span class="n">tril</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">double</span> <span class="ow">and</span> <span class="n">tril</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">complex</span><span class="p">):</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">tril</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">double</span> <span class="ow">and</span> <span class="n">tril</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">complex128</span><span class="p">):</span>
         <span class="n">out</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">tril</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">buffer</span><span class="o">=</span><span class="n">out</span><span class="p">)</span>
         <span class="n">idx</span><span class="p">,</span> <span class="n">idy</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">tril_indices</span><span class="p">(</span><span class="n">nd</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">filltriu</span> <span class="o">==</span> <span class="n">ANTIHERMI</span><span class="p">:</span>
@@ -654,7 +654,7 @@
         <span class="k">return</span> <span class="n">out</span>
 
     <span class="k">else</span><span class="p">:</span>  <span class="c1"># unpack the leading dimension</span>
-        <span class="k">assert</span><span class="p">(</span><span class="n">axis</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="p">(</span><span class="n">axis</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
         <span class="n">shape</span> <span class="o">=</span> <span class="p">(</span><span class="n">nd</span><span class="p">,</span><span class="n">nd</span><span class="p">)</span> <span class="o">+</span> <span class="n">tril</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
         <span class="n">out</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">tril</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">buffer</span><span class="o">=</span><span class="n">out</span><span class="p">)</span>
         <span class="n">idx</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">tril_indices</span><span class="p">(</span><span class="n">nd</span><span class="p">)</span>
@@ -669,7 +669,7 @@
         <span class="k">elif</span> <span class="n">filltriu</span> <span class="o">==</span> <span class="n">SYMMETRIC</span><span class="p">:</span>
             <span class="c1">#:for ij,(i,j) in enumerate(zip(*idx)):</span>
             <span class="c1">#:    out[i,j] = out[j,i] = tril[ij]</span>
-            <span class="n">idxy</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">nd</span><span class="p">,</span><span class="n">nd</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
+            <span class="n">idxy</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">nd</span><span class="p">,</span><span class="n">nd</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
             <span class="n">idxy</span><span class="p">[</span><span class="n">idx</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">idx</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span> <span class="o">=</span> <span class="n">idxy</span><span class="p">[</span><span class="n">idx</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">idx</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">nd</span><span class="o">*</span><span class="p">(</span><span class="n">nd</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">//</span><span class="mi">2</span><span class="p">)</span>
             <span class="n">numpy</span><span class="o">.</span><span class="n">take</span><span class="p">(</span><span class="n">tril</span><span class="p">,</span> <span class="n">idxy</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="n">out</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
@@ -693,7 +693,7 @@
     <span class="n">mat</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">nd</span><span class="p">,</span> <span class="n">tril</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">tril</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="n">numpy</span><span class="o">.</span><span class="n">double</span><span class="p">:</span>
         <span class="n">fn</span> <span class="o">=</span> <span class="n">_np_helper</span><span class="o">.</span><span class="n">NPdunpack_row</span>
-    <span class="k">elif</span> <span class="n">tril</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="n">numpy</span><span class="o">.</span><span class="n">complex</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">tril</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="n">numpy</span><span class="o">.</span><span class="n">complex128</span><span class="p">:</span>
         <span class="n">fn</span> <span class="o">=</span> <span class="n">_np_helper</span><span class="o">.</span><span class="n">NPzunpack_row</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">p0</span> <span class="o">=</span> <span class="n">row_id</span><span class="o">*</span><span class="p">(</span><span class="n">row_id</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">//</span><span class="mi">2</span>
@@ -712,23 +712,23 @@
     <span class="sd">'''Use the elements of the lower triangular part to fill the upper triangular part.</span>
 
 <span class="sd">    Kwargs:</span>
-<span class="sd">        filltriu : int</span>
+<span class="sd">        hermi : int</span>
 
 <span class="sd">            | 1 (default) return a hermitian matrix</span>
 <span class="sd">            | 2           return an anti-hermitian matrix</span>
 
 <span class="sd">    Examples:</span>
 
-<span class="sd">    &gt;&gt;&gt; unpack_row(numpy.arange(9.).reshape(3,3), 1)</span>
+<span class="sd">    &gt;&gt;&gt; hermi_triu(numpy.arange(9.).reshape(3,3), 1)</span>
 <span class="sd">    [[ 0.  3.  6.]</span>
 <span class="sd">     [ 3.  4.  7.]</span>
 <span class="sd">     [ 6.  7.  8.]]</span>
-<span class="sd">    &gt;&gt;&gt; unpack_row(numpy.arange(9.).reshape(3,3), 2)</span>
+<span class="sd">    &gt;&gt;&gt; hermi_triu(numpy.arange(9.).reshape(3,3), 2)</span>
 <span class="sd">    [[ 0. -3. -6.]</span>
 <span class="sd">     [ 3.  4. -7.]</span>
 <span class="sd">     [ 6.  7.  8.]]</span>
 <span class="sd">    '''</span>
-    <span class="k">assert</span><span class="p">(</span><span class="n">hermi</span> <span class="o">==</span> <span class="n">HERMITIAN</span> <span class="ow">or</span> <span class="n">hermi</span> <span class="o">==</span> <span class="n">ANTIHERMI</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="p">(</span><span class="n">hermi</span> <span class="o">==</span> <span class="n">HERMITIAN</span> <span class="ow">or</span> <span class="n">hermi</span> <span class="o">==</span> <span class="n">ANTIHERMI</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">inplace</span><span class="p">:</span>
         <span class="n">mat</span> <span class="o">=</span> <span class="n">mat</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="s1">'A'</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">mat</span><span class="o">.</span><span class="n">flags</span><span class="o">.</span><span class="n">c_contiguous</span><span class="p">:</span>
@@ -739,11 +739,11 @@
         <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
     <span class="n">nd</span> <span class="o">=</span> <span class="n">mat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="k">assert</span><span class="p">(</span><span class="n">mat</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="n">nd</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="p">(</span><span class="n">mat</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="n">nd</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">mat</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="n">numpy</span><span class="o">.</span><span class="n">double</span><span class="p">:</span>
         <span class="n">fn</span> <span class="o">=</span> <span class="n">_np_helper</span><span class="o">.</span><span class="n">NPdsymm_triu</span>
-    <span class="k">elif</span> <span class="n">mat</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="n">numpy</span><span class="o">.</span><span class="n">complex</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">mat</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="n">numpy</span><span class="o">.</span><span class="n">complex128</span><span class="p">:</span>
         <span class="n">fn</span> <span class="o">=</span> <span class="n">_np_helper</span><span class="o">.</span><span class="n">NPzhermi_triu</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span>
@@ -787,7 +787,7 @@
     <span class="n">idy</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">idy</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">a</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="n">numpy</span><span class="o">.</span><span class="n">double</span><span class="p">:</span>
         <span class="n">fn</span> <span class="o">=</span> <span class="n">_np_helper</span><span class="o">.</span><span class="n">NPdtake_2d</span>
-    <span class="k">elif</span> <span class="n">a</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="n">numpy</span><span class="o">.</span><span class="n">complex</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">a</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="n">numpy</span><span class="o">.</span><span class="n">complex128</span><span class="p">:</span>
         <span class="n">fn</span> <span class="o">=</span> <span class="n">_np_helper</span><span class="o">.</span><span class="n">NPztake_2d</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">a</span><span class="p">[</span><span class="n">idx</span><span class="p">[:,</span><span class="kc">None</span><span class="p">],</span><span class="n">idy</span><span class="p">]</span>
@@ -811,13 +811,13 @@
 <span class="sd">     [ 0.  0.  0.]</span>
 <span class="sd">     [ 1.  0.  1.]]</span>
 <span class="sd">    '''</span>
-    <span class="k">assert</span><span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">flags</span><span class="o">.</span><span class="n">c_contiguous</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">flags</span><span class="o">.</span><span class="n">c_contiguous</span><span class="p">)</span>
     <span class="n">a</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="s1">'C'</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">out</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="n">a</span><span class="o">.</span><span class="n">dtype</span><span class="p">:</span>
         <span class="n">a</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">out</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="n">numpy</span><span class="o">.</span><span class="n">double</span><span class="p">:</span>
         <span class="n">fn</span> <span class="o">=</span> <span class="n">_np_helper</span><span class="o">.</span><span class="n">NPdtakebak_2d</span>
-    <span class="k">elif</span> <span class="n">out</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="n">numpy</span><span class="o">.</span><span class="n">complex</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">out</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="n">numpy</span><span class="o">.</span><span class="n">complex128</span><span class="p">:</span>
         <span class="n">fn</span> <span class="o">=</span> <span class="n">_np_helper</span><span class="o">.</span><span class="n">NPztakebak_2d</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">thread_safe</span><span class="p">:</span>
@@ -846,8 +846,8 @@
 <span class="sd">     [ 1.  1.  1.]]</span>
 <span class="sd">    '''</span>
     <span class="k">if</span> <span class="n">inplace</span><span class="p">:</span>
-        <span class="n">arow</span><span class="p">,</span> <span class="n">acol</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">shape</span>
-        <span class="k">assert</span><span class="p">(</span><span class="n">arow</span> <span class="o">==</span> <span class="n">acol</span><span class="p">)</span>
+        <span class="n">arow</span><span class="p">,</span> <span class="n">acol</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>
+        <span class="k">assert</span> <span class="n">arow</span> <span class="o">==</span> <span class="n">acol</span>
         <span class="n">tmp</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">BLOCK_DIM</span><span class="p">,</span><span class="n">BLOCK_DIM</span><span class="p">))</span>
         <span class="k">for</span> <span class="n">c0</span><span class="p">,</span> <span class="n">c1</span> <span class="ow">in</span> <span class="n">misc</span><span class="o">.</span><span class="n">prange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">acol</span><span class="p">,</span> <span class="n">BLOCK_DIM</span><span class="p">):</span>
             <span class="k">for</span> <span class="n">r0</span><span class="p">,</span> <span class="n">r1</span> <span class="ow">in</span> <span class="n">misc</span><span class="o">.</span><span class="n">prange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">c0</span><span class="p">,</span> <span class="n">BLOCK_DIM</span><span class="p">):</span>
@@ -859,8 +859,11 @@
         <span class="k">return</span> <span class="n">a</span>
 
     <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">a</span><span class="o">.</span><span class="n">flags</span><span class="o">.</span><span class="n">c_contiguous</span>
-        <span class="ow">or</span> <span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">double</span> <span class="ow">and</span> <span class="n">a</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">complex</span><span class="p">)):</span>
+        <span class="ow">or</span> <span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">double</span> <span class="ow">and</span> <span class="n">a</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">complex128</span><span class="p">)):</span>
         <span class="k">if</span> <span class="n">a</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">a</span><span class="o">.</span><span class="n">flags</span><span class="o">.</span><span class="n">f_contiguous</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">a</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
             <span class="n">arow</span><span class="p">,</span> <span class="n">acol</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">shape</span>
             <span class="n">out</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">acol</span><span class="p">,</span><span class="n">arow</span><span class="p">),</span> <span class="n">a</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
             <span class="n">r1</span> <span class="o">=</span> <span class="n">c1</span> <span class="o">=</span> <span class="mi">0</span>
@@ -876,7 +879,7 @@
             <span class="n">out</span><span class="p">[</span><span class="n">c1</span><span class="p">:</span><span class="n">acol</span><span class="p">,</span><span class="n">r1</span><span class="p">:</span><span class="n">arow</span><span class="p">]</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="n">r1</span><span class="p">:</span><span class="n">arow</span><span class="p">,</span><span class="n">c1</span><span class="p">:</span><span class="n">acol</span><span class="p">]</span><span class="o">.</span><span class="n">T</span>
             <span class="k">return</span> <span class="n">out</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">a</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">axes</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">axes</span><span class="p">),</span> <span class="n">order</span><span class="o">=</span><span class="s1">'C'</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">a</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
         <span class="n">arow</span><span class="p">,</span> <span class="n">acol</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">shape</span>
@@ -889,7 +892,7 @@
     <span class="k">else</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
-    <span class="k">assert</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">flags</span><span class="o">.</span><span class="n">c_contiguous</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">flags</span><span class="o">.</span><span class="n">c_contiguous</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">a</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="n">numpy</span><span class="o">.</span><span class="n">double</span><span class="p">:</span>
         <span class="n">fn</span> <span class="o">=</span> <span class="n">_np_helper</span><span class="o">.</span><span class="n">NPdtranspose_021</span>
     <span class="k">else</span><span class="p">:</span>
@@ -920,13 +923,15 @@
 <span class="sd">     [ 3.  6.]]</span>
 <span class="sd">    '''</span>
     <span class="k">if</span> <span class="n">inplace</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span>
         <span class="n">out</span> <span class="o">=</span> <span class="n">a</span>
     <span class="k">else</span><span class="p">:</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
         <span class="n">out</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">a</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">buffer</span><span class="o">=</span><span class="n">out</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">a</span><span class="o">.</span><span class="n">flags</span><span class="o">.</span><span class="n">c_contiguous</span>
-        <span class="ow">or</span> <span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">double</span> <span class="ow">and</span> <span class="n">a</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">complex</span><span class="p">)):</span>
-        <span class="k">if</span> <span class="n">a</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="ow">or</span> <span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">double</span> <span class="ow">and</span> <span class="n">a</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">complex128</span><span class="p">)):</span>
+        <span class="k">def</span> <span class="nf">_hermi_sum_2d</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">out</span><span class="p">):</span>
             <span class="n">na</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
             <span class="k">for</span> <span class="n">c0</span><span class="p">,</span> <span class="n">c1</span> <span class="ow">in</span> <span class="n">misc</span><span class="o">.</span><span class="n">prange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">na</span><span class="p">,</span> <span class="n">BLOCK_DIM</span><span class="p">):</span>
                 <span class="k">for</span> <span class="n">r0</span><span class="p">,</span> <span class="n">r1</span> <span class="ow">in</span> <span class="n">misc</span><span class="o">.</span><span class="n">prange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">c0</span><span class="p">,</span> <span class="n">BLOCK_DIM</span><span class="p">):</span>
@@ -937,19 +942,27 @@
                 <span class="n">tmp</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="n">c0</span><span class="p">:</span><span class="n">c1</span><span class="p">,</span><span class="n">c0</span><span class="p">:</span><span class="n">c1</span><span class="p">]</span> <span class="o">+</span> <span class="n">a</span><span class="p">[</span><span class="n">c0</span><span class="p">:</span><span class="n">c1</span><span class="p">,</span><span class="n">c0</span><span class="p">:</span><span class="n">c1</span><span class="p">]</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span><span class="o">.</span><span class="n">T</span>
                 <span class="n">out</span><span class="p">[</span><span class="n">c0</span><span class="p">:</span><span class="n">c1</span><span class="p">,</span><span class="n">c0</span><span class="p">:</span><span class="n">c1</span><span class="p">]</span> <span class="o">=</span> <span class="n">tmp</span>
             <span class="k">return</span> <span class="n">out</span>
+
+        <span class="k">if</span> <span class="n">a</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">_hermi_sum_2d</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">out</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">a</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">3</span> <span class="ow">and</span> <span class="n">axes</span> <span class="o">==</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">):</span>
+            <span class="k">assert</span> <span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+                <span class="n">_hermi_sum_2d</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">out</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+            <span class="k">return</span> <span class="n">out</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">'input array is not C-contiguous'</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">a</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
-        <span class="k">assert</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">assert</span> <span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
         <span class="n">c_shape</span> <span class="o">=</span> <span class="p">(</span><span class="n">ctypes</span><span class="o">.</span><span class="n">c_int</span><span class="o">*</span><span class="mi">3</span><span class="p">)(</span><span class="mi">1</span><span class="p">,</span> <span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
     <span class="k">elif</span> <span class="n">a</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">3</span> <span class="ow">and</span> <span class="n">axes</span> <span class="o">==</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">):</span>
-        <span class="k">assert</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="k">assert</span> <span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
         <span class="n">c_shape</span> <span class="o">=</span> <span class="p">(</span><span class="n">ctypes</span><span class="o">.</span><span class="n">c_int</span><span class="o">*</span><span class="mi">3</span><span class="p">)(</span><span class="o">*</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
-    <span class="k">assert</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">flags</span><span class="o">.</span><span class="n">c_contiguous</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">flags</span><span class="o">.</span><span class="n">c_contiguous</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">a</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="n">numpy</span><span class="o">.</span><span class="n">double</span><span class="p">:</span>
         <span class="n">fn</span> <span class="o">=</span> <span class="n">_np_helper</span><span class="o">.</span><span class="n">NPdsymm_021_sum</span>
     <span class="k">else</span><span class="p">:</span>
@@ -977,7 +990,7 @@
         <span class="n">trans_a</span> <span class="o">=</span> <span class="s1">'N'</span>
         <span class="c1">#raise ValueError('a.flags: %s' % str(a.flags))</span>
 
-    <span class="k">assert</span><span class="p">(</span><span class="n">k</span> <span class="o">==</span> <span class="n">b</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">assert</span> <span class="p">(</span><span class="n">k</span> <span class="o">==</span> <span class="n">b</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
     <span class="k">if</span> <span class="n">b</span><span class="o">.</span><span class="n">flags</span><span class="o">.</span><span class="n">c_contiguous</span><span class="p">:</span>
         <span class="n">trans_b</span> <span class="o">=</span> <span class="s1">'N'</span>
     <span class="k">elif</span> <span class="n">b</span><span class="o">.</span><span class="n">flags</span><span class="o">.</span><span class="n">f_contiguous</span><span class="p">:</span>
@@ -992,7 +1005,7 @@
         <span class="n">c</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">m</span><span class="p">,</span><span class="n">n</span><span class="p">))</span>
         <span class="n">beta</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">assert</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">n</span><span class="p">))</span>
+        <span class="k">assert</span> <span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">n</span><span class="p">))</span>
 
     <span class="k">return</span> <span class="n">_dgemm</span><span class="p">(</span><span class="n">trans_a</span><span class="p">,</span> <span class="n">trans_b</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">)</span></div>
 
@@ -1010,7 +1023,7 @@
     <span class="k">else</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'a.flags: </span><span class="si">%s</span><span class="s1">'</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">flags</span><span class="p">))</span>
 
-    <span class="k">assert</span><span class="p">(</span><span class="n">k</span> <span class="o">==</span> <span class="n">b</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">assert</span> <span class="p">(</span><span class="n">k</span> <span class="o">==</span> <span class="n">b</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
     <span class="k">if</span> <span class="n">b</span><span class="o">.</span><span class="n">flags</span><span class="o">.</span><span class="n">c_contiguous</span><span class="p">:</span>
         <span class="n">trans_b</span> <span class="o">=</span> <span class="s1">'N'</span>
     <span class="k">elif</span> <span class="n">b</span><span class="o">.</span><span class="n">flags</span><span class="o">.</span><span class="n">f_contiguous</span><span class="p">:</span>
@@ -1023,9 +1036,33 @@
         <span class="n">beta</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">c</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">m</span><span class="p">,</span><span class="n">n</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">complex128</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">assert</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">n</span><span class="p">))</span>
+        <span class="k">assert</span> <span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">n</span><span class="p">))</span>
 
     <span class="k">return</span> <span class="n">_zgemm</span><span class="p">(</span><span class="n">trans_a</span><span class="p">,</span> <span class="n">trans_b</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="zdotNN"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.lib.numpy_helper.zdotNN">[docs]</a><span class="k">def</span> <span class="nf">zdotNN</span><span class="p">(</span><span class="n">aR</span><span class="p">,</span> <span class="n">aI</span><span class="p">,</span> <span class="n">bR</span><span class="p">,</span> <span class="n">bI</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">cR</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cI</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="sd">'''c = a*b'''</span>
+    <span class="n">cR</span> <span class="o">=</span> <span class="n">ddot</span><span class="p">(</span><span class="n">aR</span><span class="p">,</span> <span class="n">bR</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">cR</span><span class="p">,</span> <span class="n">beta</span><span class="p">)</span>
+    <span class="n">cR</span> <span class="o">=</span> <span class="n">ddot</span><span class="p">(</span><span class="n">aI</span><span class="p">,</span> <span class="n">bI</span><span class="p">,</span><span class="o">-</span><span class="n">alpha</span><span class="p">,</span> <span class="n">cR</span><span class="p">,</span> <span class="mi">1</span>   <span class="p">)</span>
+    <span class="n">cI</span> <span class="o">=</span> <span class="n">ddot</span><span class="p">(</span><span class="n">aR</span><span class="p">,</span> <span class="n">bI</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">cI</span><span class="p">,</span> <span class="n">beta</span><span class="p">)</span>
+    <span class="n">cI</span> <span class="o">=</span> <span class="n">ddot</span><span class="p">(</span><span class="n">aI</span><span class="p">,</span> <span class="n">bR</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">cI</span><span class="p">,</span> <span class="mi">1</span>   <span class="p">)</span>
+    <span class="k">return</span> <span class="n">cR</span><span class="p">,</span> <span class="n">cI</span></div>
+
+<div class="viewcode-block" id="zdotCN"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.lib.numpy_helper.zdotCN">[docs]</a><span class="k">def</span> <span class="nf">zdotCN</span><span class="p">(</span><span class="n">aR</span><span class="p">,</span> <span class="n">aI</span><span class="p">,</span> <span class="n">bR</span><span class="p">,</span> <span class="n">bI</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">cR</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cI</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="sd">'''c = a.conj()*b'''</span>
+    <span class="n">cR</span> <span class="o">=</span> <span class="n">ddot</span><span class="p">(</span><span class="n">aR</span><span class="p">,</span> <span class="n">bR</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">cR</span><span class="p">,</span> <span class="n">beta</span><span class="p">)</span>
+    <span class="n">cR</span> <span class="o">=</span> <span class="n">ddot</span><span class="p">(</span><span class="n">aI</span><span class="p">,</span> <span class="n">bI</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">cR</span><span class="p">,</span> <span class="mi">1</span>   <span class="p">)</span>
+    <span class="n">cI</span> <span class="o">=</span> <span class="n">ddot</span><span class="p">(</span><span class="n">aR</span><span class="p">,</span> <span class="n">bI</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">cI</span><span class="p">,</span> <span class="n">beta</span><span class="p">)</span>
+    <span class="n">cI</span> <span class="o">=</span> <span class="n">ddot</span><span class="p">(</span><span class="n">aI</span><span class="p">,</span> <span class="n">bR</span><span class="p">,</span><span class="o">-</span><span class="n">alpha</span><span class="p">,</span> <span class="n">cI</span><span class="p">,</span> <span class="mi">1</span>   <span class="p">)</span>
+    <span class="k">return</span> <span class="n">cR</span><span class="p">,</span> <span class="n">cI</span></div>
+
+<div class="viewcode-block" id="zdotNC"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.lib.numpy_helper.zdotNC">[docs]</a><span class="k">def</span> <span class="nf">zdotNC</span><span class="p">(</span><span class="n">aR</span><span class="p">,</span> <span class="n">aI</span><span class="p">,</span> <span class="n">bR</span><span class="p">,</span> <span class="n">bI</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">cR</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cI</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="sd">'''c = a*b.conj()'''</span>
+    <span class="n">cR</span> <span class="o">=</span> <span class="n">ddot</span><span class="p">(</span><span class="n">aR</span><span class="p">,</span> <span class="n">bR</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">cR</span><span class="p">,</span> <span class="n">beta</span><span class="p">)</span>
+    <span class="n">cR</span> <span class="o">=</span> <span class="n">ddot</span><span class="p">(</span><span class="n">aI</span><span class="p">,</span> <span class="n">bI</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">cR</span><span class="p">,</span> <span class="mi">1</span>   <span class="p">)</span>
+    <span class="n">cI</span> <span class="o">=</span> <span class="n">ddot</span><span class="p">(</span><span class="n">aR</span><span class="p">,</span> <span class="n">bI</span><span class="p">,</span><span class="o">-</span><span class="n">alpha</span><span class="p">,</span> <span class="n">cI</span><span class="p">,</span> <span class="n">beta</span><span class="p">)</span>
+    <span class="n">cI</span> <span class="o">=</span> <span class="n">ddot</span><span class="p">(</span><span class="n">aI</span><span class="p">,</span> <span class="n">bR</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">cI</span><span class="p">,</span> <span class="mi">1</span>   <span class="p">)</span>
+    <span class="k">return</span> <span class="n">cR</span><span class="p">,</span> <span class="n">cI</span></div>
 
 <div class="viewcode-block" id="dot"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.lib.numpy_helper.dot">[docs]</a><span class="k">def</span> <span class="nf">dot</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
     <span class="n">atype</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">dtype</span>
@@ -1101,9 +1138,9 @@
             <span class="n">c</span><span class="p">[:]</span> <span class="o">*=</span> <span class="n">beta</span>
         <span class="k">return</span> <span class="n">c</span>
 
-    <span class="k">assert</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">flags</span><span class="o">.</span><span class="n">c_contiguous</span><span class="p">)</span>
-    <span class="k">assert</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">flags</span><span class="o">.</span><span class="n">c_contiguous</span><span class="p">)</span>
-    <span class="k">assert</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">flags</span><span class="o">.</span><span class="n">c_contiguous</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">flags</span><span class="o">.</span><span class="n">c_contiguous</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">flags</span><span class="o">.</span><span class="n">c_contiguous</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">flags</span><span class="o">.</span><span class="n">c_contiguous</span><span class="p">)</span>
 
     <span class="n">_np_helper</span><span class="o">.</span><span class="n">NPdgemm</span><span class="p">(</span><span class="n">ctypes</span><span class="o">.</span><span class="n">c_char</span><span class="p">(</span><span class="n">trans_b</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">'ascii'</span><span class="p">)),</span>
                        <span class="n">ctypes</span><span class="o">.</span><span class="n">c_char</span><span class="p">(</span><span class="n">trans_a</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">'ascii'</span><span class="p">)),</span>
@@ -1126,12 +1163,12 @@
             <span class="n">c</span><span class="p">[:]</span> <span class="o">*=</span> <span class="n">beta</span>
         <span class="k">return</span> <span class="n">c</span>
 
-    <span class="k">assert</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">flags</span><span class="o">.</span><span class="n">c_contiguous</span><span class="p">)</span>
-    <span class="k">assert</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">flags</span><span class="o">.</span><span class="n">c_contiguous</span><span class="p">)</span>
-    <span class="k">assert</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">flags</span><span class="o">.</span><span class="n">c_contiguous</span><span class="p">)</span>
-    <span class="k">assert</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="n">numpy</span><span class="o">.</span><span class="n">complex128</span><span class="p">)</span>
-    <span class="k">assert</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="n">numpy</span><span class="o">.</span><span class="n">complex128</span><span class="p">)</span>
-    <span class="k">assert</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="n">numpy</span><span class="o">.</span><span class="n">complex128</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">flags</span><span class="o">.</span><span class="n">c_contiguous</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">flags</span><span class="o">.</span><span class="n">c_contiguous</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">flags</span><span class="o">.</span><span class="n">c_contiguous</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="n">numpy</span><span class="o">.</span><span class="n">complex128</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="n">numpy</span><span class="o">.</span><span class="n">complex128</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="n">numpy</span><span class="o">.</span><span class="n">complex128</span><span class="p">)</span>
 
     <span class="n">_np_helper</span><span class="o">.</span><span class="n">NPzgemm</span><span class="p">(</span><span class="n">ctypes</span><span class="o">.</span><span class="n">c_char</span><span class="p">(</span><span class="n">trans_b</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">'ascii'</span><span class="p">)),</span>
                        <span class="n">ctypes</span><span class="o">.</span><span class="n">c_char</span><span class="p">(</span><span class="n">trans_a</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">'ascii'</span><span class="p">)),</span>
@@ -1171,23 +1208,7 @@
     <span class="n">a</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">(</span><span class="n">count</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">int8</span><span class="p">,</span> <span class="n">buffer</span><span class="o">=</span><span class="n">buf</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">a</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span></div>
 
-<span class="kn">from</span> <span class="nn">distutils.version</span> <span class="kn">import</span> <span class="n">LooseVersion</span>
-<span class="k">if</span> <span class="n">LooseVersion</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">LooseVersion</span><span class="p">(</span><span class="s1">'1.6.0'</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">norm</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">ord</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">'''numpy.linalg.norm for numpy 1.6.*</span>
-<span class="sd">        '''</span>
-        <span class="k">if</span> <span class="n">axis</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">ord</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">ord</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">x</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-            <span class="n">axes</span> <span class="o">=</span> <span class="n">string</span><span class="o">.</span><span class="n">ascii_lowercase</span><span class="p">[:</span><span class="n">x</span><span class="o">.</span><span class="n">ndim</span><span class="p">]</span>
-            <span class="n">target</span> <span class="o">=</span> <span class="n">axes</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">axes</span><span class="p">[</span><span class="n">axis</span><span class="p">],</span> <span class="s1">''</span><span class="p">)</span>
-            <span class="n">descr</span> <span class="o">=</span> <span class="s1">'</span><span class="si">%s</span><span class="s1">,</span><span class="si">%s</span><span class="s1">-&gt;</span><span class="si">%s</span><span class="s1">'</span> <span class="o">%</span> <span class="p">(</span><span class="n">axes</span><span class="p">,</span> <span class="n">axes</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
-            <span class="n">xx</span> <span class="o">=</span> <span class="n">_numpy_einsum</span><span class="p">(</span><span class="n">descr</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">conj</span><span class="p">(),</span> <span class="n">x</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">xx</span><span class="o">.</span><span class="n">real</span><span class="p">)</span>
-<span class="k">else</span><span class="p">:</span>
-    <span class="n">norm</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span>
-<span class="k">del</span><span class="p">(</span><span class="n">LooseVersion</span><span class="p">)</span>
+<span class="n">norm</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span>
 
 <div class="viewcode-block" id="cond"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.lib.numpy_helper.cond">[docs]</a><span class="k">def</span> <span class="nf">cond</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">'''Compute the condition number'''</span>
@@ -1276,7 +1297,7 @@
 
         <span class="n">symbs</span> <span class="o">=</span> <span class="n">subscript</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">'-'</span><span class="p">,</span> <span class="s1">'+'</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">'+'</span><span class="p">)</span>
         <span class="c1">#s = ''.join(symbs)</span>
-        <span class="c1">#assert(len(set(s)) == len(s))  # make sure no duplicated symbols</span>
+        <span class="c1">#assert (len(set(s)) == len(s))  # make sure no duplicated symbols</span>
         <span class="k">return</span> <span class="n">sign</span><span class="p">,</span> <span class="n">symbs</span>
 
     <span class="k">if</span> <span class="s1">'-&gt;'</span> <span class="ow">in</span> <span class="n">subscripts</span><span class="p">:</span>
@@ -1286,11 +1307,11 @@
     <span class="k">else</span><span class="p">:</span>
         <span class="n">sign</span><span class="p">,</span> <span class="n">src</span> <span class="o">=</span> <span class="n">sign_and_symbs</span><span class="p">(</span><span class="n">subscripts</span><span class="p">)</span>
         <span class="n">dest</span> <span class="o">=</span> <span class="s1">''</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">src</span><span class="p">)</span>
-    <span class="k">assert</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">src</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">operands</span><span class="p">))</span>
+    <span class="k">assert</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">src</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">operands</span><span class="p">))</span>
 
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">symb</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">src</span><span class="p">):</span>
         <span class="n">op</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">operands</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
-        <span class="k">assert</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">symb</span><span class="p">)</span> <span class="o">==</span> <span class="n">op</span><span class="o">.</span><span class="n">ndim</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">symb</span><span class="p">)</span> <span class="o">==</span> <span class="n">op</span><span class="o">.</span><span class="n">ndim</span><span class="p">)</span>
         <span class="n">unisymb</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">symb</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">unisymb</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">symb</span><span class="p">):</span>
             <span class="n">unisymb</span> <span class="o">=</span> <span class="s1">''</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">unisymb</span><span class="p">)</span>
@@ -1314,27 +1335,38 @@
     <span class="sd">'''</span>
 <span class="sd">    .. code-block:: python</span>
 
-<span class="sd">        for i,i0 in enumerate(loc_x):</span>
+<span class="sd">        for i,i0 in enumerate(loc_x[:-1]):</span>
 <span class="sd">            i1 = loc_x[i+1]</span>
-<span class="sd">            for j,j0 in enumerate(loc_y):</span>
+<span class="sd">            for j,j0 in enumerate(loc_y[:-1]):</span>
 <span class="sd">                j1 = loc_y[j+1]</span>
-<span class="sd">                out[i,j] = op(a[i0:i1,j0:j1])</span>
+<span class="sd">                out[i,j] = op(a[i0:i1, j0:j1])</span>
 <span class="sd">    '''</span>
-    <span class="k">assert</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="n">numpy</span><span class="o">.</span><span class="n">double</span><span class="p">)</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">opname</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">'NP_'</span><span class="p">):</span>
-        <span class="n">opname</span> <span class="o">=</span> <span class="s1">'NP_'</span> <span class="o">+</span> <span class="n">opname</span>
-    <span class="n">op</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">_np_helper</span><span class="p">,</span> <span class="n">opname</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">loc_y</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">loc_y</span> <span class="o">=</span> <span class="n">loc_x</span>
     <span class="n">loc_x</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">loc_x</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
     <span class="n">loc_y</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">loc_y</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
     <span class="n">nloc_x</span> <span class="o">=</span> <span class="n">loc_x</span><span class="o">.</span><span class="n">size</span> <span class="o">-</span> <span class="mi">1</span>
     <span class="n">nloc_y</span> <span class="o">=</span> <span class="n">loc_y</span><span class="o">.</span><span class="n">size</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="n">opname</span> <span class="o">=</span> <span class="n">opname</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">'numpy.'</span><span class="p">,</span> <span class="s1">''</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">'np.'</span><span class="p">,</span> <span class="s1">''</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">opname</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">'NP_'</span><span class="p">):</span>
+        <span class="n">opname</span> <span class="o">=</span> <span class="n">opname</span><span class="p">[</span><span class="mi">3</span><span class="p">:]</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">double</span> <span class="ow">or</span>
+        <span class="n">opname</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">'sum'</span><span class="p">,</span> <span class="s1">'max'</span><span class="p">,</span> <span class="s1">'min'</span><span class="p">,</span> <span class="s1">'abssum'</span><span class="p">,</span> <span class="s1">'absmax'</span><span class="p">,</span> <span class="s1">'absmin'</span><span class="p">,</span> <span class="s1">'norm'</span><span class="p">)):</span>
+        <span class="n">tmp</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">nloc_x</span><span class="p">,</span> <span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">a</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">nloc_x</span><span class="p">,</span> <span class="n">nloc_y</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">a</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+        <span class="n">op</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">numpy</span><span class="p">,</span> <span class="n">opname</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">i0</span><span class="p">,</span> <span class="n">i1</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">loc_x</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">loc_x</span><span class="p">[</span><span class="mi">1</span><span class="p">:])):</span>
+            <span class="n">tmp</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">op</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="n">i0</span><span class="p">:</span><span class="n">i1</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="p">(</span><span class="n">j0</span><span class="p">,</span> <span class="n">j1</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">loc_y</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">loc_y</span><span class="p">[</span><span class="mi">1</span><span class="p">:])):</span>
+            <span class="n">out</span><span class="p">[:,</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">op</span><span class="p">(</span><span class="n">tmp</span><span class="p">[:,</span><span class="n">j0</span><span class="p">:</span><span class="n">j1</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">out</span>
+
+    <span class="n">op</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">_np_helper</span><span class="p">,</span> <span class="s1">'NP_'</span> <span class="o">+</span> <span class="n">opname</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">a</span><span class="o">.</span><span class="n">flags</span><span class="o">.</span><span class="n">f_contiguous</span><span class="p">:</span>
-        <span class="n">out</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">nloc_x</span><span class="p">,</span> <span class="n">nloc_y</span><span class="p">),</span> <span class="n">order</span><span class="o">=</span><span class="s1">'F'</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">a</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="s1">'C'</span><span class="p">)</span>
-        <span class="n">out</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">nloc_x</span><span class="p">,</span> <span class="n">nloc_y</span><span class="p">))</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">transpose</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="s1">'C'</span><span class="p">)</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">nloc_x</span><span class="p">,</span> <span class="n">nloc_y</span><span class="p">))</span>
     <span class="n">_np_helper</span><span class="o">.</span><span class="n">NPcondense</span><span class="p">(</span><span class="n">op</span><span class="p">,</span> <span class="n">out</span><span class="o">.</span><span class="n">ctypes</span><span class="o">.</span><span class="n">data_as</span><span class="p">(</span><span class="n">ctypes</span><span class="o">.</span><span class="n">c_void_p</span><span class="p">),</span>
                           <span class="n">a</span><span class="o">.</span><span class="n">ctypes</span><span class="o">.</span><span class="n">data_as</span><span class="p">(</span><span class="n">ctypes</span><span class="o">.</span><span class="n">c_void_p</span><span class="p">),</span>
                           <span class="n">loc_x</span><span class="o">.</span><span class="n">ctypes</span><span class="o">.</span><span class="n">data_as</span><span class="p">(</span><span class="n">ctypes</span><span class="o">.</span><span class="n">c_void_p</span><span class="p">),</span>
@@ -1372,20 +1404,25 @@
     <span class="c1">#    obj = numpy.asarray(a).view(cls)</span>
     <span class="c1">#    obj.__dict__.update(kwargs)</span>
     <span class="c1">#    return obj</span>
-<span class="c1"># Customize __reduce__ and __setstate__ to keep tags after serialization</span>
-<span class="c1"># pickle.loads(pickle.dumps(tagarray)).  This is needed by mpi communication</span>
+
+    <span class="c1"># Customize __reduce__ and __setstate__ to keep tags after serialization</span>
+    <span class="c1"># pickle.loads(pickle.dumps(tagarray)).  This is needed by mpi communication</span>
     <span class="k">def</span> <span class="nf">__reduce__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">pickled</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="o">.</span><span class="n">__reduce__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="n">state</span> <span class="o">=</span> <span class="n">pickled</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">,)</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">pickled</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">pickled</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">state</span><span class="p">)</span>
+
     <span class="k">def</span> <span class="nf">__setstate__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
         <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="o">.</span><span class="n">__setstate__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
         <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">state</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
 
-    <span class="c1"># Whenever the contents of the array was modified (through ufunc), the tag</span>
+    <span class="c1"># Whenever the contents of the array were modified (through ufunc), the tag</span>
     <span class="c1"># should be expired. Overwrite the output of ufunc to restore ndarray type.</span>
     <span class="k">def</span> <span class="nf">__array_wrap__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">out</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="o">.</span><span class="n">__array_wrap__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">out</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span></div>
+        <span class="k">if</span> <span class="n">out</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>  <span class="c1"># if ufunc returns a scalar</span>
+            <span class="k">return</span> <span class="n">out</span><span class="p">[()]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">out</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="tag_array"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.lib.numpy_helper.tag_array">[docs]</a><span class="k">def</span> <span class="nf">tag_array</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -1409,7 +1446,7 @@
 <span class="sd">    The entries of shapes indicate the shape of each tensor.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        tensors : a list of tensors </span>
+<span class="sd">        tensors : a list of tensors</span>
 
 <span class="sd">    Examples:</span>
 
@@ -1439,6 +1476,209 @@
         <span class="n">size</span> <span class="o">=</span> <span class="n">p1</span>
         <span class="k">return</span> <span class="n">tensors</span><span class="p">,</span> <span class="n">size</span>
     <span class="k">return</span> <span class="n">sub_split</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">shapes</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="locs_to_indices"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.lib.numpy_helper.locs_to_indices">[docs]</a><span class="k">def</span> <span class="nf">locs_to_indices</span><span class="p">(</span><span class="n">locs</span><span class="p">,</span> <span class="n">segement_list</span><span class="p">):</span>
+    <span class="sd">'''</span>
+<span class="sd">    Generate indices based on the segement information list "locs" and the</span>
+<span class="sd">    required segements.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        locs : list or ndarray</span>
+<span class="sd">            locs[i], locs[i+1] indicates the [start:end] index for i-th segement</span>
+<span class="sd">        segement_list: list or ndarray</span>
+<span class="sd">            The segement Ids to extract.</span>
+
+<span class="sd">    Examples::</span>
+
+<span class="sd">    &gt;&gt;&gt; locs_to_indices([0, 2, 5, 6, 9, 15, 17], [0, 2, 3, 5])</span>
+<span class="sd">    array([0, 1, 5, 6, 7, 8, 15, 16])</span>
+
+<span class="sd">    &gt;&gt;&gt; locs_to_indices([0, 2, 5, 6, 9], array([True, False, True, True]))</span>
+<span class="sd">    array([0, 1, 5, 6, 7, 8])</span>
+<span class="sd">    '''</span>
+    <span class="n">segement_list</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">segement_list</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">segement_list</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="n">segement_list</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">segement_list</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">nsegs</span> <span class="o">=</span> <span class="n">segement_list</span><span class="o">.</span><span class="n">size</span>
+    <span class="k">if</span> <span class="n">nsegs</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">elif</span> <span class="n">nsegs</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">i0</span><span class="p">,</span> <span class="n">i1</span> <span class="o">=</span> <span class="n">locs</span><span class="p">[</span><span class="n">segement_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">segement_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">i0</span><span class="p">,</span> <span class="n">i1</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="n">segement_list</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">locs</span><span class="p">)</span>
+        <span class="c1"># Find the dis-continued Ids in segement_list</span>
+        <span class="n">bas_mask</span> <span class="o">=</span> <span class="n">segement_list</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">!=</span> <span class="n">segement_list</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+        <span class="n">segs_loc</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">bas_mask</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">nsegs</span><span class="p">])</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">b0</span><span class="p">,</span> <span class="n">b1</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">segs_loc</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">segs_loc</span><span class="p">[</span><span class="mi">1</span><span class="p">:]):</span>
+            <span class="n">i0</span><span class="p">,</span> <span class="n">i1</span> <span class="o">=</span> <span class="n">locs</span><span class="p">[</span><span class="n">segement_list</span><span class="p">[</span><span class="n">b0</span><span class="p">]],</span> <span class="n">locs</span><span class="p">[</span><span class="n">segement_list</span><span class="p">[</span><span class="n">b1</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">idx</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">i0</span><span class="p">,</span> <span class="n">i1</span><span class="p">))</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">hstack</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="cleanse"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.lib.numpy_helper.cleanse">[docs]</a><span class="k">def</span> <span class="nf">cleanse</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="sd">'''</span>
+<span class="sd">    Remove floating-point errors by setting the</span>
+<span class="sd">    numbers with differences smaller than `tol`</span>
+<span class="sd">    to the same value. This should allow</span>
+<span class="sd">    `numpy.round_` and `numpy.unique` together</span>
+<span class="sd">    to work as expected.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        a : ndarray</span>
+<span class="sd">            Array to be cleansed.</span>
+<span class="sd">        axis : int or None</span>
+<span class="sd">            Axis along which the array values are compared.</span>
+<span class="sd">            Default is the first axis. If set to None,</span>
+<span class="sd">            the flattened array is used.</span>
+<span class="sd">        tol : floating</span>
+<span class="sd">            Tolerance, default is 0.</span>
+<span class="sd">    Returns:</span>
+<span class="sd">        Cleansed array.</span>
+<span class="sd">    '''</span>
+    <span class="k">def</span> <span class="nf">_cleanse_1d</span><span class="p">(</span><span class="n">a_flat</span><span class="p">,</span> <span class="n">tol</span><span class="p">):</span>
+        <span class="n">sorted_index</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">a_flat</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+        <span class="n">sorted_a_flat</span> <span class="o">=</span> <span class="n">a_flat</span><span class="p">[</span><span class="n">sorted_index</span><span class="p">]</span>
+        <span class="n">diff</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">sorted_a_flat</span><span class="p">)</span>
+        <span class="n">cluster_loc</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">argwhere</span><span class="p">(</span><span class="n">diff</span> <span class="o">&gt;</span> <span class="n">tol</span><span class="p">)[:,</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="n">a_flat</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">cluster_loc</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+            <span class="n">id0</span><span class="p">,</span> <span class="n">id1</span> <span class="o">=</span> <span class="n">cluster_loc</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">cluster_loc</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">a_flat</span><span class="p">[</span><span class="n">sorted_index</span><span class="p">[</span><span class="n">id0</span><span class="p">:</span><span class="n">id1</span><span class="p">]]</span> <span class="o">=</span> <span class="n">a_flat</span><span class="p">[</span><span class="n">sorted_index</span><span class="p">[</span><span class="n">id0</span><span class="p">]]</span>
+        <span class="k">return</span> <span class="n">a_flat</span>
+
+    <span class="k">if</span> <span class="n">axis</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">a_flat</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">_cleanse_1d</span><span class="p">(</span><span class="n">a_flat</span><span class="p">,</span> <span class="n">tol</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">a0</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">moveaxis</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">axis</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">shape</span> <span class="o">=</span> <span class="n">a0</span><span class="o">.</span><span class="n">shape</span>
+        <span class="n">a0</span> <span class="o">=</span> <span class="n">a0</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">a0</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">a0</span><span class="p">)):</span>
+            <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_cleanse_1d</span><span class="p">(</span><span class="n">a0</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">tol</span><span class="p">))</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">moveaxis</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">axis</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="base_repr_int"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.lib.numpy_helper.base_repr_int">[docs]</a><span class="k">def</span> <span class="nf">base_repr_int</span><span class="p">(</span><span class="n">number</span><span class="p">,</span> <span class="n">base</span><span class="p">,</span> <span class="n">ndigits</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">'''</span>
+<span class="sd">    Similar to numpy.base_repr, but returns a list of integers.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        number : array or int</span>
+<span class="sd">            The value to convert. Negative values are converted to</span>
+<span class="sd">            their absolute values.</span>
+<span class="sd">        base : int</span>
+<span class="sd">            Convert `number` to the `base` number system.</span>
+<span class="sd">        ndigits : int, optional</span>
+<span class="sd">            Number of digits. If given, pad zeros to the left until the number</span>
+<span class="sd">            of digits reaches `ndigits`. Default is None, meaning no padding.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        out : list</span>
+<span class="sd">            Representation of `number` in `base` system.</span>
+
+<span class="sd">    Examples::</span>
+
+<span class="sd">    &gt;&gt;&gt; lib.base_repr_int(29, 8)</span>
+<span class="sd">    [3, 5]</span>
+
+<span class="sd">    &gt;&gt;&gt; lib.base_repr_int(29, 8, 3)</span>
+<span class="sd">    [0, 3, 5]</span>
+<span class="sd">    '''</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">number</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="n">ndigits</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="n">number</span> <span class="o">=</span> <span class="n">number</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">empty</span><span class="p">([</span><span class="n">ndigits</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">number</span><span class="p">)],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ndigits</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+            <span class="n">ki</span> <span class="o">=</span> <span class="n">number</span> <span class="o">//</span> <span class="n">base</span><span class="o">**</span><span class="n">i</span>
+            <span class="n">number</span> <span class="o">-=</span> <span class="n">ki</span> <span class="o">*</span> <span class="n">base</span><span class="o">**</span><span class="n">i</span>
+            <span class="n">res</span><span class="p">[</span><span class="n">ndigits</span><span class="o">-</span><span class="mi">1</span><span class="o">-</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">ki</span>
+        <span class="k">return</span> <span class="n">res</span><span class="o">.</span><span class="n">T</span>
+
+    <span class="n">num</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">number</span><span class="p">)</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="n">num</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">while</span> <span class="n">num</span><span class="p">:</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">num</span> <span class="o">%</span> <span class="n">base</span><span class="p">)</span>
+        <span class="n">num</span> <span class="o">//=</span> <span class="n">base</span>
+    <span class="k">if</span> <span class="n">ndigits</span><span class="p">:</span>
+        <span class="n">padding</span> <span class="o">=</span> <span class="n">ndigits</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+        <span class="n">res</span> <span class="o">+=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">padding</span>
+    <span class="n">res</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">res</span></div>
+
+<div class="viewcode-block" id="inv_base_repr_int"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.lib.numpy_helper.inv_base_repr_int">[docs]</a><span class="k">def</span> <span class="nf">inv_base_repr_int</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">base</span><span class="p">):</span>
+    <span class="sd">'''Inverse of `base_repr_int`.</span>
+<span class="sd">    Similar to Python function int(), but for arbitrary base.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        x : array like</span>
+<span class="sd">        base : int</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        out : int</span>
+
+<span class="sd">    Examples::</span>
+
+<span class="sd">    &gt;&gt;&gt; lib.inv_base_repr_int([0, 18, 9], 27)</span>
+<span class="sd">    495</span>
+
+<span class="sd">    &gt;&gt;&gt; lib.base_repr_int(495, 27, 3)</span>
+<span class="sd">    [0, 18, 9]</span>
+<span class="sd">    '''</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">ndim</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">shape</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span>
+        <span class="n">nd</span> <span class="o">=</span> <span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">nd</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nd</span><span class="p">):</span>
+            <span class="n">out</span> <span class="o">+=</span> <span class="n">x</span><span class="p">[:,</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">base</span> <span class="o">**</span> <span class="p">(</span><span class="n">nd</span><span class="o">-</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">out</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">shape</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">ix</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">x</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]):</span>
+            <span class="n">out</span> <span class="o">+=</span> <span class="n">ix</span> <span class="o">*</span> <span class="n">base</span><span class="o">**</span><span class="n">i</span>
+    <span class="k">return</span> <span class="n">out</span></div>
+
+<div class="viewcode-block" id="isin_1d"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.lib.numpy_helper.isin_1d">[docs]</a><span class="k">def</span> <span class="nf">isin_1d</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">vs</span><span class="p">,</span> <span class="n">return_index</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">'''Check if vector `v` is in vectors `vs`.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        v : array like</span>
+<span class="sd">            The target vector. `v` is flattened.</span>
+<span class="sd">        vs : array like</span>
+<span class="sd">            A list of vectors. The last dimenstion of `vs`</span>
+<span class="sd">            should be the same as the size of `v`.</span>
+<span class="sd">        return_index : bool</span>
+<span class="sd">            Index of `v` in `vs`.</span>
+
+<span class="sd">    Examples::</span>
+
+<span class="sd">    &gt;&gt;&gt; lib.isin_1d([1,2], [[2,1],[1,2]])</span>
+<span class="sd">    True</span>
+
+<span class="sd">    &gt;&gt;&gt; lib.isin_1d([1,2], [[2,1],[2,1]])</span>
+<span class="sd">    False</span>
+<span class="sd">    '''</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+    <span class="n">vs</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">vs</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+    <span class="n">diff</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="kc">None</span><span class="p">,:]</span> <span class="o">-</span> <span class="n">vs</span><span class="p">)</span>
+    <span class="n">diff</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">diff</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">idx</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">diff</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">v_in_vs</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">v_in_vs</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">return_index</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">v_in_vs</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">idx</span> <span class="o">=</span> <span class="n">idx</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">v_in_vs</span><span class="p">,</span> <span class="n">idx</span></div>
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">'__main__'</span><span class="p">:</span>
     <span class="n">a</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">((</span><span class="mi">30</span><span class="p">,</span><span class="mi">40</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
@@ -1474,7 +1714,7 @@
               
           </div>
             Created using
-            <a href="http://www.sphinx-doc.org/">Sphinx</a> 4.0.1.
+            <a href="http://www.sphinx-doc.org/">Sphinx</a> 5.1.1.
              and
             <a href="https://github.com/bashtage/sphinx-material/">Material for
               Sphinx</a>

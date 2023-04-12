@@ -53,6 +53,7 @@
     <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
     <script src="../../../_static/jquery.js"></script>
     <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../../_static/doctools.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon-32x32.png"/>
@@ -95,7 +96,7 @@
       </div>
       <div class="md-flex__cell md-flex__cell--stretch">
         <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
-          <span class="md-header-nav__topic">PySCF 2.0</span>
+          <span class="md-header-nav__topic">PySCF 2.2</span>
           <span class="md-header-nav__topic"> pyscf.lib.logger </span>
         </div>
       </div>
@@ -105,7 +106,7 @@
 <div class="md-search" data-md-component="search" role="dialog">
   <label class="md-search__overlay" for="__search"></label>
   <div class="md-search__inner" role="search">
-    <form class="md-search__form" action="../../../search.html" method="GET" name="search">
+    <form class="md-search__form" action="../../../search.html" method="get" name="search">
       <input type="text" class="md-search__input" name="q" placeholder="Search"
              autocapitalize="off" autocomplete="off" spellcheck="false"
              data-md-component="query" data-md-state="active">
@@ -202,7 +203,7 @@
       
     </a>
     <a href="../../../index.html"
-       title="PySCF">PySCF 2.0</a>
+       title="PySCF">PySCF 2.2</a>
   </label>
     <div class="md-nav__source">
       <a href="https://github.com/pyscf/pyscf/" title="Go to repository" class="md-source" data-md-source="github">
@@ -320,16 +321,16 @@
 <span class="sd">======= ======</span>
 <span class="sd">Level   number</span>
 <span class="sd">------- ------</span>
-<span class="sd">DEBUG4  9 </span>
-<span class="sd">DEBUG3  8 </span>
-<span class="sd">DEBUG2  7 </span>
-<span class="sd">DEBUG1  6 </span>
-<span class="sd">DEBUG   5 </span>
-<span class="sd">INFO    4 </span>
-<span class="sd">NOTE    3 </span>
-<span class="sd">WARN    2 </span>
-<span class="sd">ERROR   1 </span>
-<span class="sd">QUIET   0 </span>
+<span class="sd">DEBUG4  9</span>
+<span class="sd">DEBUG3  8</span>
+<span class="sd">DEBUG2  7</span>
+<span class="sd">DEBUG1  6</span>
+<span class="sd">DEBUG   5</span>
+<span class="sd">INFO    4</span>
+<span class="sd">NOTE    3</span>
+<span class="sd">WARN    2</span>
+<span class="sd">ERROR   1</span>
+<span class="sd">QUIET   0</span>
 <span class="sd">======= ======</span>
 
 <span class="sd">Large value means more noise in the output file.</span>
@@ -363,7 +364,7 @@
 <span class="sd">&gt;&gt;&gt; import sys, time</span>
 <span class="sd">&gt;&gt;&gt; from pyscf import lib</span>
 <span class="sd">&gt;&gt;&gt; log = lib.logger.Logger(sys.stdout, 4)</span>
-<span class="sd">&gt;&gt;&gt; t0 = time.clock()</span>
+<span class="sd">&gt;&gt;&gt; t0 = logger.process_clock()</span>
 <span class="sd">&gt;&gt;&gt; log.timer('test', t0)</span>
 <span class="sd">&gt;&gt;&gt; lib.logger.TIMER_LEVEL = 4</span>
 <span class="sd">&gt;&gt;&gt; log.timer('test', t0)</span>
@@ -373,10 +374,13 @@
 
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">time</span>
-<span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span> <span class="o">&gt;=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">6</span><span class="p">):</span>
-    <span class="n">time</span><span class="o">.</span><span class="n">clock</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">process_time</span>
-    <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span> <span class="o">&gt;=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">8</span><span class="p">):</span>
-        <span class="n">time</span><span class="o">.</span><span class="n">time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span>
+
+<span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span> <span class="o">&lt;</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span>
+    <span class="n">process_clock</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">clock</span>
+    <span class="n">perf_counter</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">process_clock</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">process_time</span>
+    <span class="n">perf_counter</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span>
 
 <span class="kn">from</span> <span class="nn">pyscf.lib</span> <span class="kn">import</span> <span class="n">parameters</span> <span class="k">as</span> <span class="n">param</span>
 <span class="kn">import</span> <span class="nn">pyscf.__config__</span>
@@ -459,13 +463,13 @@
     <span class="k">if</span> <span class="n">cpu0</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">cpu0</span> <span class="o">=</span> <span class="n">rec</span><span class="o">.</span><span class="n">_t0</span>
     <span class="k">if</span> <span class="n">wall0</span><span class="p">:</span>
-        <span class="n">rec</span><span class="o">.</span><span class="n">_t0</span><span class="p">,</span> <span class="n">rec</span><span class="o">.</span><span class="n">_w0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">clock</span><span class="p">(),</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="n">rec</span><span class="o">.</span><span class="n">_t0</span><span class="p">,</span> <span class="n">rec</span><span class="o">.</span><span class="n">_w0</span> <span class="o">=</span> <span class="n">process_clock</span><span class="p">(),</span> <span class="n">perf_counter</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">rec</span><span class="o">.</span><span class="n">verbose</span> <span class="o">&gt;=</span> <span class="n">TIMER_LEVEL</span><span class="p">:</span>
             <span class="n">flush</span><span class="p">(</span><span class="n">rec</span><span class="p">,</span> <span class="s1">'    CPU time for </span><span class="si">%s</span><span class="s1"> </span><span class="si">%9.2f</span><span class="s1"> sec, wall time </span><span class="si">%9.2f</span><span class="s1"> sec'</span>
                   <span class="o">%</span> <span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">rec</span><span class="o">.</span><span class="n">_t0</span><span class="o">-</span><span class="n">cpu0</span><span class="p">,</span> <span class="n">rec</span><span class="o">.</span><span class="n">_w0</span><span class="o">-</span><span class="n">wall0</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">rec</span><span class="o">.</span><span class="n">_t0</span><span class="p">,</span> <span class="n">rec</span><span class="o">.</span><span class="n">_w0</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">rec</span><span class="o">.</span><span class="n">_t0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">clock</span><span class="p">()</span>
+        <span class="n">rec</span><span class="o">.</span><span class="n">_t0</span> <span class="o">=</span> <span class="n">process_clock</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">rec</span><span class="o">.</span><span class="n">verbose</span> <span class="o">&gt;=</span> <span class="n">TIMER_LEVEL</span><span class="p">:</span>
             <span class="n">flush</span><span class="p">(</span><span class="n">rec</span><span class="p">,</span> <span class="s1">'    CPU time for </span><span class="si">%s</span><span class="s1"> </span><span class="si">%9.2f</span><span class="s1"> sec'</span> <span class="o">%</span> <span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">rec</span><span class="o">.</span><span class="n">_t0</span><span class="o">-</span><span class="n">cpu0</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">rec</span><span class="o">.</span><span class="n">_t0</span></div>
@@ -474,10 +478,10 @@
     <span class="k">if</span> <span class="n">rec</span><span class="o">.</span><span class="n">verbose</span> <span class="o">&gt;=</span> <span class="n">DEBUG1</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">timer</span><span class="p">(</span><span class="n">rec</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="n">cpu0</span><span class="p">,</span> <span class="n">wall0</span><span class="p">)</span>
     <span class="k">elif</span> <span class="n">wall0</span><span class="p">:</span>
-        <span class="n">rec</span><span class="o">.</span><span class="n">_t0</span><span class="p">,</span> <span class="n">rec</span><span class="o">.</span><span class="n">_w0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">clock</span><span class="p">(),</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="n">rec</span><span class="o">.</span><span class="n">_t0</span><span class="p">,</span> <span class="n">rec</span><span class="o">.</span><span class="n">_w0</span> <span class="o">=</span> <span class="n">process_clock</span><span class="p">(),</span> <span class="n">perf_counter</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">rec</span><span class="o">.</span><span class="n">_t0</span><span class="p">,</span> <span class="n">rec</span><span class="o">.</span><span class="n">_w0</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">rec</span><span class="o">.</span><span class="n">_t0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">clock</span><span class="p">()</span>
+        <span class="n">rec</span><span class="o">.</span><span class="n">_t0</span> <span class="o">=</span> <span class="n">process_clock</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">rec</span><span class="o">.</span><span class="n">_t0</span></div>
 
 <div class="viewcode-block" id="Logger"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.lib.html#pyscf.lib.logger.Logger">[docs]</a><span class="k">class</span> <span class="nc">Logger</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -491,8 +495,8 @@
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">NOTE</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">stdout</span> <span class="o">=</span> <span class="n">stdout</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_t0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">clock</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_w0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_t0</span> <span class="o">=</span> <span class="n">process_clock</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_w0</span> <span class="o">=</span> <span class="n">perf_counter</span><span class="p">()</span>
 
     <span class="n">log</span> <span class="o">=</span> <span class="n">log</span>
     <span class="n">error</span> <span class="o">=</span> <span class="n">error</span>
@@ -553,7 +557,7 @@
               
           </div>
             Created using
-            <a href="http://www.sphinx-doc.org/">Sphinx</a> 4.0.1.
+            <a href="http://www.sphinx-doc.org/">Sphinx</a> 5.1.1.
              and
             <a href="https://github.com/bashtage/sphinx-material/">Material for
               Sphinx</a>

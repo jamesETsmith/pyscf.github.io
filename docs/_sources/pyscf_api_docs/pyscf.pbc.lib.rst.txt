@@ -20,10 +20,26 @@ pyscf.pbc.lib.chkfile module
    :undoc-members:
    :show-inheritance:
 
+pyscf.pbc.lib.kpts module
+-------------------------
+
+.. automodule:: pyscf.pbc.lib.kpts
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 pyscf.pbc.lib.kpts\_helper module
 ---------------------------------
 
 .. automodule:: pyscf.pbc.lib.kpts_helper
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+pyscf.pbc.lib.ktensor module
+----------------------------
+
+.. automodule:: pyscf.pbc.lib.ktensor
    :members:
    :undoc-members:
    :show-inheritance:

@@ -53,6 +53,7 @@
     <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
     <script src="../../../_static/jquery.js"></script>
     <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../../_static/doctools.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon-32x32.png"/>
@@ -95,7 +96,7 @@
       </div>
       <div class="md-flex__cell md-flex__cell--stretch">
         <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
-          <span class="md-header-nav__topic">PySCF 2.0</span>
+          <span class="md-header-nav__topic">PySCF 2.2</span>
           <span class="md-header-nav__topic"> pyscf.eph.rhf </span>
         </div>
       </div>
@@ -105,7 +106,7 @@
 <div class="md-search" data-md-component="search" role="dialog">
   <label class="md-search__overlay" for="__search"></label>
   <div class="md-search__inner" role="search">
-    <form class="md-search__form" action="../../../search.html" method="GET" name="search">
+    <form class="md-search__form" action="../../../search.html" method="get" name="search">
       <input type="text" class="md-search__input" name="q" placeholder="Search"
              autocapitalize="off" autocomplete="off" spellcheck="false"
              data-md-component="query" data-md-state="active">
@@ -203,7 +204,7 @@
       
     </a>
     <a href="../../../index.html"
-       title="PySCF">PySCF 2.0</a>
+       title="PySCF">PySCF 2.2</a>
   </label>
     <div class="md-nav__source">
       <a href="https://github.com/pyscf/pyscf/" title="Go to repository" class="md-source" data-md-source="github">
@@ -309,15 +310,14 @@
 <span class="c1"># limitations under the License.</span>
 <span class="c1">#</span>
 <span class="c1"># Author: Yang Gao &lt;younggao1994@gmail.com&gt;</span>
-
 <span class="c1">#</span>
+
 <span class="sd">'''</span>
 <span class="sd">Analytical electron-phonon matrix for restricted hartree fock</span>
 <span class="sd">'''</span>
 
-<span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">scipy</span>
+<span class="kn">import</span> <span class="nn">scipy.linalg</span>
 <span class="kn">from</span> <span class="nn">pyscf.hessian</span> <span class="kn">import</span> <span class="n">rhf</span>
 <span class="kn">from</span> <span class="nn">pyscf.lib</span> <span class="kn">import</span> <span class="n">logger</span><span class="p">,</span> <span class="n">chkfile</span>
 <span class="kn">from</span> <span class="nn">pyscf.scf._response_functions</span> <span class="kn">import</span> <span class="n">_gen_rhf_response</span>
@@ -329,10 +329,13 @@
 <span class="n">IMAG_CUTOFF_FREQUENCY</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">__config__</span><span class="p">,</span> <span class="s1">'eph_imag_cutoff_frequency'</span><span class="p">,</span> <span class="mf">1e-4</span><span class="p">)</span>
 
 <div class="viewcode-block" id="kernel"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.eph.html#pyscf.eph.rhf.kernel">[docs]</a><span class="k">def</span> <span class="nf">kernel</span><span class="p">(</span><span class="n">ephobj</span><span class="p">,</span> <span class="n">mo_energy</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mo_coeff</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mo_occ</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mo_rep</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-    <span class="n">cput0</span> <span class="o">=</span> <span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">clock</span><span class="p">(),</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">())</span>
     <span class="k">if</span> <span class="n">mo_energy</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="n">mo_energy</span> <span class="o">=</span> <span class="n">ephobj</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">mo_energy</span>
     <span class="k">if</span> <span class="n">mo_coeff</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="n">mo_coeff</span> <span class="o">=</span> <span class="n">ephobj</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">mo_coeff</span>
     <span class="k">if</span> <span class="n">mo_occ</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="n">mo_occ</span> <span class="o">=</span> <span class="n">ephobj</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">mo_occ</span>
+
+    <span class="c1"># chkfile is used to pass first orbitals from hessian methods to eph methods</span>
+    <span class="c1"># TODO: Remove the dependence to chfile and return first orbitals from a function</span>
+    <span class="k">assert</span> <span class="n">ephobj</span><span class="o">.</span><span class="n">chkfile</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s1">'chkfile is requred to save first order orbitals'</span>
 
     <span class="n">de</span> <span class="o">=</span> <span class="n">ephobj</span><span class="o">.</span><span class="n">hess_elec</span><span class="p">(</span><span class="n">mo_energy</span><span class="p">,</span> <span class="n">mo_coeff</span><span class="p">,</span> <span class="n">mo_occ</span><span class="p">)</span>
     <span class="n">ephobj</span><span class="o">.</span><span class="n">de</span> <span class="o">=</span> <span class="n">de</span> <span class="o">+</span> <span class="n">ephobj</span><span class="o">.</span><span class="n">hess_nuc</span><span class="p">(</span><span class="n">ephobj</span><span class="o">.</span><span class="n">mol</span><span class="p">)</span>
@@ -342,7 +345,8 @@
     <span class="n">ephobj</span><span class="o">.</span><span class="n">eph</span> <span class="o">=</span> <span class="n">ephobj</span><span class="o">.</span><span class="n">get_eph</span><span class="p">(</span><span class="n">ephobj</span><span class="o">.</span><span class="n">chkfile</span><span class="p">,</span> <span class="n">omega</span><span class="p">,</span> <span class="n">vec</span><span class="p">,</span> <span class="n">mo_rep</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">ephobj</span><span class="o">.</span><span class="n">eph</span><span class="p">,</span> <span class="n">ephobj</span><span class="o">.</span><span class="n">omega</span></div>
 
-<div class="viewcode-block" id="solve_hmat"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.eph.html#pyscf.eph.rhf.solve_hmat">[docs]</a><span class="k">def</span> <span class="nf">solve_hmat</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">hmat</span><span class="p">,</span> <span class="n">cutoff_frequency</span><span class="o">=</span><span class="n">CUTOFF_FREQUENCY</span><span class="p">,</span> <span class="n">keep_imag_frequency</span><span class="o">=</span><span class="n">KEEP_IMAG_FREQUENCY</span><span class="p">):</span>
+<div class="viewcode-block" id="solve_hmat"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.eph.html#pyscf.eph.rhf.solve_hmat">[docs]</a><span class="k">def</span> <span class="nf">solve_hmat</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">hmat</span><span class="p">,</span> <span class="n">cutoff_frequency</span><span class="o">=</span><span class="n">CUTOFF_FREQUENCY</span><span class="p">,</span>
+               <span class="n">keep_imag_frequency</span><span class="o">=</span><span class="n">KEEP_IMAG_FREQUENCY</span><span class="p">):</span>
     <span class="n">log</span> <span class="o">=</span> <span class="n">logger</span><span class="o">.</span><span class="n">new_logger</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">verbose</span><span class="p">)</span>
     <span class="n">mass</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">atom_mass_list</span><span class="p">()</span> <span class="o">*</span> <span class="n">MP_ME</span>
     <span class="n">natom</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">mass</span><span class="p">)</span>
@@ -551,7 +555,7 @@
               
           </div>
             Created using
-            <a href="http://www.sphinx-doc.org/">Sphinx</a> 4.0.1.
+            <a href="http://www.sphinx-doc.org/">Sphinx</a> 5.1.1.
              and
             <a href="https://github.com/bashtage/sphinx-material/">Material for
               Sphinx</a>

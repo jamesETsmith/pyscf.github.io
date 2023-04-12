@@ -4,7 +4,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -54,6 +54,7 @@
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="shortcut icon" href="../_static/favicon-32x32.png"/>
@@ -98,7 +99,7 @@
       </div>
       <div class="md-flex__cell md-flex__cell--stretch">
         <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
-          <span class="md-header-nav__topic">PySCF 2.0</span>
+          <span class="md-header-nav__topic">PySCF 2.2</span>
           <span class="md-header-nav__topic"> Multi-configuration self-consistent field (MCSCF) </span>
         </div>
       </div>
@@ -108,7 +109,7 @@
 <div class="md-search" data-md-component="search" role="dialog">
   <label class="md-search__overlay" for="__search"></label>
   <div class="md-search__inner" role="search">
-    <form class="md-search__form" action="../search.html" method="GET" name="search">
+    <form class="md-search__form" action="../search.html" method="get" name="search">
       <input type="text" class="md-search__input" name="q" placeholder="Search"
              autocapitalize="off" autocomplete="off" spellcheck="false"
              data-md-component="query" data-md-state="active">
@@ -204,7 +205,7 @@
       
     </a>
     <a href="../index.html"
-       title="PySCF">PySCF 2.0</a>
+       title="PySCF">PySCF 2.2</a>
   </label>
     <div class="md-nav__source">
       <a href="https://github.com/pyscf/pyscf/" title="Go to repository" class="md-source" data-md-source="github">
@@ -333,6 +334,8 @@
         </li>
         <li class="md-nav__item"><a href="#frozen-orbital-mcscf" class="md-nav__link">Frozen-orbital MCSCF</a>
         </li>
+        <li class="md-nav__item"><a href="#spin-state-of-cas-wavefunction" class="md-nav__link">Spin state of CAS wavefunction</a>
+        </li>
         <li class="md-nav__item"><a href="#state-averaged-calculations" class="md-nav__link">State-Averaged Calculations</a>
         </li>
         <li class="md-nav__item"><a href="#job-control" class="md-nav__link">Job Control</a><nav class="md-nav">
@@ -390,6 +393,13 @@
     
     
       <a href="qmmm.html" class="md-nav__link">QM/MM methods</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="md.html" class="md-nav__link">Molecular Dynamics</a>
       
     
     </li>
@@ -486,6 +496,8 @@
         </li>
         <li class="md-nav__item"><a href="#frozen-orbital-mcscf" class="md-nav__link">Frozen-orbital MCSCF</a>
         </li>
+        <li class="md-nav__item"><a href="#spin-state-of-cas-wavefunction" class="md-nav__link">Spin state of CAS wavefunction</a>
+        </li>
         <li class="md-nav__item"><a href="#state-averaged-calculations" class="md-nav__link">State-Averaged Calculations</a>
         </li>
         <li class="md-nav__item"><a href="#job-control" class="md-nav__link">Job Control</a><nav class="md-nav">
@@ -525,15 +537,15 @@
           <article class="md-content__inner md-typeset" role="main">
             
   <section id="multi-configuration-self-consistent-field-mcscf">
-<span id="user-mcscf"></span><h1 id="user-mcscf--page-root">Multi-configuration self-consistent field (MCSCF)<a class="headerlink" href="#user-mcscf--page-root" title="Permalink to this headline">¶</a></h1>
+<span id="user-mcscf"></span><h1 id="user-mcscf--page-root">Multi-configuration self-consistent field (MCSCF)<a class="headerlink" href="#user-mcscf--page-root" title="Permalink to this heading">¶</a></h1>
 <p><em>Modules</em>: <code class="xref py py-mod docutils literal notranslate"><span class="pre">mcscf</span></code></p>
 <section id="introduction">
-<h2 id="introduction">Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<h2 id="introduction">Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading">¶</a></h2>
 <p>Multiconfigurational self-consistent field (MCSCF) methods go beyond the single-determinant Hartree-Fock (HF) method by allowing the wave function to become a linear combination of multiple determinants.
 While the configurations i.e. determinants can in principle be chosen in an arbitrary number of ways, PySCF focuses on the complete active space (CAS) family of methods, where the set of electron configurations is defined in terms of a given set of active orbitals, also known as the “active space”.
 The CAS method generates all possible electron configurations that can be formed from the set of the active orbitals, and is therefore equivalent to an FCI procedure on a subset of the molecular orbitals; please see <a class="reference internal" href="ci.html#theory-ci"><span class="std std-ref">Configuration interaction (CISD and FCI)</span></a> for a discussion on the FCI method.
 The use of MCSCF methods is crucial for reliable modeling of systems that exhibit nearly degenerate orbitals i.e. static correlation, such as transition metal complexes.
-For a general discussion of MCSCF methods, we direct the reader to References <a class="bibtex reference internal" href="#helgaker2013" id="id1">[1]</a> and <a class="bibtex reference internal" href="#esqc" id="id2">[2]</a>, and for specific details about PySCF’s implementation of CASSCF see <a class="bibtex reference internal" href="#sun2017" id="id3">[3]</a>.</p>
+For a general discussion of MCSCF methods, we direct the reader to References <span id="id1">[]</span> and <span id="id2">[]</span>, and for specific details about PySCF’s implementation of CASSCF see <span id="id3">[]</span>.</p>
 <p>The MCSCF module has two main flavors: CASCI and CASSCF.
 In CASCI, the wave function is written as a linear combination of Slater determinants, and the expansion coefficients are solved in a variational procedure.
 The orbitals are fixed in a CASCI calculation.
@@ -541,7 +553,7 @@ In contrast, in a CASSCF calculation, the orbitals are relaxed to minimize the r
 This means performing multiple CASCI steps followed by updates to the molecular orbitals, in analogy to Hartree-Fock calculations which also relies on iterative algorithms to minimize the HF energy with respect to the orbitals.</p>
 <p>Minimal examples for each type of calculations are shown below.</p>
 <section id="casci">
-<h3 id="casci">CASCI<a class="headerlink" href="#casci" title="Permalink to this headline">¶</a></h3>
+<h3 id="casci">CASCI<a class="headerlink" href="#casci" title="Permalink to this heading">¶</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyscf</span> <span class="kn">import</span> <span class="n">gto</span><span class="p">,</span> <span class="n">mp</span><span class="p">,</span> <span class="n">mcscf</span>
 <span class="n">mol</span> <span class="o">=</span> <span class="n">gto</span><span class="o">.</span><span class="n">M</span><span class="p">(</span>
     <span class="n">atom</span> <span class="o">=</span> <span class="s1">'O 0 0 0; O 0 0 1.2'</span><span class="p">,</span>
@@ -559,7 +571,7 @@ This means performing multiple CASCI steps followed by updates to the molecular 
 </div>
 </section>
 <section id="casscf">
-<h3 id="casscf">CASSCF<a class="headerlink" href="#casscf" title="Permalink to this headline">¶</a></h3>
+<h3 id="casscf">CASSCF<a class="headerlink" href="#casscf" title="Permalink to this heading">¶</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pyscf</span>
 <span class="n">mol</span> <span class="o">=</span> <span class="n">pyscf</span><span class="o">.</span><span class="n">M</span><span class="p">(</span>
     <span class="n">atom</span> <span class="o">=</span> <span class="s1">'O 0 0 0; O 0 0 1.2'</span><span class="p">,</span>
@@ -579,7 +591,7 @@ Check out <a class="reference external" href="https://github.com/pyscf/pyscf/tre
 </section>
 </section>
 <section id="picking-an-active-space">
-<h2 id="picking-an-active-space">Picking an Active Space<a class="headerlink" href="#picking-an-active-space" title="Permalink to this headline">¶</a></h2>
+<h2 id="picking-an-active-space">Picking an Active Space<a class="headerlink" href="#picking-an-active-space" title="Permalink to this heading">¶</a></h2>
 <p>In general, selecting an active space can be cumbersome and PySCF offers severals ways to facilitate this process.
 There are several strategies and they all contain two main components:</p>
 <ul class="simple">
@@ -663,7 +675,7 @@ For more details, see <a class="reference external" href="https://github.com/pys
 </div>
 </section>
 <section id="frozen-orbital-mcscf">
-<h2 id="frozen-orbital-mcscf">Frozen-orbital MCSCF<a class="headerlink" href="#frozen-orbital-mcscf" title="Permalink to this headline">¶</a></h2>
+<h2 id="frozen-orbital-mcscf">Frozen-orbital MCSCF<a class="headerlink" href="#frozen-orbital-mcscf" title="Permalink to this heading">¶</a></h2>
 <p>Orbitals can be frozen in the orbital optimization to e.g. reduce the computational effort of CASSCF calculations.
 The orbitals will remain fixed throughout the optimization.</p>
 <p>Users can specify the number of lowest orbitals to freeze:</p>
@@ -674,19 +686,75 @@ The orbitals will remain fixed throughout the optimization.</p>
 </div>
 <p>Users can also specify a list of orbital indices (0-based).
 These may be occupied, virtual, or active orbitals.</p>
-<p>See <a class="reference external" href="https://github.com/pyscf/pyscf/tree/master/examples/mcscf/19-frozen_core.py">examples/mcscf/19-frozen_core.py</a> for a complete example.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">mycas</span> <span class="o">=</span> <span class="n">mcscf</span><span class="o">.</span><span class="n">CASSCF</span><span class="p">(</span><span class="n">myhf</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+<span class="n">mycas</span><span class="o">.</span><span class="n">frozen</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">26</span><span class="p">,</span><span class="mi">27</span><span class="p">]</span>
+<span class="n">mycas</span><span class="o">.</span><span class="n">kernel</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>See <a class="reference external" href="https://github.com/pyscf/pyscf/tree/master/examples/mcscf/19-frozen_orbital.py">examples/mcscf/19-frozen_orbital.py</a> for a complete example.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>The <cite>frozen</cite> keyword of the CASSCF optimizer should not be confused with the <cite>frozen</cite> keyword of the FCI solver, which controls the number of orbitals that are constrained to be doubly occupied.</p>
 </div>
 </section>
+<section id="spin-state-of-cas-wavefunction">
+<h2 id="spin-state-of-cas-wavefunction">Spin state of CAS wavefunction<a class="headerlink" href="#spin-state-of-cas-wavefunction" title="Permalink to this heading">¶</a></h2>
+<p>Multiconfigurational wavefunction provided by the
+the <cite>pyscf.fci</cite> solver is typically spin-adapted, but there is no direct
+control of the spin multiplicity (i.e. S^2 value). It is, nevertheless, possible
+to define the spin projection Sz of the obtained WF, which helps to fix the spin
+multiplicity in most of the cases. By default, the MCSCF uses the setting in
+<code class="xref py py-attr docutils literal notranslate"><span class="pre">mol.spin</span></code> for the value of 2*Sz.</p>
+<p>You can change the number of alpha and beta electrons in the active space.
+The Sz value of the MCSCF wavefunction can differ from <code class="xref py py-attr docutils literal notranslate"><span class="pre">mol.spin</span></code>.</p>
+<p>For example, you can start from <cite>Sz=0</cite> RHF calculations, and then change the
+number of alpha and beta electrons in the active space to solve higher
+spin states, such as the triplet state.```</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">mol</span><span class="o">.</span><span class="n">spin</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">myhf</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">RHF</span><span class="p">()</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+<span class="c1"># 5 alpha electrons, 3 beta electrons</span>
+<span class="n">mycas</span> <span class="o">=</span> <span class="n">mcscf</span><span class="o">.</span><span class="n">CASSCF</span><span class="p">(</span><span class="n">myhf</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="n">mycas</span><span class="o">.</span><span class="n">kernel</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Another common scenario to adjust the spin settings is the caulations of
+transition-metal systems. For transition-metal system with open d shell, one can
+start with single-reference maximum-Sz state and then switch to more complicated
+low-spin states in CASSCF.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">mol</span><span class="o">.</span><span class="n">spin</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="n">myhf</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">ROHF</span><span class="p">()</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+<span class="n">mycas</span> <span class="o">=</span> <span class="n">mcscf</span><span class="o">.</span><span class="n">CASSCF</span><span class="p">(</span><span class="n">myhf</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="n">mycas</span><span class="o">.</span><span class="n">kernel</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>It may happen that a wave function of correct Sz is achieved while
+S^2 is wrong. This issue may either be caused by convergence onto
+another spin state, or spin contamination in the CAS wave function.</p>
+<p>Such issues can be circumvented with the <code class="xref py py-func docutils literal notranslate"><span class="pre">fix_spin_()</span></code> method
+of the CASCI/CASSCF class, which is able to correct the spin state
+by biasing the calculation towards the wanted state.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">mol</span><span class="o">.</span><span class="n">spin</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">myhf</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">RHF</span><span class="p">()</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+<span class="n">mycas</span> <span class="o">=</span> <span class="n">mcscf</span><span class="o">.</span><span class="n">CASSCF</span><span class="p">(</span><span class="n">myhf</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="c1"># Targeting triplet state with Sz=0</span>
+<span class="n">mycas</span><span class="o">.</span><span class="n">fix_spin_</span><span class="p">(</span><span class="n">ss</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">mycas</span><span class="o">.</span><span class="n">kernel</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><code class="xref py py-func docutils literal notranslate"><span class="pre">fix_spin_()</span></code> is an energy-penalty method. It may affect the efficiency and
+accuracy of the CASCI and CASSCF algorithms. It should not be used unless
+the MCSCF program has difficulties in finding the wanted spin state.</p>
+<p>In example <a class="reference external" href="https://github.com/pyscf/pyscf/tree/master/examples/mcscf/02-cas_space_spin.py">examples/mcscf/02-cas_space_spin.py</a> and
+<a class="reference external" href="https://github.com/pyscf/pyscf/tree/master/examples/mcscf/18-spatial_spin_symmetry.py.py">examples/mcscf/18-spatial_spin_symmetry.py.py</a>, you can find the
+complete scripts to tune spin states of the CASCI/CASSCF wavefunctions.</p>
+</section>
 <section id="state-averaged-calculations">
-<h2 id="state-averaged-calculations">State-Averaged Calculations<a class="headerlink" href="#state-averaged-calculations" title="Permalink to this headline">¶</a></h2>
+<h2 id="state-averaged-calculations">State-Averaged Calculations<a class="headerlink" href="#state-averaged-calculations" title="Permalink to this heading">¶</a></h2>
 <p>When your system has states that are close-by in energy, their ordering may change during the orbital optimization and result in non-convergence of the CASSCF optimization.
 In such cases it is often helpful to optimize the orbitals for a state average.
 The <code class="docutils literal notranslate"><span class="pre">state_average_</span></code> function (note the hanging underscore) is a member function of <code class="docutils literal notranslate"><span class="pre">CASCI</span></code>/<code class="docutils literal notranslate"><span class="pre">CASSCF</span></code> objects and takes the weights of the states as input.
 The weights can be any normalized and non-negative array of values, but equal weights are typically used.
-See Section 12.7.2 in Ref. <a class="bibtex reference internal" href="#helgaker2013" id="id4">[1]</a> for more details.</p>
+See Section 12.7.2 in Ref. <span id="id4">[]</span> for more details.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">n_states</span> <span class="o">=</span> <span class="mi">5</span>
 <span class="n">weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n_states</span><span class="p">)</span><span class="o">/</span><span class="n">n_states</span>
 <span class="n">mycas</span> <span class="o">=</span> <span class="n">mcscf</span><span class="o">.</span><span class="n">CASSCF</span><span class="p">(</span><span class="n">mf</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span><span class="o">.</span><span class="n">state_average_</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span>
@@ -710,9 +778,9 @@ See Section 12.7.2 in Ref. <a class="bibtex reference internal" href="#helgaker2
 <p>See <a class="reference external" href="https://github.com/pyscf/pyscf/tree/master/examples/mcscf/41-state_average.py">examples/mcscf/41-state_average.py</a> for a complete example.</p>
 </section>
 <section id="job-control">
-<h2 id="job-control">Job Control<a class="headerlink" href="#job-control" title="Permalink to this headline">¶</a></h2>
+<h2 id="job-control">Job Control<a class="headerlink" href="#job-control" title="Permalink to this heading">¶</a></h2>
 <section id="optimization-settings">
-<h3 id="optimization-settings">Optimization Settings<a class="headerlink" href="#optimization-settings" title="Permalink to this headline">¶</a></h3>
+<h3 id="optimization-settings">Optimization Settings<a class="headerlink" href="#optimization-settings" title="Permalink to this heading">¶</a></h3>
 <p>For CASSCF calculations, users may want to modify several of the convergence thresholds such as the energy (<code class="docutils literal notranslate"><span class="pre">conv_tol</span></code>), the orbital gradient (<code class="docutils literal notranslate"><span class="pre">conv_tol_grad</span></code>), and the maximum number of MCSCF iterations (<code class="docutils literal notranslate"><span class="pre">max_cycle_macro</span></code>).</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">mycas</span> <span class="o">=</span> <span class="n">mcscf</span><span class="o">.</span><span class="n">CASSCF</span><span class="p">(</span><span class="n">mf</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
 <span class="n">mycas</span><span class="o">.</span><span class="n">conv_tol</span> <span class="o">=</span> <span class="mf">1e-12</span>
@@ -723,7 +791,7 @@ See Section 12.7.2 in Ref. <a class="bibtex reference internal" href="#helgaker2
 </div>
 </section>
 <section id="initial-guess">
-<h3 id="initial-guess">Initial Guess<a class="headerlink" href="#initial-guess" title="Permalink to this headline">¶</a></h3>
+<h3 id="initial-guess">Initial Guess<a class="headerlink" href="#initial-guess" title="Permalink to this heading">¶</a></h3>
 <p>Initial guess orbitals for the CASSCF calculation (starting orbitals) may be passed to the <code class="docutils literal notranslate"><span class="pre">kernel</span></code> member function of an MCSCF object.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">mycas</span> <span class="o">=</span> <span class="n">mcscf</span><span class="o">.</span><span class="n">CASSCF</span><span class="p">(</span><span class="n">myhf</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
 <span class="n">mycas</span><span class="o">.</span><span class="n">kernel</span><span class="p">(</span><span class="n">my_custom_mos</span><span class="p">)</span>
@@ -740,7 +808,7 @@ See Section 12.7.2 in Ref. <a class="bibtex reference internal" href="#helgaker2
 </ul>
 </section>
 <section id="restarting">
-<h3 id="restarting">Restarting<a class="headerlink" href="#restarting" title="Permalink to this headline">¶</a></h3>
+<h3 id="restarting">Restarting<a class="headerlink" href="#restarting" title="Permalink to this heading">¶</a></h3>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>When running large calculations, it’s always recommended that you specify a checkpoint file for your calculation.</p>
@@ -762,9 +830,9 @@ See Section 12.7.2 in Ref. <a class="bibtex reference internal" href="#helgaker2
 </section>
 </section>
 <section id="observables-and-properties">
-<h2 id="observables-and-properties">Observables and Properties<a class="headerlink" href="#observables-and-properties" title="Permalink to this headline">¶</a></h2>
+<h2 id="observables-and-properties">Observables and Properties<a class="headerlink" href="#observables-and-properties" title="Permalink to this heading">¶</a></h2>
 <section id="wave-function-analysis">
-<h3 id="wave-function-analysis">Wave Function Analysis<a class="headerlink" href="#wave-function-analysis" title="Permalink to this headline">¶</a></h3>
+<h3 id="wave-function-analysis">Wave Function Analysis<a class="headerlink" href="#wave-function-analysis" title="Permalink to this heading">¶</a></h3>
 <p>The <code class="docutils literal notranslate"><span class="pre">analyze</span></code> member functions of MCSCF objects prints many useful properties to <code class="docutils literal notranslate"><span class="pre">stdout</span></code> when the verbosity is &gt;=4.</p>
 <ol class="arabic simple">
 <li><p>Natural orbital occupancies</p></li>
@@ -783,7 +851,7 @@ See Section 12.7.2 in Ref. <a class="bibtex reference internal" href="#helgaker2
 </div>
 </section>
 <section id="natural-orbitals">
-<h3 id="natural-orbitals">Natural Orbitals<a class="headerlink" href="#natural-orbitals" title="Permalink to this headline">¶</a></h3>
+<h3 id="natural-orbitals">Natural Orbitals<a class="headerlink" href="#natural-orbitals" title="Permalink to this heading">¶</a></h3>
 <p>The CAS wave function is invariant under orbital rotation within the inactive core, active, and inactive virtual spaces.
 The inactive core and virtual orbitals are by default canonicalized, i.e., they are transformed by block-diagonalizing the generalized Fock matrix within the inactive core and virtual subblocks.
 This also yields energy eigenvalues for the inactive core and virtual orbitals.
@@ -801,20 +869,8 @@ The user may request the active orbitals to be transformed to the so-called natu
 </section>
 </section>
 <section id="references">
-<h2 id="references">References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
-<p id="bibtex-bibliography-user/mcscf-0"><dl class="bibtex citation">
-<dt class="bibtex label" id="helgaker2013"><span class="brackets">1</span><span class="fn-backref">(<a href="#id1">1</a>,<a href="#id4">2</a>)</span></dt>
-<dd><p>Trygve Helgaker, Poul Jorgensen, and Jeppe Olsen. <em>Molecular Electronic-Structure Theory</em>. Wiley, 2013. ISBN 9781118531471.</p>
-</dd>
-<dt class="bibtex label" id="esqc"><span class="brackets"><a class="fn-backref" href="#id2">2</a></span></dt>
-<dd><p>Esqc lectures 2019. URL: <a class="reference external" href="http://www.esqc.org/?page=lectures">http://www.esqc.org/?page=lectures</a>.</p>
-</dd>
-<dt class="bibtex label" id="sun2017"><span class="brackets"><a class="fn-backref" href="#id3">3</a></span></dt>
-<dd><p>Qiming Sun, Jun Yang, and Garnet Kin-lic Lic Chan. A general second order complete active space self-consistent-field solver for large-scale systems. <em>Chemical Physics Letters</em>, 683:291–299, 2017. <a class="reference external" href="https://arxiv.org/abs/1610.08394">arXiv:1610.08394</a>, <a class="reference external" href="https://doi.org/10.1016/j.cplett.2017.03.004">doi:10.1016/j.cplett.2017.03.004</a>.</p>
-</dd>
-</dl>
-</p>
-</section>
+<h2 id="references">References<a class="headerlink" href="#references" title="Permalink to this heading">¶</a></h2>
+<span class="target" id="id5"></span></section>
 </section>
 
 
@@ -864,7 +920,7 @@ The user may request the active orbitals to be transformed to the so-called natu
               
           </div>
             Created using
-            <a href="http://www.sphinx-doc.org/">Sphinx</a> 4.0.1.
+            <a href="http://www.sphinx-doc.org/">Sphinx</a> 5.1.1.
              and
             <a href="https://github.com/bashtage/sphinx-material/">Material for
               Sphinx</a>

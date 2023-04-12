@@ -53,6 +53,7 @@
     <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
     <script src="../../../../_static/jquery.js"></script>
     <script src="../../../../_static/underscore.js"></script>
+    <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../../../_static/doctools.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="shortcut icon" href="../../../../_static/favicon-32x32.png"/>
@@ -95,7 +96,7 @@
       </div>
       <div class="md-flex__cell md-flex__cell--stretch">
         <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
-          <span class="md-header-nav__topic">PySCF 2.0</span>
+          <span class="md-header-nav__topic">PySCF 2.2</span>
           <span class="md-header-nav__topic"> pyscf.pbc.df.df_ao2mo </span>
         </div>
       </div>
@@ -105,7 +106,7 @@
 <div class="md-search" data-md-component="search" role="dialog">
   <label class="md-search__overlay" for="__search"></label>
   <div class="md-search__inner" role="search">
-    <form class="md-search__form" action="../../../../search.html" method="GET" name="search">
+    <form class="md-search__form" action="../../../../search.html" method="get" name="search">
       <input type="text" class="md-search__input" name="q" placeholder="Search"
              autocapitalize="off" autocomplete="off" spellcheck="false"
              data-md-component="query" data-md-state="active">
@@ -202,7 +203,7 @@
       
     </a>
     <a href="../../../../index.html"
-       title="PySCF">PySCF 2.0</a>
+       title="PySCF">PySCF 2.2</a>
   </label>
     <div class="md-nav__source">
       <a href="https://github.com/pyscf/pyscf/" title="Go to repository" class="md-source" data-md-source="github">
@@ -437,7 +438,7 @@
         <span class="n">mo_coeffs</span> <span class="o">=</span> <span class="n">_mo_as_complex</span><span class="p">(</span><span class="n">mo_coeffs</span><span class="p">)</span>
         <span class="n">nij_pair</span><span class="p">,</span> <span class="n">moij</span><span class="p">,</span> <span class="n">ijslice</span> <span class="o">=</span> <span class="n">_conc_mos</span><span class="p">(</span><span class="n">mo_coeffs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">mo_coeffs</span><span class="p">[</span><span class="mi">1</span><span class="p">])[</span><span class="mi">1</span><span class="p">:]</span>
         <span class="n">nkl_pair</span><span class="p">,</span> <span class="n">mokl</span><span class="p">,</span> <span class="n">klslice</span> <span class="o">=</span> <span class="n">_conc_mos</span><span class="p">(</span><span class="n">mo_coeffs</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">mo_coeffs</span><span class="p">[</span><span class="mi">3</span><span class="p">])[</span><span class="mi">1</span><span class="p">:]</span>
-        <span class="n">eri_mo</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">nij_pair</span><span class="p">,</span><span class="n">nkl_pair</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">complex</span><span class="p">)</span>
+        <span class="n">eri_mo</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">nij_pair</span><span class="p">,</span><span class="n">nkl_pair</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">complex128</span><span class="p">)</span>
         <span class="n">sym</span> <span class="o">=</span> <span class="p">(</span><span class="n">iden_coeffs</span><span class="p">(</span><span class="n">mo_coeffs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">mo_coeffs</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="ow">and</span>
                <span class="n">iden_coeffs</span><span class="p">(</span><span class="n">mo_coeffs</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">mo_coeffs</span><span class="p">[</span><span class="mi">3</span><span class="p">]))</span>
 
@@ -458,7 +459,7 @@
         <span class="n">mo_coeffs</span> <span class="o">=</span> <span class="n">_mo_as_complex</span><span class="p">(</span><span class="n">mo_coeffs</span><span class="p">)</span>
         <span class="n">nij_pair</span><span class="p">,</span> <span class="n">moij</span><span class="p">,</span> <span class="n">ijslice</span> <span class="o">=</span> <span class="n">_conc_mos</span><span class="p">(</span><span class="n">mo_coeffs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">mo_coeffs</span><span class="p">[</span><span class="mi">1</span><span class="p">])[</span><span class="mi">1</span><span class="p">:]</span>
         <span class="n">nlk_pair</span><span class="p">,</span> <span class="n">molk</span><span class="p">,</span> <span class="n">lkslice</span> <span class="o">=</span> <span class="n">_conc_mos</span><span class="p">(</span><span class="n">mo_coeffs</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">mo_coeffs</span><span class="p">[</span><span class="mi">2</span><span class="p">])[</span><span class="mi">1</span><span class="p">:]</span>
-        <span class="n">eri_mo</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">nij_pair</span><span class="p">,</span><span class="n">nlk_pair</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">complex</span><span class="p">)</span>
+        <span class="n">eri_mo</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">nij_pair</span><span class="p">,</span><span class="n">nlk_pair</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">complex128</span><span class="p">)</span>
         <span class="n">sym</span> <span class="o">=</span> <span class="p">(</span><span class="n">iden_coeffs</span><span class="p">(</span><span class="n">mo_coeffs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">mo_coeffs</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span> <span class="ow">and</span>
                <span class="n">iden_coeffs</span><span class="p">(</span><span class="n">mo_coeffs</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">mo_coeffs</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
 
@@ -486,7 +487,7 @@
         <span class="n">nij_pair</span><span class="p">,</span> <span class="n">moij</span><span class="p">,</span> <span class="n">ijslice</span> <span class="o">=</span> <span class="n">_conc_mos</span><span class="p">(</span><span class="n">mo_coeffs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">mo_coeffs</span><span class="p">[</span><span class="mi">1</span><span class="p">])[</span><span class="mi">1</span><span class="p">:]</span>
         <span class="n">nkl_pair</span><span class="p">,</span> <span class="n">mokl</span><span class="p">,</span> <span class="n">klslice</span> <span class="o">=</span> <span class="n">_conc_mos</span><span class="p">(</span><span class="n">mo_coeffs</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">mo_coeffs</span><span class="p">[</span><span class="mi">3</span><span class="p">])[</span><span class="mi">1</span><span class="p">:]</span>
         <span class="n">nao</span> <span class="o">=</span> <span class="n">mo_coeffs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="n">eri_mo</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">nij_pair</span><span class="p">,</span><span class="n">nkl_pair</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">complex</span><span class="p">)</span>
+        <span class="n">eri_mo</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">nij_pair</span><span class="p">,</span><span class="n">nkl_pair</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">complex128</span><span class="p">)</span>
 
         <span class="n">blksize</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">max_memory</span><span class="o">*.</span><span class="mf">3e6</span><span class="o">/</span><span class="mi">16</span><span class="o">/</span><span class="n">nij_pair</span><span class="p">,</span>
                           <span class="n">max_memory</span><span class="o">*.</span><span class="mf">3e6</span><span class="o">/</span><span class="mi">16</span><span class="o">/</span><span class="n">nkl_pair</span><span class="p">,</span>
@@ -526,7 +527,7 @@
     <span class="k">if</span> <span class="n">out</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">out</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">eri_shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">assert</span><span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="n">eri_shape</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="n">eri_shape</span><span class="p">)</span>
 
     <span class="n">kptij_lst</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([(</span><span class="n">ki</span><span class="p">,</span> <span class="n">kj</span><span class="p">)</span> <span class="k">for</span> <span class="n">ki</span> <span class="ow">in</span> <span class="n">kpts</span> <span class="k">for</span> <span class="n">kj</span> <span class="ow">in</span> <span class="n">kpts</span><span class="p">])</span>
     <span class="n">kptis_lst</span> <span class="o">=</span> <span class="n">kptij_lst</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span>
@@ -667,7 +668,7 @@
               
           </div>
             Created using
-            <a href="http://www.sphinx-doc.org/">Sphinx</a> 4.0.1.
+            <a href="http://www.sphinx-doc.org/">Sphinx</a> 5.1.1.
              and
             <a href="https://github.com/bashtage/sphinx-material/">Material for
               Sphinx</a>

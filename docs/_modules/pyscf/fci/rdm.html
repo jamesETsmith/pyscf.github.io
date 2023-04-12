@@ -53,6 +53,7 @@
     <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
     <script src="../../../_static/jquery.js"></script>
     <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../../_static/doctools.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon-32x32.png"/>
@@ -95,7 +96,7 @@
       </div>
       <div class="md-flex__cell md-flex__cell--stretch">
         <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
-          <span class="md-header-nav__topic">PySCF 2.0</span>
+          <span class="md-header-nav__topic">PySCF 2.2</span>
           <span class="md-header-nav__topic"> pyscf.fci.rdm </span>
         </div>
       </div>
@@ -105,7 +106,7 @@
 <div class="md-search" data-md-component="search" role="dialog">
   <label class="md-search__overlay" for="__search"></label>
   <div class="md-search__inner" role="search">
-    <form class="md-search__form" action="../../../search.html" method="GET" name="search">
+    <form class="md-search__form" action="../../../search.html" method="get" name="search">
       <input type="text" class="md-search__input" name="q" placeholder="Search"
              autocapitalize="off" autocomplete="off" spellcheck="false"
              data-md-component="query" data-md-state="active">
@@ -203,7 +204,7 @@
       
     </a>
     <a href="../../../index.html"
-       title="PySCF">PySCF 2.0</a>
+       title="PySCF">PySCF 2.2</a>
   </label>
     <div class="md-nav__source">
       <a href="https://github.com/pyscf/pyscf/" title="Go to repository" class="md-source" data-md-source="github">
@@ -294,7 +295,7 @@
             
   <h1 id="modules-pyscf-fci-rdm--page-root">Source code for pyscf.fci.rdm</h1><div class="highlight"><pre>
 <span></span><span class="ch">#!/usr/bin/env python</span>
-<span class="c1"># Copyright 2014-2018 The PySCF Developers. All Rights Reserved.</span>
+<span class="c1"># Copyright 2014-2021 The PySCF Developers. All Rights Reserved.</span>
 <span class="c1">#</span>
 <span class="c1"># Licensed under the Apache License, Version 2.0 (the "License");</span>
 <span class="c1"># you may not use this file except in compliance with the License.</span>
@@ -333,22 +334,24 @@
         <span class="n">rdm2</span> <span class="o">=</span> <span class="n">rdm2</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
     <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nmo</span><span class="p">):</span>
         <span class="n">rdm2</span><span class="p">[:,</span><span class="n">k</span><span class="p">,</span><span class="n">k</span><span class="p">,:]</span> <span class="o">-=</span> <span class="n">rdm1</span><span class="o">.</span><span class="n">T</span>
-    <span class="c1">#return rdm1, rdm2</span>
+
+    <span class="c1"># Employing the particle permutation symmetry, average over two particles</span>
+    <span class="c1"># to reduce numerical round off error</span>
     <span class="n">rdm2</span> <span class="o">=</span> <span class="n">lib</span><span class="o">.</span><span class="n">transpose_sum</span><span class="p">(</span><span class="n">rdm2</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">nmo</span><span class="o">*</span><span class="n">nmo</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">*</span> <span class="o">.</span><span class="mi">5</span>
     <span class="k">return</span> <span class="n">rdm1</span><span class="p">,</span> <span class="n">rdm2</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">nmo</span><span class="p">,</span><span class="n">nmo</span><span class="p">,</span><span class="n">nmo</span><span class="p">,</span><span class="n">nmo</span><span class="p">)</span></div>
 
 <span class="c1"># dm[p,q] = &lt;|q^+ p|&gt;</span>
 <div class="viewcode-block" id="make_rdm1_ms0"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.fci.html#pyscf.fci.rdm.make_rdm1_ms0">[docs]</a><span class="k">def</span> <span class="nf">make_rdm1_ms0</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">cibra</span><span class="p">,</span> <span class="n">ciket</span><span class="p">,</span> <span class="n">norb</span><span class="p">,</span> <span class="n">nelec</span><span class="p">,</span> <span class="n">link_index</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="k">assert</span><span class="p">(</span><span class="n">cibra</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">ciket</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="p">(</span><span class="n">cibra</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">ciket</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>
     <span class="n">cibra</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">cibra</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="s1">'C'</span><span class="p">)</span>
     <span class="n">ciket</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">ciket</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="s1">'C'</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">link_index</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">neleca</span><span class="p">,</span> <span class="n">nelecb</span> <span class="o">=</span> <span class="n">_unpack_nelec</span><span class="p">(</span><span class="n">nelec</span><span class="p">)</span>
-        <span class="k">assert</span><span class="p">(</span><span class="n">neleca</span> <span class="o">==</span> <span class="n">nelecb</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="p">(</span><span class="n">neleca</span> <span class="o">==</span> <span class="n">nelecb</span><span class="p">)</span>
         <span class="n">link_index</span> <span class="o">=</span> <span class="n">cistring</span><span class="o">.</span><span class="n">gen_linkstr_index</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">norb</span><span class="p">),</span> <span class="n">neleca</span><span class="p">)</span>
     <span class="n">na</span><span class="p">,</span> <span class="n">nlink</span> <span class="o">=</span> <span class="n">link_index</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>
-    <span class="k">assert</span><span class="p">(</span><span class="n">cibra</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="n">na</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
-    <span class="k">assert</span><span class="p">(</span><span class="n">ciket</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="n">na</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="p">(</span><span class="n">cibra</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="n">na</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="p">(</span><span class="n">ciket</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="n">na</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
     <span class="n">rdm1</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">norb</span><span class="p">,</span><span class="n">norb</span><span class="p">))</span>
     <span class="n">fn</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">librdm</span><span class="p">,</span> <span class="n">fname</span><span class="p">)</span>
     <span class="n">fn</span><span class="p">(</span><span class="n">rdm1</span><span class="o">.</span><span class="n">ctypes</span><span class="o">.</span><span class="n">data_as</span><span class="p">(</span><span class="n">ctypes</span><span class="o">.</span><span class="n">c_void_p</span><span class="p">),</span>
@@ -369,7 +372,7 @@
 <div class="viewcode-block" id="make_rdm12_ms0"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.fci.html#pyscf.fci.rdm.make_rdm12_ms0">[docs]</a><span class="k">def</span> <span class="nf">make_rdm12_ms0</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">cibra</span><span class="p">,</span> <span class="n">ciket</span><span class="p">,</span> <span class="n">norb</span><span class="p">,</span> <span class="n">nelec</span><span class="p">,</span> <span class="n">link_index</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">symm</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">link_index</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">neleca</span><span class="p">,</span> <span class="n">nelecb</span> <span class="o">=</span> <span class="n">_unpack_nelec</span><span class="p">(</span><span class="n">nelec</span><span class="p">)</span>
-        <span class="k">assert</span><span class="p">(</span><span class="n">neleca</span> <span class="o">==</span> <span class="n">nelecb</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="p">(</span><span class="n">neleca</span> <span class="o">==</span> <span class="n">nelecb</span><span class="p">)</span>
         <span class="n">link_index</span> <span class="o">=</span> <span class="n">cistring</span><span class="o">.</span><span class="n">gen_linkstr_index</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">norb</span><span class="p">),</span> <span class="n">neleca</span><span class="p">)</span>
     <span class="n">link_index</span> <span class="o">=</span> <span class="p">(</span><span class="n">link_index</span><span class="p">,</span> <span class="n">link_index</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">make_rdm12_spin1</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">cibra</span><span class="p">,</span> <span class="n">ciket</span><span class="p">,</span> <span class="n">norb</span><span class="p">,</span> <span class="n">nelec</span><span class="p">,</span> <span class="n">link_index</span><span class="p">,</span> <span class="n">symm</span><span class="p">)</span></div>
@@ -382,7 +385,7 @@
 <span class="c1"># nelec and link_index are tuples of (alpha,beta)</span>
 <span class="c1">#</span>
 <div class="viewcode-block" id="make_rdm1_spin1"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.fci.html#pyscf.fci.rdm.make_rdm1_spin1">[docs]</a><span class="k">def</span> <span class="nf">make_rdm1_spin1</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">cibra</span><span class="p">,</span> <span class="n">ciket</span><span class="p">,</span> <span class="n">norb</span><span class="p">,</span> <span class="n">nelec</span><span class="p">,</span> <span class="n">link_index</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="k">assert</span><span class="p">(</span><span class="n">cibra</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">ciket</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="p">(</span><span class="n">cibra</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">ciket</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>
     <span class="n">cibra</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">cibra</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="s1">'C'</span><span class="p">)</span>
     <span class="n">ciket</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">ciket</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="s1">'C'</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">link_index</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -394,8 +397,8 @@
         <span class="n">link_indexa</span><span class="p">,</span> <span class="n">link_indexb</span> <span class="o">=</span> <span class="n">link_index</span>
     <span class="n">na</span><span class="p">,</span><span class="n">nlinka</span> <span class="o">=</span> <span class="n">link_indexa</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>
     <span class="n">nb</span><span class="p">,</span><span class="n">nlinkb</span> <span class="o">=</span> <span class="n">link_indexb</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>
-    <span class="k">assert</span><span class="p">(</span><span class="n">cibra</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="n">na</span><span class="o">*</span><span class="n">nb</span><span class="p">)</span>
-    <span class="k">assert</span><span class="p">(</span><span class="n">ciket</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="n">na</span><span class="o">*</span><span class="n">nb</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="p">(</span><span class="n">cibra</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="n">na</span><span class="o">*</span><span class="n">nb</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="p">(</span><span class="n">ciket</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="n">na</span><span class="o">*</span><span class="n">nb</span><span class="p">)</span>
     <span class="n">rdm1</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">norb</span><span class="p">,</span><span class="n">norb</span><span class="p">))</span>
     <span class="n">fn</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">librdm</span><span class="p">,</span> <span class="n">fname</span><span class="p">)</span>
     <span class="n">fn</span><span class="p">(</span><span class="n">rdm1</span><span class="o">.</span><span class="n">ctypes</span><span class="o">.</span><span class="n">data_as</span><span class="p">(</span><span class="n">ctypes</span><span class="o">.</span><span class="n">c_void_p</span><span class="p">),</span>
@@ -414,7 +417,7 @@
 <span class="c1"># symm = 1: bra, ket symmetry</span>
 <span class="c1"># symm = 2: particle permutation symmetry</span>
 <div class="viewcode-block" id="make_rdm12_spin1"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.fci.html#pyscf.fci.rdm.make_rdm12_spin1">[docs]</a><span class="k">def</span> <span class="nf">make_rdm12_spin1</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">cibra</span><span class="p">,</span> <span class="n">ciket</span><span class="p">,</span> <span class="n">norb</span><span class="p">,</span> <span class="n">nelec</span><span class="p">,</span> <span class="n">link_index</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">symm</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-    <span class="k">assert</span><span class="p">(</span><span class="n">cibra</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">ciket</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="p">(</span><span class="n">cibra</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">ciket</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>
     <span class="n">cibra</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">cibra</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="s1">'C'</span><span class="p">)</span>
     <span class="n">ciket</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">ciket</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="s1">'C'</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">link_index</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -426,8 +429,8 @@
         <span class="n">link_indexa</span><span class="p">,</span> <span class="n">link_indexb</span> <span class="o">=</span> <span class="n">link_index</span>
     <span class="n">na</span><span class="p">,</span><span class="n">nlinka</span> <span class="o">=</span> <span class="n">link_indexa</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>
     <span class="n">nb</span><span class="p">,</span><span class="n">nlinkb</span> <span class="o">=</span> <span class="n">link_indexb</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>
-    <span class="k">assert</span><span class="p">(</span><span class="n">cibra</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="n">na</span><span class="o">*</span><span class="n">nb</span><span class="p">)</span>
-    <span class="k">assert</span><span class="p">(</span><span class="n">ciket</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="n">na</span><span class="o">*</span><span class="n">nb</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="p">(</span><span class="n">cibra</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="n">na</span><span class="o">*</span><span class="n">nb</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="p">(</span><span class="n">ciket</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="n">na</span><span class="o">*</span><span class="n">nb</span><span class="p">)</span>
     <span class="n">rdm1</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">norb</span><span class="p">,</span><span class="n">norb</span><span class="p">))</span>
     <span class="n">rdm2</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">norb</span><span class="p">,</span><span class="n">norb</span><span class="p">,</span><span class="n">norb</span><span class="p">,</span><span class="n">norb</span><span class="p">))</span>
     <span class="n">librdm</span><span class="o">.</span><span class="n">FCIrdm12_drv</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">librdm</span><span class="p">,</span> <span class="n">fname</span><span class="p">),</span>
@@ -469,8 +472,8 @@
     <span class="n">link_indexb</span> <span class="o">=</span> <span class="n">cistring</span><span class="o">.</span><span class="n">gen_linkstr_index</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">norb</span><span class="p">),</span> <span class="n">nelecb</span><span class="p">)</span>
     <span class="n">na</span><span class="p">,</span><span class="n">nlinka</span> <span class="o">=</span> <span class="n">link_indexa</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>
     <span class="n">nb</span><span class="p">,</span><span class="n">nlinkb</span> <span class="o">=</span> <span class="n">link_indexb</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>
-    <span class="k">assert</span><span class="p">(</span><span class="n">cibra</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="n">na</span><span class="o">*</span><span class="n">nb</span><span class="p">)</span>
-    <span class="k">assert</span><span class="p">(</span><span class="n">ciket</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="n">na</span><span class="o">*</span><span class="n">nb</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="p">(</span><span class="n">cibra</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="n">na</span><span class="o">*</span><span class="n">nb</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="p">(</span><span class="n">ciket</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="n">na</span><span class="o">*</span><span class="n">nb</span><span class="p">)</span>
     <span class="n">rdm1</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">norb</span><span class="p">,)</span><span class="o">*</span><span class="mi">2</span><span class="p">)</span>
     <span class="n">rdm2</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">norb</span><span class="p">,)</span><span class="o">*</span><span class="mi">4</span><span class="p">)</span>
     <span class="n">rdm3</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">norb</span><span class="p">,)</span><span class="o">*</span><span class="mi">6</span><span class="p">)</span>
@@ -487,10 +490,11 @@
                        <span class="n">link_indexb</span><span class="o">.</span><span class="n">ctypes</span><span class="o">.</span><span class="n">data_as</span><span class="p">(</span><span class="n">ctypes</span><span class="o">.</span><span class="n">c_void_p</span><span class="p">))</span>
     <span class="n">rdm3</span> <span class="o">=</span> <span class="n">_complete_dm3_</span><span class="p">(</span><span class="n">rdm2</span><span class="p">,</span> <span class="n">rdm3</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">rdm1</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">rdm2</span><span class="p">,</span> <span class="n">rdm3</span></div>
+
 <span class="k">def</span> <span class="nf">_complete_dm3_</span><span class="p">(</span><span class="n">dm2</span><span class="p">,</span> <span class="n">dm3</span><span class="p">):</span>
-<span class="c1"># fci_4pdm.c assumed symmetry p &gt;= r &gt;= t for 3-pdm &lt;p^+ q r^+ s t^+ u&gt;</span>
-<span class="c1"># Using E^r_sE^p_q = E^p_qE^r_s - \delta_{qr}E^p_s + \delta_{ps}E^r_q to</span>
-<span class="c1"># complete the full 3-pdm</span>
+    <span class="c1"># fci_4pdm.c assumed symmetry p &gt;= r &gt;= t for 3-pdm &lt;p^+ q r^+ s t^+ u&gt;</span>
+    <span class="c1"># Using E^r_sE^p_q = E^p_qE^r_s - \delta_{qr}E^p_s + \delta_{ps}E^r_q to</span>
+    <span class="c1"># complete the full 3-pdm</span>
     <span class="k">def</span> <span class="nf">transpose01</span><span class="p">(</span><span class="n">ijk</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
         <span class="n">jik</span> <span class="o">=</span> <span class="n">ijk</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
         <span class="n">jik</span><span class="p">[:,</span><span class="n">j</span><span class="p">]</span> <span class="o">-=</span> <span class="n">dm2</span><span class="p">[</span><span class="n">i</span><span class="p">,:,</span><span class="n">k</span><span class="p">,:]</span>
@@ -504,7 +508,7 @@
         <span class="n">dm3</span><span class="p">[</span><span class="n">i</span><span class="p">,:,</span><span class="n">k</span><span class="p">,:,</span><span class="n">j</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">ikj</span>
         <span class="k">return</span> <span class="n">ikj</span>
 
-<span class="c1"># ijk -&gt; jik -&gt; jki -&gt; kji -&gt; kij -&gt; ikj</span>
+    <span class="c1"># ijk -&gt; jik -&gt; jki -&gt; kji -&gt; kij -&gt; ikj</span>
     <span class="n">norb</span> <span class="o">=</span> <span class="n">dm2</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">norb</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
@@ -537,8 +541,8 @@
     <span class="n">link_indexb</span> <span class="o">=</span> <span class="n">cistring</span><span class="o">.</span><span class="n">gen_linkstr_index</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">norb</span><span class="p">),</span> <span class="n">nelecb</span><span class="p">)</span>
     <span class="n">na</span><span class="p">,</span><span class="n">nlinka</span> <span class="o">=</span> <span class="n">link_indexa</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>
     <span class="n">nb</span><span class="p">,</span><span class="n">nlinkb</span> <span class="o">=</span> <span class="n">link_indexb</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>
-    <span class="k">assert</span><span class="p">(</span><span class="n">cibra</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="n">na</span><span class="o">*</span><span class="n">nb</span><span class="p">)</span>
-    <span class="k">assert</span><span class="p">(</span><span class="n">ciket</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="n">na</span><span class="o">*</span><span class="n">nb</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="p">(</span><span class="n">cibra</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="n">na</span><span class="o">*</span><span class="n">nb</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="p">(</span><span class="n">ciket</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="n">na</span><span class="o">*</span><span class="n">nb</span><span class="p">)</span>
     <span class="n">rdm1</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">norb</span><span class="p">,)</span><span class="o">*</span><span class="mi">2</span><span class="p">)</span>
     <span class="n">rdm2</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">norb</span><span class="p">,)</span><span class="o">*</span><span class="mi">4</span><span class="p">)</span>
     <span class="n">rdm3</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">norb</span><span class="p">,)</span><span class="o">*</span><span class="mi">6</span><span class="p">)</span>
@@ -558,10 +562,11 @@
     <span class="n">rdm3</span> <span class="o">=</span> <span class="n">_complete_dm3_</span><span class="p">(</span><span class="n">rdm2</span><span class="p">,</span> <span class="n">rdm3</span><span class="p">)</span>
     <span class="n">rdm4</span> <span class="o">=</span> <span class="n">_complete_dm4_</span><span class="p">(</span><span class="n">rdm3</span><span class="p">,</span> <span class="n">rdm4</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">rdm1</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">rdm2</span><span class="p">,</span> <span class="n">rdm3</span><span class="p">,</span> <span class="n">rdm4</span></div>
+
 <span class="k">def</span> <span class="nf">_complete_dm4_</span><span class="p">(</span><span class="n">dm3</span><span class="p">,</span> <span class="n">dm4</span><span class="p">):</span>
-<span class="c1"># fci_4pdm.c assumed symmetry p &gt;= r &gt;= t &gt;= v for 4-pdm &lt;p^+ q r^+ s t^+ u v^+ w&gt;</span>
-<span class="c1"># Using E^r_sE^p_q = E^p_qE^r_s - \delta_{qr}E^p_s + \delta_{ps}E^r_q to</span>
-<span class="c1"># complete the full 4-pdm</span>
+    <span class="c1"># fci_4pdm.c assumed symmetry p &gt;= r &gt;= t &gt;= v for 4-pdm &lt;p^+ q r^+ s t^+ u v^+ w&gt;</span>
+    <span class="c1"># Using E^r_sE^p_q = E^p_qE^r_s - \delta_{qr}E^p_s + \delta_{ps}E^r_q to</span>
+    <span class="c1"># complete the full 4-pdm</span>
     <span class="k">def</span> <span class="nf">transpose01</span><span class="p">(</span><span class="n">ijkl</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">l</span><span class="p">):</span>
         <span class="n">jikl</span> <span class="o">=</span> <span class="n">ijkl</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
         <span class="n">jikl</span><span class="p">[:,</span><span class="n">j</span><span class="p">]</span> <span class="o">-=</span> <span class="n">dm3</span><span class="p">[</span><span class="n">i</span><span class="p">,:,</span><span class="n">k</span><span class="p">,:,</span><span class="n">l</span><span class="p">,:]</span>
@@ -675,7 +680,7 @@
               
           </div>
             Created using
-            <a href="http://www.sphinx-doc.org/">Sphinx</a> 4.0.1.
+            <a href="http://www.sphinx-doc.org/">Sphinx</a> 5.1.1.
              and
             <a href="https://github.com/bashtage/sphinx-material/">Material for
               Sphinx</a>

@@ -53,6 +53,7 @@
     <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
     <script src="../../../_static/jquery.js"></script>
     <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../../_static/doctools.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon-32x32.png"/>
@@ -95,7 +96,7 @@
       </div>
       <div class="md-flex__cell md-flex__cell--stretch">
         <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
-          <span class="md-header-nav__topic">PySCF 2.0</span>
+          <span class="md-header-nav__topic">PySCF 2.2</span>
           <span class="md-header-nav__topic"> pyscf.tdscf.uks </span>
         </div>
       </div>
@@ -105,7 +106,7 @@
 <div class="md-search" data-md-component="search" role="dialog">
   <label class="md-search__overlay" for="__search"></label>
   <div class="md-search__inner" role="search">
-    <form class="md-search__form" action="../../../search.html" method="GET" name="search">
+    <form class="md-search__form" action="../../../search.html" method="get" name="search">
       <input type="text" class="md-search__input" name="q" placeholder="Search"
              autocapitalize="off" autocomplete="off" spellcheck="false"
              data-md-component="query" data-md-state="active">
@@ -203,7 +204,7 @@
       
     </a>
     <a href="../../../index.html"
-       title="PySCF">PySCF 2.0</a>
+       title="PySCF">PySCF 2.2</a>
   </label>
     <div class="md-nav__source">
       <a href="https://github.com/pyscf/pyscf/" title="Go to repository" class="md-source" data-md-source="github">
@@ -311,20 +312,16 @@
 <span class="c1"># Author: Qiming Sun &lt;osirpt.sun@gmail.com&gt;</span>
 <span class="c1">#</span>
 
-<span class="kn">import</span> <span class="nn">time</span>
+
 <span class="kn">import</span> <span class="nn">numpy</span>
 <span class="kn">from</span> <span class="nn">pyscf</span> <span class="kn">import</span> <span class="n">symm</span>
 <span class="kn">from</span> <span class="nn">pyscf</span> <span class="kn">import</span> <span class="n">lib</span>
-<span class="kn">from</span> <span class="nn">pyscf</span> <span class="kn">import</span> <span class="n">scf</span>
+<span class="kn">from</span> <span class="nn">pyscf.lib</span> <span class="kn">import</span> <span class="n">logger</span>
 <span class="kn">from</span> <span class="nn">pyscf.tdscf</span> <span class="kn">import</span> <span class="n">uhf</span>
 <span class="kn">from</span> <span class="nn">pyscf.scf</span> <span class="kn">import</span> <span class="n">uhf_symm</span>
-<span class="kn">from</span> <span class="nn">pyscf.scf</span> <span class="kn">import</span> <span class="n">_response_functions</span>  <span class="c1"># noqa</span>
 <span class="kn">from</span> <span class="nn">pyscf.data</span> <span class="kn">import</span> <span class="n">nist</span>
 <span class="kn">from</span> <span class="nn">pyscf.dft.rks</span> <span class="kn">import</span> <span class="n">KohnShamDFT</span>
 <span class="kn">from</span> <span class="nn">pyscf</span> <span class="kn">import</span> <span class="n">__config__</span>
-
-<span class="c1"># Low excitation filter to avoid numerical instability</span>
-<span class="n">POSTIVE_EIG_THRESHOLD</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">__config__</span><span class="p">,</span> <span class="s1">'tdscf_rhf_TDDFT_positive_eig_threshold'</span><span class="p">,</span> <span class="mf">1e-3</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="TDA"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.tdscf.html#pyscf.tdscf.uks.TDA">[docs]</a><span class="k">class</span> <span class="nc">TDA</span><span class="p">(</span><span class="n">uhf</span><span class="o">.</span><span class="n">TDA</span><span class="p">):</span>
@@ -340,15 +337,20 @@
 <span class="n">RPA</span> <span class="o">=</span> <span class="n">TDUKS</span> <span class="o">=</span> <span class="n">TDDFT</span>
 
 
-<div class="viewcode-block" id="TDDFTNoHybrid"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.tdscf.html#pyscf.tdscf.uks.TDDFTNoHybrid">[docs]</a><span class="k">class</span> <span class="nc">TDDFTNoHybrid</span><span class="p">(</span><span class="n">TDA</span><span class="p">):</span>
-    <span class="sd">''' Solve (A-B)(A+B)(X+Y) = (X+Y)w^2</span>
+<div class="viewcode-block" id="CasidaTDDFT"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.tdscf.html#pyscf.tdscf.uks.CasidaTDDFT">[docs]</a><span class="k">class</span> <span class="nc">CasidaTDDFT</span><span class="p">(</span><span class="n">TDDFT</span><span class="p">,</span> <span class="n">TDA</span><span class="p">):</span>
+    <span class="sd">'''Solve the Casida TDDFT formula (A-B)(A+B)(X+Y) = (X+Y)w^2</span>
 <span class="sd">    '''</span>
-<div class="viewcode-block" id="TDDFTNoHybrid.get_vind"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.tdscf.html#pyscf.tdscf.uks.TDDFTNoHybrid.get_vind">[docs]</a>    <span class="k">def</span> <span class="nf">get_vind</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mf</span><span class="p">):</span>
+
+    <span class="n">init_guess</span> <span class="o">=</span> <span class="n">TDA</span><span class="o">.</span><span class="n">init_guess</span>
+
+<div class="viewcode-block" id="CasidaTDDFT.gen_vind"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.tdscf.html#pyscf.tdscf.uks.CasidaTDDFT.gen_vind">[docs]</a>    <span class="k">def</span> <span class="nf">gen_vind</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mf</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">mf</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">mf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_scf</span>
         <span class="n">wfnsym</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">wfnsym</span>
 
         <span class="n">mol</span> <span class="o">=</span> <span class="n">mf</span><span class="o">.</span><span class="n">mol</span>
         <span class="n">mo_coeff</span> <span class="o">=</span> <span class="n">mf</span><span class="o">.</span><span class="n">mo_coeff</span>
-        <span class="k">assert</span><span class="p">(</span><span class="n">mo_coeff</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="n">numpy</span><span class="o">.</span><span class="n">double</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">mo_coeff</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="n">numpy</span><span class="o">.</span><span class="n">double</span>
         <span class="n">mo_energy</span> <span class="o">=</span> <span class="n">mf</span><span class="o">.</span><span class="n">mo_energy</span>
         <span class="n">mo_occ</span> <span class="o">=</span> <span class="n">mf</span><span class="o">.</span><span class="n">mo_occ</span>
         <span class="n">nao</span><span class="p">,</span> <span class="n">nmo</span> <span class="o">=</span> <span class="n">mo_coeff</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span>
@@ -413,10 +415,10 @@
 
         <span class="k">return</span> <span class="n">vind</span><span class="p">,</span> <span class="n">hdiag</span></div>
 
-<div class="viewcode-block" id="TDDFTNoHybrid.kernel"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.tdscf.html#pyscf.tdscf.uks.TDDFTNoHybrid.kernel">[docs]</a>    <span class="k">def</span> <span class="nf">kernel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x0</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nstates</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="CasidaTDDFT.kernel"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.tdscf.html#pyscf.tdscf.uks.CasidaTDDFT.kernel">[docs]</a>    <span class="k">def</span> <span class="nf">kernel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x0</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nstates</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">'''TDDFT diagonalization solver</span>
 <span class="sd">        '''</span>
-        <span class="n">cpu0</span> <span class="o">=</span> <span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">clock</span><span class="p">(),</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">())</span>
+        <span class="n">cpu0</span> <span class="o">=</span> <span class="p">(</span><span class="n">logger</span><span class="o">.</span><span class="n">process_clock</span><span class="p">(),</span> <span class="n">logger</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">())</span>
         <span class="n">mf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_scf</span>
         <span class="k">if</span> <span class="n">mf</span><span class="o">.</span><span class="n">_numint</span><span class="o">.</span><span class="n">libxc</span><span class="o">.</span><span class="n">is_hybrid_xc</span><span class="p">(</span><span class="n">mf</span><span class="o">.</span><span class="n">xc</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">'</span><span class="si">%s</span><span class="s1"> cannot be used with hybrid functional'</span>
@@ -427,22 +429,23 @@
             <span class="n">nstates</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nstates</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">nstates</span> <span class="o">=</span> <span class="n">nstates</span>
-        <span class="n">log</span> <span class="o">=</span> <span class="n">lib</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">Logger</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stdout</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">)</span>
+        <span class="n">log</span> <span class="o">=</span> <span class="n">logger</span><span class="o">.</span><span class="n">Logger</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stdout</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">)</span>
 
-        <span class="n">vind</span><span class="p">,</span> <span class="n">hdiag</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_vind</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_scf</span><span class="p">)</span>
+        <span class="n">vind</span><span class="p">,</span> <span class="n">hdiag</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gen_vind</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_scf</span><span class="p">)</span>
         <span class="n">precond</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_precond</span><span class="p">(</span><span class="n">hdiag</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">x0</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">x0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">init_guess</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_scf</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nstates</span><span class="p">)</span>
 
         <span class="k">def</span> <span class="nf">pickeig</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">nroots</span><span class="p">,</span> <span class="n">envs</span><span class="p">):</span>
-            <span class="n">idx</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">w</span> <span class="o">&gt;</span> <span class="n">POSTIVE_EIG_THRESHOLD</span><span class="o">**</span><span class="mi">2</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">idx</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">w</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">positive_eig_threshold</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
             <span class="k">return</span> <span class="n">w</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">v</span><span class="p">[:,</span><span class="n">idx</span><span class="p">],</span> <span class="n">idx</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">converged</span><span class="p">,</span> <span class="n">w2</span><span class="p">,</span> <span class="n">x1</span> <span class="o">=</span> \
                 <span class="n">lib</span><span class="o">.</span><span class="n">davidson1</span><span class="p">(</span><span class="n">vind</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">precond</span><span class="p">,</span>
                               <span class="n">tol</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">conv_tol</span><span class="p">,</span>
                               <span class="n">nroots</span><span class="o">=</span><span class="n">nstates</span><span class="p">,</span> <span class="n">lindep</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lindep</span><span class="p">,</span>
+                              <span class="n">max_cycle</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">max_cycle</span><span class="p">,</span>
                               <span class="n">max_space</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">max_space</span><span class="p">,</span> <span class="n">pick</span><span class="o">=</span><span class="n">pickeig</span><span class="p">,</span>
                               <span class="n">verbose</span><span class="o">=</span><span class="n">log</span><span class="p">)</span>
 
@@ -464,7 +467,7 @@
         <span class="n">e</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">xy</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">z</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">x1</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">w2</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">POSTIVE_EIG_THRESHOLD</span><span class="o">**</span><span class="mi">2</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">w2</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">positive_eig_threshold</span><span class="p">:</span>
                 <span class="k">continue</span>
             <span class="n">w</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">w2</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
             <span class="n">zp</span> <span class="o">=</span> <span class="n">e_ia</span> <span class="o">*</span> <span class="n">z</span>
@@ -487,19 +490,21 @@
             <span class="n">lib</span><span class="o">.</span><span class="n">chkfile</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">chkfile</span><span class="p">,</span> <span class="s1">'tddft/xy'</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">xy</span><span class="p">)</span>
 
         <span class="n">log</span><span class="o">.</span><span class="n">timer</span><span class="p">(</span><span class="s1">'TDDFT'</span><span class="p">,</span> <span class="o">*</span><span class="n">cpu0</span><span class="p">)</span>
-        <span class="n">log</span><span class="o">.</span><span class="n">note</span><span class="p">(</span><span class="s1">'Excited State energies (eV)</span><span class="se">\n</span><span class="si">%s</span><span class="s1">'</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">e</span> <span class="o">*</span> <span class="n">nist</span><span class="o">.</span><span class="n">HARTREE2EV</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_finalize</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">e</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">xy</span></div>
 
-<div class="viewcode-block" id="TDDFTNoHybrid.nuc_grad_method"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.tdscf.html#pyscf.tdscf.uks.TDDFTNoHybrid.nuc_grad_method">[docs]</a>    <span class="k">def</span> <span class="nf">nuc_grad_method</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="CasidaTDDFT.nuc_grad_method"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.tdscf.html#pyscf.tdscf.uks.CasidaTDDFT.nuc_grad_method">[docs]</a>    <span class="k">def</span> <span class="nf">nuc_grad_method</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="kn">from</span> <span class="nn">pyscf.grad</span> <span class="kn">import</span> <span class="n">tduks</span>
         <span class="k">return</span> <span class="n">tduks</span><span class="o">.</span><span class="n">Gradients</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div></div>
+
+<span class="n">TDDFTNoHybrid</span> <span class="o">=</span> <span class="n">CasidaTDDFT</span>
 
 
 <div class="viewcode-block" id="dRPA"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.tdscf.html#pyscf.tdscf.uks.dRPA">[docs]</a><span class="k">class</span> <span class="nc">dRPA</span><span class="p">(</span><span class="n">TDDFTNoHybrid</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mf</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mf</span><span class="p">,</span> <span class="n">KohnShamDFT</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">"direct RPA can only be applied with DFT; for HF+dRPA, use .xc='hf'"</span><span class="p">)</span>
-        <span class="n">mf</span> <span class="o">=</span> <span class="n">scf</span><span class="o">.</span><span class="n">addons</span><span class="o">.</span><span class="n">convert_to_uhf</span><span class="p">(</span><span class="n">mf</span><span class="p">)</span>
+        <span class="n">mf</span> <span class="o">=</span> <span class="n">mf</span><span class="o">.</span><span class="n">to_uks</span><span class="p">()</span>
         <span class="n">mf</span><span class="o">.</span><span class="n">xc</span> <span class="o">=</span> <span class="s1">''</span>
         <span class="n">TDDFTNoHybrid</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mf</span><span class="p">)</span></div>
 
@@ -509,93 +514,27 @@
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mf</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mf</span><span class="p">,</span> <span class="n">KohnShamDFT</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">"direct TDA can only be applied with DFT; for HF+dTDA, use .xc='hf'"</span><span class="p">)</span>
-        <span class="n">mf</span> <span class="o">=</span> <span class="n">scf</span><span class="o">.</span><span class="n">addons</span><span class="o">.</span><span class="n">convert_to_uhf</span><span class="p">(</span><span class="n">mf</span><span class="p">)</span>
+        <span class="n">mf</span> <span class="o">=</span> <span class="n">mf</span><span class="o">.</span><span class="n">to_uks</span><span class="p">()</span>
         <span class="n">mf</span><span class="o">.</span><span class="n">xc</span> <span class="o">=</span> <span class="s1">''</span>
         <span class="n">TDA</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mf</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="tddft"><a class="viewcode-back" href="../../../pyscf_api_docs/pyscf.tdscf.html#pyscf.tdscf.uks.tddft">[docs]</a><span class="k">def</span> <span class="nf">tddft</span><span class="p">(</span><span class="n">mf</span><span class="p">):</span>
-    <span class="sd">'''Driver to create TDDFT or TDDFTNoHybrid object'''</span>
+    <span class="sd">'''Driver to create TDDFT or CasidaTDDFT object'''</span>
     <span class="k">if</span> <span class="n">mf</span><span class="o">.</span><span class="n">_numint</span><span class="o">.</span><span class="n">libxc</span><span class="o">.</span><span class="n">is_hybrid_xc</span><span class="p">(</span><span class="n">mf</span><span class="o">.</span><span class="n">xc</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">TDDFT</span><span class="p">(</span><span class="n">mf</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">TDDFTNoHybrid</span><span class="p">(</span><span class="n">mf</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">CasidaTDDFT</span><span class="p">(</span><span class="n">mf</span><span class="p">)</span></div>
 
 <span class="kn">from</span> <span class="nn">pyscf</span> <span class="kn">import</span> <span class="n">dft</span>
 <span class="n">dft</span><span class="o">.</span><span class="n">uks</span><span class="o">.</span><span class="n">UKS</span><span class="o">.</span><span class="n">TDA</span>           <span class="o">=</span> <span class="n">dft</span><span class="o">.</span><span class="n">uks_symm</span><span class="o">.</span><span class="n">UKS</span><span class="o">.</span><span class="n">TDA</span>           <span class="o">=</span> <span class="n">lib</span><span class="o">.</span><span class="n">class_as_method</span><span class="p">(</span><span class="n">TDA</span><span class="p">)</span>
 <span class="n">dft</span><span class="o">.</span><span class="n">uks</span><span class="o">.</span><span class="n">UKS</span><span class="o">.</span><span class="n">TDHF</span>          <span class="o">=</span> <span class="n">dft</span><span class="o">.</span><span class="n">uks_symm</span><span class="o">.</span><span class="n">UKS</span><span class="o">.</span><span class="n">TDHF</span>          <span class="o">=</span> <span class="kc">None</span>
 <span class="c1">#dft.uks.UKS.TDDFT         = dft.uks_symm.UKS.TDDFT         = lib.class_as_method(TDDFT)</span>
 <span class="n">dft</span><span class="o">.</span><span class="n">uks</span><span class="o">.</span><span class="n">UKS</span><span class="o">.</span><span class="n">TDDFTNoHybrid</span> <span class="o">=</span> <span class="n">dft</span><span class="o">.</span><span class="n">uks_symm</span><span class="o">.</span><span class="n">UKS</span><span class="o">.</span><span class="n">TDDFTNoHybrid</span> <span class="o">=</span> <span class="n">lib</span><span class="o">.</span><span class="n">class_as_method</span><span class="p">(</span><span class="n">TDDFTNoHybrid</span><span class="p">)</span>
+<span class="n">dft</span><span class="o">.</span><span class="n">uks</span><span class="o">.</span><span class="n">UKS</span><span class="o">.</span><span class="n">CasidaTDDFT</span>   <span class="o">=</span> <span class="n">dft</span><span class="o">.</span><span class="n">uks_symm</span><span class="o">.</span><span class="n">UKS</span><span class="o">.</span><span class="n">CasidaTDDFT</span>   <span class="o">=</span> <span class="n">lib</span><span class="o">.</span><span class="n">class_as_method</span><span class="p">(</span><span class="n">CasidaTDDFT</span><span class="p">)</span>
 <span class="n">dft</span><span class="o">.</span><span class="n">uks</span><span class="o">.</span><span class="n">UKS</span><span class="o">.</span><span class="n">TDDFT</span>         <span class="o">=</span> <span class="n">dft</span><span class="o">.</span><span class="n">uks_symm</span><span class="o">.</span><span class="n">UKS</span><span class="o">.</span><span class="n">TDDFT</span>         <span class="o">=</span> <span class="n">tddft</span>
 <span class="n">dft</span><span class="o">.</span><span class="n">uks</span><span class="o">.</span><span class="n">UKS</span><span class="o">.</span><span class="n">dTDA</span>          <span class="o">=</span> <span class="n">dft</span><span class="o">.</span><span class="n">uks_symm</span><span class="o">.</span><span class="n">UKS</span><span class="o">.</span><span class="n">dTDA</span>          <span class="o">=</span> <span class="n">lib</span><span class="o">.</span><span class="n">class_as_method</span><span class="p">(</span><span class="n">dTDA</span><span class="p">)</span>
 <span class="n">dft</span><span class="o">.</span><span class="n">uks</span><span class="o">.</span><span class="n">UKS</span><span class="o">.</span><span class="n">dRPA</span>          <span class="o">=</span> <span class="n">dft</span><span class="o">.</span><span class="n">uks_symm</span><span class="o">.</span><span class="n">UKS</span><span class="o">.</span><span class="n">dRPA</span>          <span class="o">=</span> <span class="n">lib</span><span class="o">.</span><span class="n">class_as_method</span><span class="p">(</span><span class="n">dRPA</span><span class="p">)</span>
-
-
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">'__main__'</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">pyscf</span> <span class="kn">import</span> <span class="n">gto</span>
-    <span class="n">mol</span> <span class="o">=</span> <span class="n">gto</span><span class="o">.</span><span class="n">Mole</span><span class="p">()</span>
-    <span class="n">mol</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">mol</span><span class="o">.</span><span class="n">output</span> <span class="o">=</span> <span class="kc">None</span>
-
-    <span class="n">mol</span><span class="o">.</span><span class="n">atom</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="p">[</span><span class="s1">'H'</span> <span class="p">,</span> <span class="p">(</span><span class="mf">0.</span> <span class="p">,</span> <span class="mf">0.</span> <span class="p">,</span> <span class="o">.</span><span class="mi">917</span><span class="p">)],</span>
-        <span class="p">[</span><span class="s1">'F'</span> <span class="p">,</span> <span class="p">(</span><span class="mf">0.</span> <span class="p">,</span> <span class="mf">0.</span> <span class="p">,</span> <span class="mf">0.</span><span class="p">)],</span> <span class="p">]</span>
-    <span class="n">mol</span><span class="o">.</span><span class="n">basis</span> <span class="o">=</span> <span class="s1">'631g'</span>
-    <span class="n">mol</span><span class="o">.</span><span class="n">build</span><span class="p">()</span>
-
-    <span class="n">mf</span> <span class="o">=</span> <span class="n">dft</span><span class="o">.</span><span class="n">UKS</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
-    <span class="n">mf</span><span class="o">.</span><span class="n">xc</span> <span class="o">=</span> <span class="s1">'lda, vwn_rpa'</span>
-    <span class="n">mf</span><span class="o">.</span><span class="n">scf</span><span class="p">()</span>
-    <span class="n">td</span> <span class="o">=</span> <span class="n">mf</span><span class="o">.</span><span class="n">TDDFTNoHybrid</span><span class="p">()</span>
-    <span class="c1">#td.verbose = 5</span>
-    <span class="n">td</span><span class="o">.</span><span class="n">nstates</span> <span class="o">=</span> <span class="mi">5</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">td</span><span class="o">.</span><span class="n">kernel</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mf">27.2114</span><span class="p">)</span>
-<span class="c1"># [  9.08754011   9.08754011   9.7422721    9.7422721   12.48375928]</span>
-
-    <span class="n">mf</span> <span class="o">=</span> <span class="n">dft</span><span class="o">.</span><span class="n">UKS</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
-    <span class="n">mf</span><span class="o">.</span><span class="n">xc</span> <span class="o">=</span> <span class="s1">'b88,p86'</span>
-    <span class="n">mf</span><span class="o">.</span><span class="n">scf</span><span class="p">()</span>
-    <span class="n">td</span> <span class="o">=</span> <span class="n">mf</span><span class="o">.</span><span class="n">TDDFT</span><span class="p">()</span>
-    <span class="n">td</span><span class="o">.</span><span class="n">nstates</span> <span class="o">=</span> <span class="mi">5</span>
-    <span class="c1">#td.verbose = 5</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">td</span><span class="o">.</span><span class="n">kernel</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mf">27.2114</span><span class="p">)</span>
-<span class="c1"># [  9.09321047   9.09321047   9.82203065   9.82203065  12.29842071]</span>
-
-    <span class="n">mf</span> <span class="o">=</span> <span class="n">dft</span><span class="o">.</span><span class="n">UKS</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
-    <span class="n">mf</span><span class="o">.</span><span class="n">xc</span> <span class="o">=</span> <span class="s1">'lda,vwn'</span>
-    <span class="n">mf</span><span class="o">.</span><span class="n">scf</span><span class="p">()</span>
-    <span class="n">td</span> <span class="o">=</span> <span class="n">mf</span><span class="o">.</span><span class="n">TDA</span><span class="p">()</span>
-    <span class="n">td</span><span class="o">.</span><span class="n">nstates</span> <span class="o">=</span> <span class="mi">5</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">td</span><span class="o">.</span><span class="n">kernel</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mf">27.2114</span><span class="p">)</span>
-<span class="c1"># [  9.01393088   9.01393088   9.68872733   9.68872733  12.42444633]</span>
-
-    <span class="n">mol</span><span class="o">.</span><span class="n">spin</span> <span class="o">=</span> <span class="mi">2</span>
-    <span class="n">mf</span> <span class="o">=</span> <span class="n">dft</span><span class="o">.</span><span class="n">UKS</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
-    <span class="n">mf</span><span class="o">.</span><span class="n">xc</span> <span class="o">=</span> <span class="s1">'lda, vwn_rpa'</span>
-    <span class="n">mf</span><span class="o">.</span><span class="n">scf</span><span class="p">()</span>
-    <span class="n">td</span> <span class="o">=</span> <span class="n">TDDFTNoHybrid</span><span class="p">(</span><span class="n">mf</span><span class="p">)</span>
-    <span class="c1">#td.verbose = 5</span>
-    <span class="n">td</span><span class="o">.</span><span class="n">nstates</span> <span class="o">=</span> <span class="mi">5</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">td</span><span class="o">.</span><span class="n">kernel</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mf">27.2114</span><span class="p">)</span>
-<span class="c1"># [  0.0765857    3.16823079  15.20150204  18.40379107  21.11477253]</span>
-
-    <span class="n">mf</span> <span class="o">=</span> <span class="n">dft</span><span class="o">.</span><span class="n">UKS</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
-    <span class="n">mf</span><span class="o">.</span><span class="n">xc</span> <span class="o">=</span> <span class="s1">'b88,p86'</span>
-    <span class="n">mf</span><span class="o">.</span><span class="n">scf</span><span class="p">()</span>
-    <span class="n">td</span> <span class="o">=</span> <span class="n">TDDFT</span><span class="p">(</span><span class="n">mf</span><span class="p">)</span>
-    <span class="n">td</span><span class="o">.</span><span class="n">nstates</span> <span class="o">=</span> <span class="mi">5</span>
-    <span class="c1">#td.verbose = 5</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">td</span><span class="o">.</span><span class="n">kernel</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mf">27.2114</span><span class="p">)</span>
-<span class="c1"># [  0.05161674   3.57883843  15.0960023   18.33537454  20.76914967]</span>
-
-    <span class="n">mf</span> <span class="o">=</span> <span class="n">dft</span><span class="o">.</span><span class="n">UKS</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
-    <span class="n">mf</span><span class="o">.</span><span class="n">xc</span> <span class="o">=</span> <span class="s1">'lda,vwn'</span>
-    <span class="n">mf</span><span class="o">.</span><span class="n">scf</span><span class="p">()</span>
-    <span class="n">td</span> <span class="o">=</span> <span class="n">TDA</span><span class="p">(</span><span class="n">mf</span><span class="p">)</span>
-    <span class="n">td</span><span class="o">.</span><span class="n">nstates</span> <span class="o">=</span> <span class="mi">5</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">td</span><span class="o">.</span><span class="n">kernel</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mf">27.2114</span><span class="p">)</span>
-<span class="c1"># [  0.16142061   3.22811366  14.98443928  18.29273507  21.18410081]</span>
-
 </pre></div>
 
           </article>
@@ -620,7 +559,7 @@
               
           </div>
             Created using
-            <a href="http://www.sphinx-doc.org/">Sphinx</a> 4.0.1.
+            <a href="http://www.sphinx-doc.org/">Sphinx</a> 5.1.1.
              and
             <a href="https://github.com/bashtage/sphinx-material/">Material for
               Sphinx</a>

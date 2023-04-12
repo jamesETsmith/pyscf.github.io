@@ -4,7 +4,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -54,6 +54,7 @@
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="shortcut icon" href="../_static/favicon-32x32.png"/>
@@ -61,7 +62,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="pyscf.mrpt package" href="pyscf.mrpt.html" />
-    <link rel="prev" title="pyscf.mcscf package" href="pyscf.mcscf.html" />
+    <link rel="prev" title="pyscf.md package" href="pyscf.md.html" />
   
    
 
@@ -98,7 +99,7 @@
       </div>
       <div class="md-flex__cell md-flex__cell--stretch">
         <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
-          <span class="md-header-nav__topic">PySCF 2.0</span>
+          <span class="md-header-nav__topic">PySCF 2.2</span>
           <span class="md-header-nav__topic"> pyscf.mp package </span>
         </div>
       </div>
@@ -108,7 +109,7 @@
 <div class="md-search" data-md-component="search" role="dialog">
   <label class="md-search__overlay" for="__search"></label>
   <div class="md-search__inner" role="search">
-    <form class="md-search__form" action="../search.html" method="GET" name="search">
+    <form class="md-search__form" action="../search.html" method="get" name="search">
       <input type="text" class="md-search__input" name="q" placeholder="Search"
              autocapitalize="off" autocomplete="off" spellcheck="false"
              data-md-component="query" data-md-state="active">
@@ -204,7 +205,7 @@
       
     </a>
     <a href="../index.html"
-       title="PySCF">PySCF 2.0</a>
+       title="PySCF">PySCF 2.2</a>
   </label>
     <div class="md-nav__source">
       <a href="https://github.com/pyscf/pyscf/" title="Go to repository" class="md-source" data-md-source="github">
@@ -317,6 +318,10 @@
         </li>
         <li class="md-nav__item"><a href="#module-pyscf.mp.dfmp2" class="md-nav__link">pyscf.mp.dfmp2 module</a>
         </li>
+        <li class="md-nav__item"><a href="#module-pyscf.mp.dfmp2_native" class="md-nav__link">pyscf.mp.dfmp2_native module</a>
+        </li>
+        <li class="md-nav__item"><a href="#module-pyscf.mp.dfump2_native" class="md-nav__link">pyscf.mp.dfump2_native module</a>
+        </li>
         <li class="md-nav__item"><a href="#module-pyscf.mp.gmp2" class="md-nav__link">pyscf.mp.gmp2 module</a>
         </li>
         <li class="md-nav__item"><a href="#module-pyscf.mp.mp2" class="md-nav__link">pyscf.mp.mp2 module</a>
@@ -344,17 +349,17 @@
           <article class="md-content__inner md-typeset" role="main">
             
   <section id="pyscf-mp-package">
-<h1 id="pyscf-api-docs-pyscf-mp--page-root">pyscf.mp package<a class="headerlink" href="#pyscf-api-docs-pyscf-mp--page-root" title="Permalink to this headline">¶</a></h1>
+<h1 id="pyscf-api-docs-pyscf-mp--page-root">pyscf.mp package<a class="headerlink" href="#pyscf-api-docs-pyscf-mp--page-root" title="Permalink to this heading">¶</a></h1>
 <section id="submodules">
-<h2 id="submodules">Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+<h2 id="submodules">Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading">¶</a></h2>
 </section>
 <section id="module-pyscf.mp.dfgmp2">
-<span id="pyscf-mp-dfgmp2-module"></span><h2 id="module-pyscf.mp.dfgmp2">pyscf.mp.dfgmp2 module<a class="headerlink" href="#module-pyscf.mp.dfgmp2" title="Permalink to this headline">¶</a></h2>
+<span id="pyscf-mp-dfgmp2-module"></span><h2 id="module-pyscf.mp.dfgmp2">pyscf.mp.dfgmp2 module<a class="headerlink" href="#module-pyscf.mp.dfgmp2" title="Permalink to this heading">¶</a></h2>
 <p>density fitting GMP2,  3-center integrals incore.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="pyscf.mp.dfgmp2.DFGMP2">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pyscf.mp.dfgmp2.</span></span><span class="sig-name descname"><span class="pre">DFGMP2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frozen</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mo_coeff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mo_occ</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyscf/mp/dfgmp2.html#DFGMP2"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyscf.mp.dfgmp2.DFGMP2" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pyscf.mp.dfmp2.DFMP2" title="pyscf.mp.dfmp2.DFMP2"><code class="xref py py-class docutils literal notranslate"><span class="pre">pyscf.mp.dfmp2.DFMP2</span></code></a></p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyscf.mp.dfgmp2.</span></span><span class="sig-name descname"><span class="pre">DFGMP2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frozen</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mo_coeff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mo_occ</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyscf/mp/dfgmp2.html#DFGMP2"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyscf.mp.dfgmp2.DFGMP2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyscf.mp.dfmp2.DFMP2" title="pyscf.mp.dfmp2.DFMP2"><code class="xref py py-class docutils literal notranslate"><span class="pre">DFMP2</span></code></a></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyscf.mp.dfgmp2.DFGMP2.ao2mo">
 <span class="sig-name descname"><span class="pre">ao2mo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mo_coeff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyscf/mp/dfgmp2.html#DFGMP2.ao2mo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyscf.mp.dfgmp2.DFGMP2.ao2mo" title="Permalink to this definition">¶</a></dt>
@@ -400,12 +405,12 @@ E = einsum(‘pqrs,pqrs’, eri, rdm2)</p>
 <dd></dd></dl>
 </section>
 <section id="module-pyscf.mp.dfmp2">
-<span id="pyscf-mp-dfmp2-module"></span><h2 id="module-pyscf.mp.dfmp2">pyscf.mp.dfmp2 module<a class="headerlink" href="#module-pyscf.mp.dfmp2" title="Permalink to this headline">¶</a></h2>
+<span id="pyscf-mp-dfmp2-module"></span><h2 id="module-pyscf.mp.dfmp2">pyscf.mp.dfmp2 module<a class="headerlink" href="#module-pyscf.mp.dfmp2" title="Permalink to this heading">¶</a></h2>
 <p>density fitting MP2,  3-center integrals incore.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="pyscf.mp.dfmp2.DFMP2">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pyscf.mp.dfmp2.</span></span><span class="sig-name descname"><span class="pre">DFMP2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frozen</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mo_coeff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mo_occ</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyscf/mp/dfmp2.html#DFMP2"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyscf.mp.dfmp2.DFMP2" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pyscf.mp.mp2.MP2" title="pyscf.mp.mp2.MP2"><code class="xref py py-class docutils literal notranslate"><span class="pre">pyscf.mp.mp2.MP2</span></code></a></p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyscf.mp.dfmp2.</span></span><span class="sig-name descname"><span class="pre">DFMP2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frozen</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mo_coeff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mo_occ</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyscf/mp/dfmp2.html#DFMP2"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyscf.mp.dfmp2.DFMP2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyscf.mp.mp2.MP2" title="pyscf.mp.mp2.MP2"><code class="xref py py-class docutils literal notranslate"><span class="pre">MP2</span></code></a></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyscf.mp.dfmp2.DFMP2.ao2mo">
 <span class="sig-name descname"><span class="pre">ao2mo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mo_coeff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyscf/mp/dfmp2.html#DFMP2.ao2mo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyscf.mp.dfmp2.DFMP2.ao2mo" title="Permalink to this definition">¶</a></dt>
@@ -461,21 +466,500 @@ E = einsum(‘pqrs,pqrs’, eri, rdm2)</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pyscf.mp.dfmp2.MP2">
 <span class="sig-prename descclassname"><span class="pre">pyscf.mp.dfmp2.</span></span><span class="sig-name descname"><span class="pre">MP2</span></span><a class="headerlink" href="#pyscf.mp.dfmp2.MP2" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="#pyscf.mp.dfmp2.DFMP2" title="pyscf.mp.dfmp2.DFMP2"><code class="xref py py-class docutils literal notranslate"><span class="pre">pyscf.mp.dfmp2.DFMP2</span></code></a></p>
+<dd><p>alias of <a class="reference internal" href="#pyscf.mp.dfmp2.DFMP2" title="pyscf.mp.dfmp2.DFMP2"><code class="xref py py-class docutils literal notranslate"><span class="pre">DFMP2</span></code></a></p>
 </dd></dl>
 <dl class="py function">
 <dt class="sig sig-object py" id="pyscf.mp.dfmp2.kernel">
 <span class="sig-prename descclassname"><span class="pre">pyscf.mp.dfmp2.</span></span><span class="sig-name descname"><span class="pre">kernel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mo_energy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mo_coeff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eris</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">with_t2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyscf/mp/dfmp2.html#kernel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyscf.mp.dfmp2.kernel" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 </section>
+<section id="module-pyscf.mp.dfmp2_native">
+<span id="pyscf-mp-dfmp2-native-module"></span><h2 id="module-pyscf.mp.dfmp2_native">pyscf.mp.dfmp2_native module<a class="headerlink" href="#module-pyscf.mp.dfmp2_native" title="Permalink to this heading">¶</a></h2>
+<p>native implementation of DF-MP2/RI-MP2 with an RHF reference</p>
+<dl class="py exception">
+<dt class="sig sig-object py" id="pyscf.mp.dfmp2_native.BatchSizeError">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyscf.mp.dfmp2_native.</span></span><span class="sig-name descname"><span class="pre">BatchSizeError</span></span><a class="reference internal" href="../_modules/pyscf/mp/dfmp2_native.html#BatchSizeError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyscf.mp.dfmp2_native.BatchSizeError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+</dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyscf.mp.dfmp2_native.DFMP2">
+<span class="sig-prename descclassname"><span class="pre">pyscf.mp.dfmp2_native.</span></span><span class="sig-name descname"><span class="pre">DFMP2</span></span><a class="headerlink" href="#pyscf.mp.dfmp2_native.DFMP2" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#pyscf.mp.dfmp2_native.DFRMP2" title="pyscf.mp.dfmp2_native.DFRMP2"><code class="xref py py-class docutils literal notranslate"><span class="pre">DFRMP2</span></code></a></p>
+</dd></dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="pyscf.mp.dfmp2_native.DFRMP2">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyscf.mp.dfmp2_native.</span></span><span class="sig-name descname"><span class="pre">DFRMP2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frozen</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auxbasis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyscf/mp/dfmp2_native.html#DFRMP2"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyscf.mp.dfmp2_native.DFRMP2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="pyscf.lib.html#pyscf.lib.misc.StreamObject" title="pyscf.lib.misc.StreamObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">StreamObject</span></code></a></p>
+<p>native implementation of DF-MP2/RI-MP2 with an RHF reference</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyscf.mp.dfmp2_native.DFRMP2.calculate_energy">
+<span class="sig-name descname"><span class="pre">calculate_energy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyscf/mp/dfmp2_native.html#DFRMP2.calculate_energy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyscf.mp.dfmp2_native.DFRMP2.calculate_energy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the MP2 correlation energy.</p>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyscf.mp.dfmp2_native.DFRMP2.calculate_integrals_">
+<span class="sig-name descname"><span class="pre">calculate_integrals_</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyscf/mp/dfmp2_native.html#DFRMP2.calculate_integrals_"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyscf.mp.dfmp2_native.DFRMP2.calculate_integrals_" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the three center integrals for MP2.</p>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyscf.mp.dfmp2_native.DFRMP2.delete">
+<span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyscf/mp/dfmp2_native.html#DFRMP2.delete"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyscf.mp.dfmp2_native.DFRMP2.delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete the temporary file(s).</p>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyscf.mp.dfmp2_native.DFRMP2.dump_flags">
+<span class="sig-name descname"><span class="pre">dump_flags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyscf/mp/dfmp2_native.html#DFRMP2.dump_flags"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyscf.mp.dfmp2_native.DFRMP2.dump_flags" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prints selected information.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>logger : Logger object</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="pyscf.mp.dfmp2_native.DFRMP2.e_tot">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">e_tot</span></span><a class="headerlink" href="#pyscf.mp.dfmp2_native.DFRMP2.e_tot" title="Permalink to this definition">¶</a></dt>
+<dd><p>total energy (SCF + MP2)</p>
+</dd></dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="pyscf.mp.dfmp2_native.DFRMP2.has_ints">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">has_ints</span></span><a class="headerlink" href="#pyscf.mp.dfmp2_native.DFRMP2.has_ints" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyscf.mp.dfmp2_native.DFRMP2.kernel">
+<span class="sig-name descname"><span class="pre">kernel</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyscf/mp/dfmp2_native.html#DFRMP2.kernel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyscf.mp.dfmp2_native.DFRMP2.kernel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for the MP2 energy calculation.
+Does not need to be called to calculate the 1-RDM only.</p>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyscf.mp.dfmp2_native.DFRMP2.make_natorbs">
+<span class="sig-name descname"><span class="pre">make_natorbs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rdm1_mo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">relaxed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyscf/mp/dfmp2_native.html#DFRMP2.make_natorbs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyscf.mp.dfmp2_native.DFRMP2.make_natorbs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate natural orbitals.
+Note: the most occupied orbitals come first (left)</p>
+<blockquote>
+<div><p>and the least occupied orbitals last (right).</p>
+</div></blockquote>
+<dl>
+<dt>Args:</dt><dd><dl class="simple">
+<dt>rdm1_mo<span class="classifier">1-RDM in MO basis</span></dt><dd><p>the function calculates a density matrix if none is provided</p>
+</dd>
+</dl>
+<p>relaxed : calculated relaxed or unrelaxed density matrix</p>
+</dd>
+<dt>Returns:</dt><dd><p>natural occupation numbers, natural orbitals</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyscf.mp.dfmp2_native.DFRMP2.make_rdm1">
+<span class="sig-name descname"><span class="pre">make_rdm1</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">relaxed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ao_repr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyscf/mp/dfmp2_native.html#DFRMP2.make_rdm1"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyscf.mp.dfmp2_native.DFRMP2.make_rdm1" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the MP2 1-RDM.
+- The relaxed density matrix can be used to calculate properties of systems</p>
+<blockquote>
+<div><p>for which MP2 is well-behaved.</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>The unrelaxed density is less suited to calculate properties accurately,
+but it can be used to calculate CASSCF starting orbitals.</p></li>
+</ul>
+<dl class="simple">
+<dt>Args:</dt><dd><p>relaxed : relaxed density if True, unrelaxed density if False
+ao_repr : density in AO or in MO basis</p>
+</dd>
+<dt>Returns:</dt><dd><p>the 1-RDM</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyscf.mp.dfmp2_native.DFRMP2.make_rdm1_relaxed">
+<span class="sig-name descname"><span class="pre">make_rdm1_relaxed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ao_repr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyscf/mp/dfmp2_native.html#DFRMP2.make_rdm1_relaxed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyscf.mp.dfmp2_native.DFRMP2.make_rdm1_relaxed" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyscf.mp.dfmp2_native.DFRMP2.make_rdm1_unrelaxed">
+<span class="sig-name descname"><span class="pre">make_rdm1_unrelaxed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ao_repr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyscf/mp/dfmp2_native.html#DFRMP2.make_rdm1_unrelaxed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyscf.mp.dfmp2_native.DFRMP2.make_rdm1_unrelaxed" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyscf.mp.dfmp2_native.DFRMP2.nuc_grad_method">
+<span class="sig-name descname"><span class="pre">nuc_grad_method</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyscf/mp/dfmp2_native.html#DFRMP2.nuc_grad_method"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyscf.mp.dfmp2_native.DFRMP2.nuc_grad_method" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+</dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyscf.mp.dfmp2_native.MP2">
+<span class="sig-prename descclassname"><span class="pre">pyscf.mp.dfmp2_native.</span></span><span class="sig-name descname"><span class="pre">MP2</span></span><a class="headerlink" href="#pyscf.mp.dfmp2_native.MP2" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#pyscf.mp.dfmp2_native.DFRMP2" title="pyscf.mp.dfmp2_native.DFRMP2"><code class="xref py py-class docutils literal notranslate"><span class="pre">DFRMP2</span></code></a></p>
+</dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyscf.mp.dfmp2_native.RMP2">
+<span class="sig-prename descclassname"><span class="pre">pyscf.mp.dfmp2_native.</span></span><span class="sig-name descname"><span class="pre">RMP2</span></span><a class="headerlink" href="#pyscf.mp.dfmp2_native.RMP2" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#pyscf.mp.dfmp2_native.DFRMP2" title="pyscf.mp.dfmp2_native.DFRMP2"><code class="xref py py-class docutils literal notranslate"><span class="pre">DFRMP2</span></code></a></p>
+</dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyscf.mp.dfmp2_native.SCSDFMP2">
+<span class="sig-prename descclassname"><span class="pre">pyscf.mp.dfmp2_native.</span></span><span class="sig-name descname"><span class="pre">SCSDFMP2</span></span><a class="headerlink" href="#pyscf.mp.dfmp2_native.SCSDFMP2" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#pyscf.mp.dfmp2_native.SCSDFRMP2" title="pyscf.mp.dfmp2_native.SCSDFRMP2"><code class="xref py py-class docutils literal notranslate"><span class="pre">SCSDFRMP2</span></code></a></p>
+</dd></dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="pyscf.mp.dfmp2_native.SCSDFRMP2">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyscf.mp.dfmp2_native.</span></span><span class="sig-name descname"><span class="pre">SCSDFRMP2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.3333333333333333</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyscf/mp/dfmp2_native.html#SCSDFRMP2"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyscf.mp.dfmp2_native.SCSDFRMP2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyscf.mp.dfmp2_native.DFRMP2" title="pyscf.mp.dfmp2_native.DFRMP2"><code class="xref py py-class docutils literal notranslate"><span class="pre">DFRMP2</span></code></a></p>
+<p>RHF-DF-MP2 with spin-component scaling
+S. Grimme, J. Chem. Phys. 118 (2003), 9095
+<a class="reference external" href="https://doi.org/10.1063/1.1569242">https://doi.org/10.1063/1.1569242</a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyscf.mp.dfmp2_native.SCSDFRMP2.dump_flags">
+<span class="sig-name descname"><span class="pre">dump_flags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyscf/mp/dfmp2_native.html#SCSDFRMP2.dump_flags"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyscf.mp.dfmp2_native.SCSDFRMP2.dump_flags" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prints selected information.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>logger : Logger object</p>
+</dd>
+</dl>
+</dd></dl>
+</dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyscf.mp.dfmp2_native.SCSMP2">
+<span class="sig-prename descclassname"><span class="pre">pyscf.mp.dfmp2_native.</span></span><span class="sig-name descname"><span class="pre">SCSMP2</span></span><a class="headerlink" href="#pyscf.mp.dfmp2_native.SCSMP2" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#pyscf.mp.dfmp2_native.SCSDFRMP2" title="pyscf.mp.dfmp2_native.SCSDFRMP2"><code class="xref py py-class docutils literal notranslate"><span class="pre">SCSDFRMP2</span></code></a></p>
+</dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyscf.mp.dfmp2_native.SCSRMP2">
+<span class="sig-prename descclassname"><span class="pre">pyscf.mp.dfmp2_native.</span></span><span class="sig-name descname"><span class="pre">SCSRMP2</span></span><a class="headerlink" href="#pyscf.mp.dfmp2_native.SCSRMP2" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#pyscf.mp.dfmp2_native.SCSDFRMP2" title="pyscf.mp.dfmp2_native.SCSDFRMP2"><code class="xref py py-class docutils literal notranslate"><span class="pre">SCSDFRMP2</span></code></a></p>
+</dd></dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyscf.mp.dfmp2_native.emp2_rhf">
+<span class="sig-prename descclassname"><span class="pre">pyscf.mp.dfmp2_native.</span></span><span class="sig-name descname"><span class="pre">emp2_rhf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">intsfile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mo_energy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frozen_mask</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyscf/mp/dfmp2_native.html#emp2_rhf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyscf.mp.dfmp2_native.emp2_rhf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the DF-MP2 energy with an RHF reference.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>intsfile : contains the three center integrals in MO basis
+mo_energy : energies of the molecular orbitals
+frozen_mask : boolean mask for frozen orbitals
+logger : Logger instance
+ps : SCS factor for opposite-spin contributions
+pt : SCS factor for same-spin contributions</p>
+</dd>
+<dt>Returns:</dt><dd><p>the MP2 correlation energy</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyscf.mp.dfmp2_native.fock_response_rhf">
+<span class="sig-prename descclassname"><span class="pre">pyscf.mp.dfmp2_native.</span></span><span class="sig-name descname"><span class="pre">fock_response_rhf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">full</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyscf/mp/dfmp2_native.html#fock_response_rhf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyscf.mp.dfmp2_native.fock_response_rhf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the Fock response function for a given density matrix:
+sum_pq [ 4 (ai|pq) - (ap|iq) - (aq|ip) ] dm[p, q]</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>mf : RHF instance
+dm : density matrix in MO basis
+full : full MO density matrix if True, virtual x occupied if False</p>
+</dd>
+<dt>Returns:</dt><dd><p>Fock response in MO basis. Shape: virtual x occupied.</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyscf.mp.dfmp2_native.ints3c_cholesky">
+<span class="sig-prename descclassname"><span class="pre">pyscf.mp.dfmp2_native.</span></span><span class="sig-name descname"><span class="pre">ints3c_cholesky</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auxmol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mo_coeff1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mo_coeff2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_memory</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyscf/mp/dfmp2_native.html#ints3c_cholesky"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyscf.mp.dfmp2_native.ints3c_cholesky" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the three center electron repulsion integrals in MO basis
+multiplied with the Cholesky factor of the inverse Coulomb metric matrix.
+Only integrals in MO basis are stored on disk; integral-direct with regard to AO integrals.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>mol : Mole instance
+auxmol : Mole instance with auxiliary basis
+mo_coeff1 : MO coefficient matrix for the leading MO index, typically occupied
+mo_coeff2 : MO coefficient matrix for the secondary MO index, typically virtual
+max_memory : memory threshold in MB
+logger : Logger instance</p>
+</dd>
+<dt>Returns:</dt><dd><p>A HDF5 temporary file containing the integrals in the dataset “ints_cholesky”.
+Indexing order: [mo1, aux, mo2]</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyscf.mp.dfmp2_native.make_rdm1">
+<span class="sig-prename descclassname"><span class="pre">pyscf.mp.dfmp2_native.</span></span><span class="sig-name descname"><span class="pre">make_rdm1</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mp2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">relaxed</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyscf/mp/dfmp2_native.html#make_rdm1"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyscf.mp.dfmp2_native.make_rdm1" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the unrelaxed or relaxed MP2 density matrix.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>mp2 : DFRMP2 instance
+relaxed : relaxed density if True, unrelaxed density if False
+logger : Logger instance</p>
+</dd>
+<dt>Returns:</dt><dd><p>the 1-RDM in MO basis</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyscf.mp.dfmp2_native.orbgrad_from_Gamma">
+<span class="sig-prename descclassname"><span class="pre">pyscf.mp.dfmp2_native.</span></span><span class="sig-name descname"><span class="pre">orbgrad_from_Gamma</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auxmol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Gamma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mo_coeff</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frozen_mask</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_memory</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyscf/mp/dfmp2_native.html#orbgrad_from_Gamma"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyscf.mp.dfmp2_native.orbgrad_from_Gamma" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the orbital gradient of the two-electron term in the Hylleraas functional.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>mol : Mole object
+auxmol : Mole object for the auxiliary functions
+Gamma : h5py dataset with the 3c2e density, order: [occ. orbs., aux. fcns., virt. orbs.]
+mo_coeff : molecular orbital coefficients
+frozen_mask : boolean mask for frozen orbitals
+max_memory : memory limit in MB
+logger : Logger object</p>
+</dd>
+<dt>Returns:</dt><dd><p>orbital gradient in shape: virt. orbitals x occ. orbitals,
+orbital gradient in shape: froz. orbitals x occ. orbitals</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyscf.mp.dfmp2_native.rmp2_densities_contribs">
+<span class="sig-prename descclassname"><span class="pre">pyscf.mp.dfmp2_native.</span></span><span class="sig-name descname"><span class="pre">rmp2_densities_contribs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">intsfile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mo_energy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frozen_mask</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_memory</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">calcGamma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auxmol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyscf/mp/dfmp2_native.html#rmp2_densities_contribs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyscf.mp.dfmp2_native.rmp2_densities_contribs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the unrelaxed DF-MP2 density matrix contribution with an RHF reference.
+Note: this is the difference density, i.e. without HF contribution.
+Also calculates the three-center two-particle density if requested.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>intsfile : contains the three center integrals
+mo_energy : molecular orbital energies
+frozen_mask : boolean mask for frozen orbitals
+max_memory : memory threshold in MB
+logger : Logger instance
+calcGamma : if True, calculate 3c2e density
+auxmol : required if relaxed is True
+ps : SCS factor for opposite-spin contributions
+pt : SCS factor for same-spin contributions</p>
+</dd>
+<dt>Returns:</dt><dd><p>matrix containing the 1-RDM contribution, file with 3c2e density if requested</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyscf.mp.dfmp2_native.shellBatchGenerator">
+<span class="sig-prename descclassname"><span class="pre">pyscf.mp.dfmp2_native.</span></span><span class="sig-name descname"><span class="pre">shellBatchGenerator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nao_max</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyscf/mp/dfmp2_native.html#shellBatchGenerator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyscf.mp.dfmp2_native.shellBatchGenerator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates sets of shells with a limited number of functions.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>mol : the molecule object
+nao_max : maximum number of AOs in each set</p>
+</dd>
+<dt>Returns:</dt><dd><p>generator yields ((first shell, last shell+1), (first AO, last AO+1))</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyscf.mp.dfmp2_native.solve_cphf_rhf">
+<span class="sig-prename descclassname"><span class="pre">pyscf.mp.dfmp2_native.</span></span><span class="sig-name descname"><span class="pre">solve_cphf_rhf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Lvo</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_cycle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyscf/mp/dfmp2_native.html#solve_cphf_rhf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyscf.mp.dfmp2_native.solve_cphf_rhf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solve the CPHF equations.
+(e[i] - e[a]) zvo[a, i] - sum_bj [ 4 (ai|bj) - (ab|ij) - (aj|ib) ] zvo[b, j] = Lvo[a, i]</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>mf : an RHF object
+Lvo : right-hand side the the response equation
+max_cycle : number of iterations for the CPHF solver
+tol : convergence tolerance for the CPHF solver
+logger : Logger object</p>
+</dd>
+</dl>
+</dd></dl>
+</section>
+<section id="module-pyscf.mp.dfump2_native">
+<span id="pyscf-mp-dfump2-native-module"></span><h2 id="module-pyscf.mp.dfump2_native">pyscf.mp.dfump2_native module<a class="headerlink" href="#module-pyscf.mp.dfump2_native" title="Permalink to this heading">¶</a></h2>
+<p>native implementation of DF-MP2/RI-MP2 with a UHF reference</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyscf.mp.dfump2_native.DFMP2">
+<span class="sig-prename descclassname"><span class="pre">pyscf.mp.dfump2_native.</span></span><span class="sig-name descname"><span class="pre">DFMP2</span></span><a class="headerlink" href="#pyscf.mp.dfump2_native.DFMP2" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#pyscf.mp.dfump2_native.DFUMP2" title="pyscf.mp.dfump2_native.DFUMP2"><code class="xref py py-class docutils literal notranslate"><span class="pre">DFUMP2</span></code></a></p>
+</dd></dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="pyscf.mp.dfump2_native.DFUMP2">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyscf.mp.dfump2_native.</span></span><span class="sig-name descname"><span class="pre">DFUMP2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frozen</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auxbasis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyscf/mp/dfump2_native.html#DFUMP2"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyscf.mp.dfump2_native.DFUMP2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyscf.mp.dfmp2_native.DFRMP2" title="pyscf.mp.dfmp2_native.DFRMP2"><code class="xref py py-class docutils literal notranslate"><span class="pre">DFRMP2</span></code></a></p>
+<p>native implementation of DF-MP2/RI-MP2 with a UHF reference</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyscf.mp.dfump2_native.DFUMP2.calculate_energy">
+<span class="sig-name descname"><span class="pre">calculate_energy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyscf/mp/dfump2_native.html#DFUMP2.calculate_energy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyscf.mp.dfump2_native.DFUMP2.calculate_energy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the MP2 correlation energy.</p>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyscf.mp.dfump2_native.DFUMP2.calculate_integrals_">
+<span class="sig-name descname"><span class="pre">calculate_integrals_</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyscf/mp/dfump2_native.html#DFUMP2.calculate_integrals_"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyscf.mp.dfump2_native.DFUMP2.calculate_integrals_" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the three center integrals for MP2.</p>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyscf.mp.dfump2_native.DFUMP2.delete">
+<span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyscf/mp/dfump2_native.html#DFUMP2.delete"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyscf.mp.dfump2_native.DFUMP2.delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete the temporary file(s).</p>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyscf.mp.dfump2_native.DFUMP2.dump_flags">
+<span class="sig-name descname"><span class="pre">dump_flags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyscf/mp/dfump2_native.html#DFUMP2.dump_flags"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyscf.mp.dfump2_native.DFUMP2.dump_flags" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prints selected information.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>logger : Logger object</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyscf.mp.dfump2_native.DFUMP2.make_natorbs">
+<span class="sig-name descname"><span class="pre">make_natorbs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rdm1_mo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">relaxed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyscf/mp/dfump2_native.html#DFUMP2.make_natorbs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyscf.mp.dfump2_native.DFUMP2.make_natorbs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate natural orbitals.
+Note: the most occupied orbitals come first (left)</p>
+<blockquote>
+<div><p>and the least occupied orbitals last (right).</p>
+</div></blockquote>
+<dl>
+<dt>Args:</dt><dd><dl class="simple">
+<dt>rdm1_mo<span class="classifier">1-RDM in MO basis</span></dt><dd><p>the function calculates a density matrix if none is provided</p>
+</dd>
+</dl>
+<p>relaxed : calculated relaxed or unrelaxed density matrix</p>
+</dd>
+<dt>Returns:</dt><dd><p>natural occupation numbers, natural orbitals</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyscf.mp.dfump2_native.DFUMP2.make_rdm1">
+<span class="sig-name descname"><span class="pre">make_rdm1</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">relaxed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ao_repr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyscf/mp/dfump2_native.html#DFUMP2.make_rdm1"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyscf.mp.dfump2_native.DFUMP2.make_rdm1" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the MP2 1-RDM.
+- The relaxed density matrix can be used to calculate properties of systems</p>
+<blockquote>
+<div><p>for which MP2 is well-behaved.</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>The unrelaxed density is less suited to calculate properties accurately,
+but it can be used to calculate CASSCF starting orbitals.</p></li>
+</ul>
+<dl class="simple">
+<dt>Args:</dt><dd><p>relaxed : relaxed density if True, unrelaxed density if False
+ao_repr : density in AO or in MO basis</p>
+</dd>
+<dt>Returns:</dt><dd><p>the 1-RDM</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyscf.mp.dfump2_native.DFUMP2.nuc_grad_method">
+<span class="sig-name descname"><span class="pre">nuc_grad_method</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyscf/mp/dfump2_native.html#DFUMP2.nuc_grad_method"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyscf.mp.dfump2_native.DFUMP2.nuc_grad_method" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+</dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyscf.mp.dfump2_native.MP2">
+<span class="sig-prename descclassname"><span class="pre">pyscf.mp.dfump2_native.</span></span><span class="sig-name descname"><span class="pre">MP2</span></span><a class="headerlink" href="#pyscf.mp.dfump2_native.MP2" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#pyscf.mp.dfump2_native.DFUMP2" title="pyscf.mp.dfump2_native.DFUMP2"><code class="xref py py-class docutils literal notranslate"><span class="pre">DFUMP2</span></code></a></p>
+</dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyscf.mp.dfump2_native.SCSDFMP2">
+<span class="sig-prename descclassname"><span class="pre">pyscf.mp.dfump2_native.</span></span><span class="sig-name descname"><span class="pre">SCSDFMP2</span></span><a class="headerlink" href="#pyscf.mp.dfump2_native.SCSDFMP2" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#pyscf.mp.dfump2_native.SCSDFUMP2" title="pyscf.mp.dfump2_native.SCSDFUMP2"><code class="xref py py-class docutils literal notranslate"><span class="pre">SCSDFUMP2</span></code></a></p>
+</dd></dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="pyscf.mp.dfump2_native.SCSDFUMP2">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyscf.mp.dfump2_native.</span></span><span class="sig-name descname"><span class="pre">SCSDFUMP2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.3333333333333333</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyscf/mp/dfump2_native.html#SCSDFUMP2"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyscf.mp.dfump2_native.SCSDFUMP2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyscf.mp.dfump2_native.DFUMP2" title="pyscf.mp.dfump2_native.DFUMP2"><code class="xref py py-class docutils literal notranslate"><span class="pre">DFUMP2</span></code></a></p>
+<p>UHF-DF-MP2 with spin-component scaling
+S. Grimme, J. Chem. Phys. 118 (2003), 9095
+<a class="reference external" href="https://doi.org/10.1063/1.1569242">https://doi.org/10.1063/1.1569242</a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyscf.mp.dfump2_native.SCSDFUMP2.dump_flags">
+<span class="sig-name descname"><span class="pre">dump_flags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyscf/mp/dfump2_native.html#SCSDFUMP2.dump_flags"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyscf.mp.dfump2_native.SCSDFUMP2.dump_flags" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prints selected information.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>logger : Logger object</p>
+</dd>
+</dl>
+</dd></dl>
+</dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyscf.mp.dfump2_native.SCSMP2">
+<span class="sig-prename descclassname"><span class="pre">pyscf.mp.dfump2_native.</span></span><span class="sig-name descname"><span class="pre">SCSMP2</span></span><a class="headerlink" href="#pyscf.mp.dfump2_native.SCSMP2" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#pyscf.mp.dfump2_native.SCSDFUMP2" title="pyscf.mp.dfump2_native.SCSDFUMP2"><code class="xref py py-class docutils literal notranslate"><span class="pre">SCSDFUMP2</span></code></a></p>
+</dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyscf.mp.dfump2_native.SCSUMP2">
+<span class="sig-prename descclassname"><span class="pre">pyscf.mp.dfump2_native.</span></span><span class="sig-name descname"><span class="pre">SCSUMP2</span></span><a class="headerlink" href="#pyscf.mp.dfump2_native.SCSUMP2" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#pyscf.mp.dfump2_native.SCSDFUMP2" title="pyscf.mp.dfump2_native.SCSDFUMP2"><code class="xref py py-class docutils literal notranslate"><span class="pre">SCSDFUMP2</span></code></a></p>
+</dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyscf.mp.dfump2_native.UMP2">
+<span class="sig-prename descclassname"><span class="pre">pyscf.mp.dfump2_native.</span></span><span class="sig-name descname"><span class="pre">UMP2</span></span><a class="headerlink" href="#pyscf.mp.dfump2_native.UMP2" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#pyscf.mp.dfump2_native.DFUMP2" title="pyscf.mp.dfump2_native.DFUMP2"><code class="xref py py-class docutils literal notranslate"><span class="pre">DFUMP2</span></code></a></p>
+</dd></dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyscf.mp.dfump2_native.emp2_uhf">
+<span class="sig-prename descclassname"><span class="pre">pyscf.mp.dfump2_native.</span></span><span class="sig-name descname"><span class="pre">emp2_uhf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">intsfiles</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mo_energy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frozen_mask</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyscf/mp/dfump2_native.html#emp2_uhf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyscf.mp.dfump2_native.emp2_uhf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the DF-MP2 energy with an UHF reference.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>intsfiles : contains the three center integrals in MO basis
+mo_energy : energies of the molecular orbitals
+frozen_mask : boolean mask for frozen orbitals
+logger : Logger instance
+ps : SCS factor for opposite-spin contributions
+pt : SCS factor for same-spin contributions</p>
+</dd>
+<dt>Returns:</dt><dd><p>the MP2 correlation energy</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyscf.mp.dfump2_native.fock_response_uhf">
+<span class="sig-prename descclassname"><span class="pre">pyscf.mp.dfump2_native.</span></span><span class="sig-name descname"><span class="pre">fock_response_uhf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">full</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyscf/mp/dfump2_native.html#fock_response_uhf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyscf.mp.dfump2_native.fock_response_uhf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the unrestricted Fock response function for a given density matrix.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>mf : UHF instance
+dm : density matrix in MO basis
+full : full MO density matrix if True, [virt. x occ., virt. x occ.] if False</p>
+</dd>
+<dt>Returns:</dt><dd><p>Fock response in MO basis. Shape: [virt. x occ., virt. x occ.]</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyscf.mp.dfump2_native.make_rdm1">
+<span class="sig-prename descclassname"><span class="pre">pyscf.mp.dfump2_native.</span></span><span class="sig-name descname"><span class="pre">make_rdm1</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mp2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">relaxed</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyscf/mp/dfump2_native.html#make_rdm1"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyscf.mp.dfump2_native.make_rdm1" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the unrelaxed or relaxed MP2 density matrix.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>mp2 : DFUMP2 instance
+relaxed : relaxed density if True, unrelaxed density if False
+logger : Logger instance</p>
+</dd>
+<dt>Returns:</dt><dd><p>the 1-RDM in MO basis</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyscf.mp.dfump2_native.solve_cphf_uhf">
+<span class="sig-prename descclassname"><span class="pre">pyscf.mp.dfump2_native.</span></span><span class="sig-name descname"><span class="pre">solve_cphf_uhf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Lvo</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_cycle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyscf/mp/dfump2_native.html#solve_cphf_uhf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyscf.mp.dfump2_native.solve_cphf_uhf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solve the CPHF equations.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>mf : a UHF object
+Lvo : right-hand side the the response equation
+max_cycle : number of iterations for the CPHF solver
+tol : convergence tolerance for the CPHF solver
+logger : Logger object</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyscf.mp.dfump2_native.ump2_densities_contribs">
+<span class="sig-prename descclassname"><span class="pre">pyscf.mp.dfump2_native.</span></span><span class="sig-name descname"><span class="pre">ump2_densities_contribs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">intsfiles</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mo_energy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frozen_mask</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_memory</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">calcGamma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auxmol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyscf/mp/dfump2_native.html#ump2_densities_contribs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyscf.mp.dfump2_native.ump2_densities_contribs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the unrelaxed DF-MP2 density matrix contribution with a UHF reference.
+Note: this is the difference density, i.e. without HF contribution.A
+lso calculates the three-center two-particle density if requested.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>intsfile : contains the three center integrals
+mo_energy : molecular orbital energies
+frozen_mask : boolean mask for frozen orbitals
+max_memory : memory threshold in MB
+logger : Logger instance
+calcGamma : if True, calculate 3c2e density
+auxmol : required if relaxed is True
+ps : SCS factor for opposite-spin contributions
+pt : SCS factor for same-spin contributions</p>
+</dd>
+<dt>Returns:</dt><dd><p>matrix containing the 1-RDM contribution, file with 3c2e density if requested</p>
+</dd>
+</dl>
+</dd></dl>
+</section>
 <section id="module-pyscf.mp.gmp2">
-<span id="pyscf-mp-gmp2-module"></span><h2 id="module-pyscf.mp.gmp2">pyscf.mp.gmp2 module<a class="headerlink" href="#module-pyscf.mp.gmp2" title="Permalink to this headline">¶</a></h2>
+<span id="pyscf-mp-gmp2-module"></span><h2 id="module-pyscf.mp.gmp2">pyscf.mp.gmp2 module<a class="headerlink" href="#module-pyscf.mp.gmp2" title="Permalink to this heading">¶</a></h2>
 <p>GMP2 in spin-orbital form
 E(MP2) = 1/4 &lt;ij||ab&gt;&lt;ab||ij&gt;/(ei+ej-ea-eb)</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="pyscf.mp.gmp2.GMP2">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pyscf.mp.gmp2.</span></span><span class="sig-name descname"><span class="pre">GMP2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frozen</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mo_coeff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mo_occ</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyscf/mp/gmp2.html#GMP2"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyscf.mp.gmp2.GMP2" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pyscf.mp.mp2.MP2" title="pyscf.mp.mp2.MP2"><code class="xref py py-class docutils literal notranslate"><span class="pre">pyscf.mp.mp2.MP2</span></code></a></p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyscf.mp.gmp2.</span></span><span class="sig-name descname"><span class="pre">GMP2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frozen</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mo_coeff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mo_occ</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyscf/mp/gmp2.html#GMP2"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyscf.mp.gmp2.GMP2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyscf.mp.mp2.MP2" title="pyscf.mp.mp2.MP2"><code class="xref py py-class docutils literal notranslate"><span class="pre">MP2</span></code></a></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyscf.mp.gmp2.GMP2.ao2mo">
 <span class="sig-name descname"><span class="pre">ao2mo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mo_coeff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyscf/mp/gmp2.html#GMP2.ao2mo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyscf.mp.gmp2.GMP2.ao2mo" title="Permalink to this definition">¶</a></dt>
@@ -527,7 +1011,7 @@ E = einsum(‘pqrs,pqrs’, eri, rdm2)</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pyscf.mp.gmp2.MP2">
 <span class="sig-prename descclassname"><span class="pre">pyscf.mp.gmp2.</span></span><span class="sig-name descname"><span class="pre">MP2</span></span><a class="headerlink" href="#pyscf.mp.gmp2.MP2" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="#pyscf.mp.gmp2.GMP2" title="pyscf.mp.gmp2.GMP2"><code class="xref py py-class docutils literal notranslate"><span class="pre">pyscf.mp.gmp2.GMP2</span></code></a></p>
+<dd><p>alias of <a class="reference internal" href="#pyscf.mp.gmp2.GMP2" title="pyscf.mp.gmp2.GMP2"><code class="xref py py-class docutils literal notranslate"><span class="pre">GMP2</span></code></a></p>
 </dd></dl>
 <dl class="py function">
 <dt class="sig sig-object py" id="pyscf.mp.gmp2.energy">
@@ -566,12 +1050,12 @@ E = einsum(‘pqrs,pqrs’, eri, rdm2)</p>
 </dd></dl>
 </section>
 <section id="module-pyscf.mp.mp2">
-<span id="pyscf-mp-mp2-module"></span><h2 id="module-pyscf.mp.mp2">pyscf.mp.mp2 module<a class="headerlink" href="#module-pyscf.mp.mp2" title="Permalink to this headline">¶</a></h2>
+<span id="pyscf-mp-mp2-module"></span><h2 id="module-pyscf.mp.mp2">pyscf.mp.mp2 module<a class="headerlink" href="#module-pyscf.mp.mp2" title="Permalink to this heading">¶</a></h2>
 <p>RMP2</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="pyscf.mp.mp2.MP2">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pyscf.mp.mp2.</span></span><span class="sig-name descname"><span class="pre">MP2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frozen</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mo_coeff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mo_occ</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyscf/mp/mp2.html#MP2"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyscf.mp.mp2.MP2" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="pyscf.lib.html#pyscf.lib.misc.StreamObject" title="pyscf.lib.misc.StreamObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">pyscf.lib.misc.StreamObject</span></code></a></p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyscf.mp.mp2.</span></span><span class="sig-name descname"><span class="pre">MP2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frozen</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mo_coeff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mo_occ</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyscf/mp/mp2.html#MP2"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyscf.mp.mp2.MP2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="pyscf.lib.html#pyscf.lib.misc.StreamObject" title="pyscf.lib.misc.StreamObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">StreamObject</span></code></a></p>
 <p>restricted MP2 with canonical HF and non-canonical HF reference</p>
 <dl>
 <dt>Attributes:</dt><dd><dl>
@@ -600,6 +1084,8 @@ occupied and virtual orbitals can be frozen in MP2 calculation.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">mf</span> <span class="o">=</span> <span class="n">scf</span><span class="o">.</span><span class="n">RHF</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># freeze 2 core orbitals</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">pt</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">MP2</span><span class="p">(</span><span class="n">mf</span><span class="p">)</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">frozen</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># auto-generate the number of core orbitals to be frozen (1 in this case)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pt</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">MP2</span><span class="p">(</span><span class="n">mf</span><span class="p">)</span><span class="o">.</span><span class="n">set_frozen</span><span class="p">()</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># freeze 2 core orbitals and 3 high lying unoccupied orbitals</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">pt</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">frozen</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">16</span><span class="p">,</span><span class="mi">17</span><span class="p">,</span><span class="mi">18</span><span class="p">])</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
 </pre></div>
@@ -612,6 +1098,8 @@ occupied and virtual orbitals can be frozen in MP2 calculation.</p>
 <blockquote>
 <div><dl class="simple">
 <dt>e_corr<span class="classifier">float</span></dt><dd><p>MP2 correlation correction</p>
+</dd>
+<dt>e_corr_ss/os<span class="classifier">float</span></dt><dd><p>Same-spin and opposite-spin component of the MP2 correlation energy</p>
 </dd>
 <dt>e_tot<span class="classifier">float</span></dt><dd><p>Total MP2 energy (HF + correlation)</p>
 </dd>
@@ -650,11 +1138,11 @@ automatically applied in the solver.</p>
 </dd></dl>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pyscf.mp.mp2.MP2.conv_tol">
-<span class="sig-name descname"><span class="pre">conv_tol</span></span><em class="property"> <span class="pre">=</span> <span class="pre">1e-07</span></em><a class="headerlink" href="#pyscf.mp.mp2.MP2.conv_tol" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">conv_tol</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1e-07</span></em><a class="headerlink" href="#pyscf.mp.mp2.MP2.conv_tol" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pyscf.mp.mp2.MP2.conv_tol_normt">
-<span class="sig-name descname"><span class="pre">conv_tol_normt</span></span><em class="property"> <span class="pre">=</span> <span class="pre">1e-05</span></em><a class="headerlink" href="#pyscf.mp.mp2.MP2.conv_tol_normt" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">conv_tol_normt</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1e-05</span></em><a class="headerlink" href="#pyscf.mp.mp2.MP2.conv_tol_normt" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyscf.mp.mp2.MP2.density_fit">
@@ -666,17 +1154,29 @@ automatically applied in the solver.</p>
 <dd></dd></dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="pyscf.mp.mp2.MP2.e_tot">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">e_tot</span></span><a class="headerlink" href="#pyscf.mp.mp2.MP2.e_tot" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">e_tot</span></span><a class="headerlink" href="#pyscf.mp.mp2.MP2.e_tot" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="pyscf.mp.mp2.MP2.e_tot_scs">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">e_tot_scs</span></span><a class="headerlink" href="#pyscf.mp.mp2.MP2.e_tot_scs" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="pyscf.mp.mp2.MP2.emp2">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">emp2</span></span><a class="headerlink" href="#pyscf.mp.mp2.MP2.emp2" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">emp2</span></span><a class="headerlink" href="#pyscf.mp.mp2.MP2.emp2" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="pyscf.mp.mp2.MP2.emp2_scs">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">emp2_scs</span></span><a class="headerlink" href="#pyscf.mp.mp2.MP2.emp2_scs" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyscf.mp.mp2.MP2.energy">
 <span class="sig-name descname"><span class="pre">energy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eris</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyscf.mp.mp2.MP2.energy" title="Permalink to this definition">¶</a></dt>
 <dd><p>MP2 energy</p>
 </dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyscf.mp.mp2.MP2.get_e_hf">
+<span class="sig-name descname"><span class="pre">get_e_hf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mo_coeff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyscf.mp.mp2.MP2.get_e_hf" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyscf.mp.mp2.MP2.get_frozen_mask">
 <span class="sig-name descname"><span class="pre">get_frozen_mask</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyscf.mp.mp2.MP2.get_frozen_mask" title="Permalink to this definition">¶</a></dt>
@@ -712,6 +1212,15 @@ element is False if it corresonds to the frozen orbital.</p>
 <span class="sig-name descname"><span class="pre">make_fno</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">thresh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-06</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pct_occ</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nvir_act</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyscf.mp.mp2.MP2.make_fno" title="Permalink to this definition">¶</a></dt>
 <dd><p>Frozen natural orbitals</p>
 <dl class="simple">
+<dt>Attributes:</dt><dd><dl class="simple">
+<dt>thresh<span class="classifier">float</span></dt><dd><p>Threshold on NO occupation numbers. Default is 1e-6 (very conservative).</p>
+</dd>
+<dt>pct_occ<span class="classifier">float</span></dt><dd><p>Percentage of total occupation number. Default is None. If present, overrides <cite>thresh</cite>.</p>
+</dd>
+<dt>nvir_act<span class="classifier">int</span></dt><dd><p>Number of virtual NOs to keep. Default is None. If present, overrides <cite>thresh</cite> and <cite>pct_occ</cite>.</p>
+</dd>
+</dl>
+</dd>
 <dt>Returns:</dt><dd><dl class="simple">
 <dt>frozen<span class="classifier">list or ndarray</span></dt><dd><p>List of orbitals to freeze</p>
 </dd>
@@ -749,15 +1258,15 @@ E = einsum(‘pqrs,pqrs’, eri, rdm2)</p>
 </dd></dl>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pyscf.mp.mp2.MP2.max_cycle">
-<span class="sig-name descname"><span class="pre">max_cycle</span></span><em class="property"> <span class="pre">=</span> <span class="pre">50</span></em><a class="headerlink" href="#pyscf.mp.mp2.MP2.max_cycle" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">max_cycle</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">50</span></em><a class="headerlink" href="#pyscf.mp.mp2.MP2.max_cycle" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="pyscf.mp.mp2.MP2.nmo">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">nmo</span></span><a class="headerlink" href="#pyscf.mp.mp2.MP2.nmo" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">nmo</span></span><a class="headerlink" href="#pyscf.mp.mp2.MP2.nmo" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="pyscf.mp.mp2.MP2.nocc">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">nocc</span></span><a class="headerlink" href="#pyscf.mp.mp2.MP2.nocc" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">nocc</span></span><a class="headerlink" href="#pyscf.mp.mp2.MP2.nocc" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyscf.mp.mp2.MP2.nuc_grad_method">
@@ -768,6 +1277,10 @@ E = einsum(‘pqrs,pqrs’, eri, rdm2)</p>
 <span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyscf/mp/mp2.html#MP2.reset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyscf.mp.mp2.MP2.reset" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 <dl class="py method">
+<dt class="sig sig-object py" id="pyscf.mp.mp2.MP2.set_frozen">
+<span class="sig-name descname"><span class="pre">set_frozen</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'auto'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">window</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(-1000.0,</span> <span class="pre">1000.0)</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyscf/mp/mp2.html#MP2.set_frozen"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyscf.mp.mp2.MP2.set_frozen" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+<dl class="py method">
 <dt class="sig sig-object py" id="pyscf.mp.mp2.MP2.update_amps">
 <span class="sig-name descname"><span class="pre">update_amps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eris</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyscf.mp.mp2.MP2.update_amps" title="Permalink to this definition">¶</a></dt>
 <dd><p>Update non-canonical MP2 amplitudes</p>
@@ -776,7 +1289,7 @@ E = einsum(‘pqrs,pqrs’, eri, rdm2)</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pyscf.mp.mp2.RMP2">
 <span class="sig-prename descclassname"><span class="pre">pyscf.mp.mp2.</span></span><span class="sig-name descname"><span class="pre">RMP2</span></span><a class="headerlink" href="#pyscf.mp.mp2.RMP2" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="#pyscf.mp.mp2.MP2" title="pyscf.mp.mp2.MP2"><code class="xref py py-class docutils literal notranslate"><span class="pre">pyscf.mp.mp2.MP2</span></code></a></p>
+<dd><p>alias of <a class="reference internal" href="#pyscf.mp.mp2.MP2" title="pyscf.mp.mp2.MP2"><code class="xref py py-class docutils literal notranslate"><span class="pre">MP2</span></code></a></p>
 </dd></dl>
 <dl class="py function">
 <dt class="sig sig-object py" id="pyscf.mp.mp2.as_scanner">
@@ -805,6 +1318,10 @@ automatically applied in the solver.</p>
 <dd><p>MP2 energy</p>
 </dd></dl>
 <dl class="py function">
+<dt class="sig sig-object py" id="pyscf.mp.mp2.get_e_hf">
+<span class="sig-prename descclassname"><span class="pre">pyscf.mp.mp2.</span></span><span class="sig-name descname"><span class="pre">get_e_hf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mo_coeff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyscf/mp/mp2.html#get_e_hf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyscf.mp.mp2.get_e_hf" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+<dl class="py function">
 <dt class="sig sig-object py" id="pyscf.mp.mp2.get_frozen_mask">
 <span class="sig-prename descclassname"><span class="pre">pyscf.mp.mp2.</span></span><span class="sig-name descname"><span class="pre">get_frozen_mask</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mp</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyscf/mp/mp2.html#get_frozen_mask"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyscf.mp.mp2.get_frozen_mask" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get boolean mask for the restricted reference orbitals.</p>
@@ -828,6 +1345,15 @@ element is False if it corresonds to the frozen orbital.</p>
 <span class="sig-prename descclassname"><span class="pre">pyscf.mp.mp2.</span></span><span class="sig-name descname"><span class="pre">make_fno</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thresh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-06</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pct_occ</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nvir_act</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyscf/mp/mp2.html#make_fno"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyscf.mp.mp2.make_fno" title="Permalink to this definition">¶</a></dt>
 <dd><p>Frozen natural orbitals</p>
 <dl class="simple">
+<dt>Attributes:</dt><dd><dl class="simple">
+<dt>thresh<span class="classifier">float</span></dt><dd><p>Threshold on NO occupation numbers. Default is 1e-6 (very conservative).</p>
+</dd>
+<dt>pct_occ<span class="classifier">float</span></dt><dd><p>Percentage of total occupation number. Default is None. If present, overrides <cite>thresh</cite>.</p>
+</dd>
+<dt>nvir_act<span class="classifier">int</span></dt><dd><p>Number of virtual NOs to keep. Default is None. If present, overrides <cite>thresh</cite> and <cite>pct_occ</cite>.</p>
+</dd>
+</dl>
+</dd>
 <dt>Returns:</dt><dd><dl class="simple">
 <dt>frozen<span class="classifier">list or ndarray</span></dt><dd><p>List of orbitals to freeze</p>
 </dd>
@@ -870,7 +1396,7 @@ E = einsum(‘pqrs,pqrs’, eri, rdm2)</p>
 </dd></dl>
 </section>
 <section id="module-pyscf.mp.mp2f12_slow">
-<span id="pyscf-mp-mp2f12-slow-module"></span><h2 id="module-pyscf.mp.mp2f12_slow">pyscf.mp.mp2f12_slow module<a class="headerlink" href="#module-pyscf.mp.mp2f12_slow" title="Permalink to this headline">¶</a></h2>
+<span id="pyscf-mp-mp2f12-slow-module"></span><h2 id="module-pyscf.mp.mp2f12_slow">pyscf.mp.mp2f12_slow module<a class="headerlink" href="#module-pyscf.mp.mp2f12_slow" title="Permalink to this heading">¶</a></h2>
 <p>MP2-F12 (In testing)</p>
 <p>Refs:
 * JCC 32, 2492 (2011); DOI:10.1002/jcc.21825
@@ -890,17 +1416,17 @@ E = einsum(‘pqrs,pqrs’, eri, rdm2)</p>
 <dd></dd></dl>
 </section>
 <section id="module-pyscf.mp.ump2">
-<span id="pyscf-mp-ump2-module"></span><h2 id="module-pyscf.mp.ump2">pyscf.mp.ump2 module<a class="headerlink" href="#module-pyscf.mp.ump2" title="Permalink to this headline">¶</a></h2>
+<span id="pyscf-mp-ump2-module"></span><h2 id="module-pyscf.mp.ump2">pyscf.mp.ump2 module<a class="headerlink" href="#module-pyscf.mp.ump2" title="Permalink to this heading">¶</a></h2>
 <p>UMP2 with spatial integals</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pyscf.mp.ump2.MP2">
 <span class="sig-prename descclassname"><span class="pre">pyscf.mp.ump2.</span></span><span class="sig-name descname"><span class="pre">MP2</span></span><a class="headerlink" href="#pyscf.mp.ump2.MP2" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="#pyscf.mp.ump2.UMP2" title="pyscf.mp.ump2.UMP2"><code class="xref py py-class docutils literal notranslate"><span class="pre">pyscf.mp.ump2.UMP2</span></code></a></p>
+<dd><p>alias of <a class="reference internal" href="#pyscf.mp.ump2.UMP2" title="pyscf.mp.ump2.UMP2"><code class="xref py py-class docutils literal notranslate"><span class="pre">UMP2</span></code></a></p>
 </dd></dl>
 <dl class="py class">
 <dt class="sig sig-object py" id="pyscf.mp.ump2.UMP2">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pyscf.mp.ump2.</span></span><span class="sig-name descname"><span class="pre">UMP2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frozen</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mo_coeff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mo_occ</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyscf/mp/ump2.html#UMP2"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyscf.mp.ump2.UMP2" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pyscf.mp.mp2.MP2" title="pyscf.mp.mp2.MP2"><code class="xref py py-class docutils literal notranslate"><span class="pre">pyscf.mp.mp2.MP2</span></code></a></p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyscf.mp.ump2.</span></span><span class="sig-name descname"><span class="pre">UMP2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frozen</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mo_coeff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mo_occ</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyscf/mp/ump2.html#UMP2"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyscf.mp.ump2.UMP2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyscf.mp.mp2.MP2" title="pyscf.mp.mp2.MP2"><code class="xref py py-class docutils literal notranslate"><span class="pre">MP2</span></code></a></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyscf.mp.ump2.UMP2.Gradients">
 <span class="sig-name descname"><span class="pre">Gradients</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyscf.mp.ump2.UMP2.Gradients" title="Permalink to this definition">¶</a></dt>
@@ -1060,7 +1586,7 @@ eri_bb[p,q,r,s] = ( p_beta q_beta | r_beta s_beta )</p>
 </dd></dl>
 </section>
 <section id="module-pyscf.mp">
-<span id="module-contents"></span><h2 id="module-pyscf.mp">Module contents<a class="headerlink" href="#module-pyscf.mp" title="Permalink to this headline">¶</a></h2>
+<span id="module-contents"></span><h2 id="module-pyscf.mp">Module contents<a class="headerlink" href="#module-pyscf.mp" title="Permalink to this heading">¶</a></h2>
 <p>Moller-Plesset perturbation theory</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="pyscf.mp.GMP2">
@@ -1097,6 +1623,8 @@ occupied and virtual orbitals can be frozen in MP2 calculation.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">mf</span> <span class="o">=</span> <span class="n">scf</span><span class="o">.</span><span class="n">RHF</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># freeze 2 core orbitals</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">pt</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">MP2</span><span class="p">(</span><span class="n">mf</span><span class="p">)</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">frozen</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># auto-generate the number of core orbitals to be frozen (1 in this case)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pt</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">MP2</span><span class="p">(</span><span class="n">mf</span><span class="p">)</span><span class="o">.</span><span class="n">set_frozen</span><span class="p">()</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># freeze 2 core orbitals and 3 high lying unoccupied orbitals</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">pt</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">frozen</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">16</span><span class="p">,</span><span class="mi">17</span><span class="p">,</span><span class="mi">18</span><span class="p">])</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
 </pre></div>
@@ -1109,6 +1637,8 @@ occupied and virtual orbitals can be frozen in MP2 calculation.</p>
 <blockquote>
 <div><dl class="simple">
 <dt>e_corr<span class="classifier">float</span></dt><dd><p>MP2 correlation correction</p>
+</dd>
+<dt>e_corr_ss/os<span class="classifier">float</span></dt><dd><p>Same-spin and opposite-spin component of the MP2 correlation energy</p>
 </dd>
 <dt>e_tot<span class="classifier">float</span></dt><dd><p>Total MP2 energy (HF + correlation)</p>
 </dd>
@@ -1148,6 +1678,8 @@ occupied and virtual orbitals can be frozen in MP2 calculation.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">mf</span> <span class="o">=</span> <span class="n">scf</span><span class="o">.</span><span class="n">RHF</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># freeze 2 core orbitals</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">pt</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">MP2</span><span class="p">(</span><span class="n">mf</span><span class="p">)</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">frozen</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># auto-generate the number of core orbitals to be frozen (1 in this case)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pt</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">MP2</span><span class="p">(</span><span class="n">mf</span><span class="p">)</span><span class="o">.</span><span class="n">set_frozen</span><span class="p">()</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># freeze 2 core orbitals and 3 high lying unoccupied orbitals</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">pt</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">frozen</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">16</span><span class="p">,</span><span class="mi">17</span><span class="p">,</span><span class="mi">18</span><span class="p">])</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
 </pre></div>
@@ -1160,6 +1692,8 @@ occupied and virtual orbitals can be frozen in MP2 calculation.</p>
 <blockquote>
 <div><dl class="simple">
 <dt>e_corr<span class="classifier">float</span></dt><dd><p>MP2 correlation correction</p>
+</dd>
+<dt>e_corr_ss/os<span class="classifier">float</span></dt><dd><p>Same-spin and opposite-spin component of the MP2 correlation energy</p>
 </dd>
 <dt>e_tot<span class="classifier">float</span></dt><dd><p>Total MP2 energy (HF + correlation)</p>
 </dd>
@@ -1185,7 +1719,7 @@ occupied and virtual orbitals can be frozen in MP2 calculation.</p>
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid">
           
-            <a href="pyscf.mcscf.html" title="pyscf.mcscf package"
+            <a href="pyscf.md.html" title="pyscf.md package"
                class="md-flex md-footer-nav__link md-footer-nav__link--prev"
                rel="prev">
               <div class="md-flex__cell md-flex__cell--shrink">
@@ -1194,7 +1728,7 @@ occupied and virtual orbitals can be frozen in MP2 calculation.</p>
               <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
                 <span class="md-flex__ellipsis">
                   <span
-                      class="md-footer-nav__direction"> Previous </span> pyscf.mcscf package </span>
+                      class="md-footer-nav__direction"> Previous </span> pyscf.md package </span>
               </div>
             </a>
           
@@ -1222,7 +1756,7 @@ occupied and virtual orbitals can be frozen in MP2 calculation.</p>
               
           </div>
             Created using
-            <a href="http://www.sphinx-doc.org/">Sphinx</a> 4.0.1.
+            <a href="http://www.sphinx-doc.org/">Sphinx</a> 5.1.1.
              and
             <a href="https://github.com/bashtage/sphinx-material/">Material for
               Sphinx</a>

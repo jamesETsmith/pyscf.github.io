@@ -20,6 +20,14 @@ pyscf.scf.atom\_hf module
    :undoc-members:
    :show-inheritance:
 
+pyscf.scf.atom\_ks module
+-------------------------
+
+.. automodule:: pyscf.scf.atom_ks
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 pyscf.scf.chkfile module
 ------------------------
 
@@ -92,14 +100,6 @@ pyscf.scf.jk module
    :undoc-members:
    :show-inheritance:
 
-pyscf.scf.newton\_ah module
----------------------------
-
-.. automodule:: pyscf.scf.newton_ah
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 pyscf.scf.rohf module
 ---------------------
 
@@ -144,14 +144,6 @@ pyscf.scf.uhf\_symm module
 --------------------------
 
 .. automodule:: pyscf.scf.uhf_symm
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-pyscf.scf.x2c module
---------------------
-
-.. automodule:: pyscf.scf.x2c
    :members:
    :undoc-members:
    :show-inheritance:
